@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "preprof-bot"
+version = "0.1.0"
+description = ""
+authors = ["Artem <artem00561@gmail.com>"]
+readme = "README.md"
+packages = [{include = "preprof_bot"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+redis = "^4.4.2"
+coloredlogs = "^15.0.1"
+pyrogram = "^2.0.97"
+aiogram = {version = "^3.0.0b6", allow-prereleases = true}
+aiogram-dialog = {version = "^2.0.0b16", allow-prereleases = true}
+aerich = "^0.7.1"
+toml = "^0.10.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
