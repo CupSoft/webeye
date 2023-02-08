@@ -1,7 +1,10 @@
 from aiogram_dialog import DialogRegistry
 
+from app.dialogs.dialogs import RegistrationDLG, InfoDLG, MenuDLG
+
 
 def register_dialogs(registry: DialogRegistry):
-    from . import sample_dialog
+    registry.register(RegistrationDLG)
+    registry.register(InfoDLG)
+    registry.register(MenuDLG)
 
-    registry.register(sample_dialog.ui)

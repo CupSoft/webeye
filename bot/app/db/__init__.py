@@ -5,6 +5,28 @@ from aerich import Command
 from click import Abort
 from tortoise import Tortoise
 
+from app.settings import settings
+
+all_models = ["app.db.db_user.user_func", "aerich.models"]
+
+
+def generate_config():
+    connections = ""
+    if settings().DB_PROTOCOL == "sqlite":
+        connections = f"{settings().DB_PROTOCOL}://{settings().DB_SQLITE_DIR}"
+    else:
+        connections = f"{settings().DB_PROTOCOL}://{settings().DB_USERNAME}:{settings().DB_PASSWORD}" \
+                      f"@{settings().DB_HOST}:{settings().DB_PORT}"
+    return {
+        "connections": {"default": connections},
+        "apps": {
+            "models": {
+                "models": all_models,
+                "default_connection": "default",
+            },
+        },
+    }
+
 
 async def create_models(tortoise_config: dict):
     command = Command(tortoise_config=tortoise_config, app="models")
