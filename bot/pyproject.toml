@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "aiogram-dialog-template"
+name = "preprofBot"
 version = "0.1.0"
 description = ""
 authors = ["Artem <artem00561@gmail.com>"]
@@ -7,16 +7,20 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-aiogram = {version = "^3.0.0b6", allow-prereleases = true}
-aiogram-dialog = {version = "^2.0.0b16", allow-prereleases = true}
+aiogram = { version = "^3.0.0b6", allow-prereleases = true }
+aiogram-dialog = { version = "^2.0.0b16", allow-prereleases = true }
 coloredlogs = "^15.0.1"
 redis = "^4.4.2"
 pydentic = "^0.0.1.dev3"
-tortoise = "^0.1.1"
+tortoise-orm = "^0.19.3"
 aerich = "^0.7.1"
-pydantic = {extras = ["dotenv"], version = "^1.10.4"}
+pydantic = { extras = ["dotenv"], version = "^1.10.4" }
+
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 119

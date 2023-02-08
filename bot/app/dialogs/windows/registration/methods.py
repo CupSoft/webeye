@@ -17,7 +17,6 @@ async def finish_registration(message: Message, dialog: DialogProtocol, manager:
         return
 
     await User.register(tg_id, username)
-    await manager.done()
     await manager.start(MenuSG.main, show_mode=ShowMode.EDIT)
 
 
