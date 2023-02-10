@@ -14,8 +14,8 @@ class User(user_models.User):
             return False
 
     @classmethod
-    async def register(cls, telegram_id, name):
-        await User(telegram_id=telegram_id, name=name).save()
+    async def register(cls, telegram_id, name, email, jwt_token):
+        await User(telegram_id=telegram_id, name=name, email=email, jwt_token=jwt_token).save()
 
     @classmethod
     async def get_by_tg(cls, telegram_id: int) -> Union[user_models.User, bool]:

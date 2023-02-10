@@ -13,3 +13,7 @@ class MenuSG(StatesGroup):
 
 class InfoSG(StatesGroup):
     main = State()
+
+
+class RemovalSG(StatesGroup):
+    main = State()

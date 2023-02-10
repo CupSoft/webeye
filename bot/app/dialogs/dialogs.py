@@ -9,7 +9,8 @@ from app.db.db_user.user_func import User
 from app.dialogs.states import RegistrationSG, MenuSG
 from app.dialogs.windows.bot_info.bot_info import InfoMainWin
 from app.dialogs.windows.menu.menu import MenuMainWin
-from app.dialogs.windows.registration.registration import RegMainWin, RegLoginWin
+from app.dialogs.windows.registration.registration import RegMainWin, RegLoginWin, RegPasswordWin
+from app.dialogs.windows.removal.removal import RemovalMainWin
 
 dlg_router = Router()
 
@@ -31,6 +32,7 @@ async def error_handler(event, dialog_manager: DialogManager):
         return UNHANDLED
 
 
-RegistrationDLG = Dialog(RegMainWin, RegLoginWin)
+RegistrationDLG = Dialog(RegMainWin, RegLoginWin, RegPasswordWin)
 InfoDLG = Dialog(InfoMainWin)
 MenuDLG = Dialog(MenuMainWin)
+RemovalDLG = Dialog(RemovalMainWin)
