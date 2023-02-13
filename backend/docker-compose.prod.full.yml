@@ -1,0 +1,111 @@
+version: "3.8"
+services:
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    command: '/bin/sh -c ''while :; do sleep 336h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+    depends_on:
+      - backend
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/sites-available/default.conf
+      - ./docker/nginx/certbot/conf:/etc/letsencrypt
+      - ./docker/nginx/certbot/www:/var/www/certbot
+    ports:
+      - 80:80
+      - 443:443
+
+  certbot:
+    container_name: certbot
+    entrypoint:  "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 118h & wait $${!}; done;'"
+    image: certbot/certbot
+    volumes:
+      - ./docker/nginx/certbot/conf:/etc/letsencrypt
+      - ./docker/nginx/certbot/www:/var/www/certbot
+
+
+  backend:
+    image: backend:latest-prod-full
+    depends_on:
+      - db
+    env_file:
+      - .prod.full.env
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    ports:
+      - 8000
+    volumes:
+      - ./app:/app
+
+  celery:
+    image: celery:latest-prod-full
+    env_file:
+      - .prod.full.env
+    build:
+      context: .
+      dockerfile: celery.Dockerfile
+    ports:
+      - 8000
+    depends_on:
+      - backend
+    volumes:
+      - ./app:/app
+
+  flower:
+    image: flower:latest-prod-full
+    container_name: flower
+    build:
+      context: .
+      dockerfile: flower.Dockerfile
+    env_file:
+      - .prod.full.env
+    volumes:
+      - ./app:/app
+    ports:
+      - 8888
+
+  redis:
+    image: redis
+    container_name: redis
+    env_file:
+      - .prod.full.env
+    command: [ "redis-server", "/docker/redis/redis.conf" ]
+
+    ports:
+      - 6379
+
+    volumes:
+      - ./docker/redis/redis-data:/data/bases
+      - ./docker/redis/redis.conf:/docker/redis/redis.conf
+      - ./docker/redis/log:/docker/redis/log
+
+  rabbitmq:
+    image: rabbitmq:3.8.4-management
+    container_name: rabbitmq
+    env_file:
+      - .prod.full.env
+    volumes:
+      - ./docker/rabbitmq/etc/:/etc/rabbitmq/
+      - ./docker/rabbitmq/data/:/var/lib/rabbitmq/
+      - ./docker/rabbitmq/logs/:/var/log/rabbitmq/
+    ports:
+      - 5672
+      - 15672
+
+  db:
+    image: postgres:12
+    volumes:
+      - ./docker/postgres/:/var/lib/postgresql/data/pgdata
+    env_file:
+      - .prod.full.env
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+
+
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - db
+    env_file:
+      - .prod.full.env
