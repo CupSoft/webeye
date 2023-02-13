@@ -12,6 +12,7 @@ from app.core.auth.utils.jwt import create_access_token
 from app.core.auth.utils.password import get_password_hash
 from app.settings.config import settings
 
+
 router = APIRouter()
 
 
