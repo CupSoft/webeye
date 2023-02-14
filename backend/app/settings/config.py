@@ -1,5 +1,7 @@
 import os
 
+from decouple import config
+
 
 class Settings:
     VERSION = '0.1.0'
@@ -12,7 +14,8 @@ class Settings:
     DEBUG = True
 
     APPLICATIONS = [
-        'users'
+        'users',
+        'resources',
     ]
 
     PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
@@ -20,17 +23,22 @@ class Settings:
     LOGS_ROOT = os.path.join(BASE_DIR, "app/logs")
     EMAIL_TEMPLATES_DIR = os.path.join(BASE_DIR, "app/templates/emails/build/")
 
-    DB_URL = 'sqlite://./test.db'
+    DB_USER = config('DB_USER')
+    DB_NAME = config('DB_NAME')
+    DB_PASS = config('DB_PASS')
+    DB_HOST = config('DB_HOST')
+    DB_PORT = config('DB_PORT')
+
+    DB_URL = f"postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     DB_CONNECTIONS = {
             'default': {
-                'engine': 'tortoise.backends.sqlite',
-                'db_url': DB_URL,
                 'credentials': {
-                    'host': '',
-                    'port': '',
-                    'user': '',
-                    'password': '',
-                    'database': '',
+                    "engine": "tortoise.backends.asyncpg",
+                    'host': DB_HOST,
+                    'port': DB_PORT,
+                    'user': DB_USER,
+                    'password': DB_PASS,
+                    'database': DB_NAME,
                 }
             },
         }
@@ -50,11 +58,11 @@ class Settings:
     EMAILS_ENABLED = SMTP_HOST and SMTP_PORT and EMAILS_FROM_EMAIL
     LOGIN_URL = SERVER_HOST + '/api/auth/login/access-token'
 
-    RABBIT_LOGIN = 'guest'
-    RABBIT_PASSWORD = ''
-    RABBIT_HOST = 'localhost'
+    RABBIT_LOGIN = config('RABBIT_HOST')
+    RABBIT_PASSWORD = config('RABBIT_PASSWORD')
+    RABBIT_HOST = config('RABBIT_HOST')
 
-    REDIS_URL = ''
+    REDIS_URL = config('REDIS_HOST')
 
     APPLICATIONS_MODULE = 'app.applications'
 

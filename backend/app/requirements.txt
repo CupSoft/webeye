@@ -86,3 +86,4 @@ wcwidth
 websockets
 yarl
 zipp
+python-decouple

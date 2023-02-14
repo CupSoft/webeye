@@ -10,8 +10,6 @@ services:
       dockerfile: backend.Dockerfile
     ports:
       - 8000:8000
-    volumes:
-      - ./app:/app
 
   celery:
     image: celery:latest-local
@@ -22,5 +20,26 @@ services:
       dockerfile: celery.Dockerfile
     depends_on:
       - web
-    volumes:
-      - ./app:/app
+
+  postgres:
+      image: postgres:latest
+      restart: always
+      env_file:
+        - .local.env
+      volumes:
+          - postgres:/var/lib/postgresql/data
+
+  pgadmin:
+      image: dpage/pgadmin4:latest
+      env_file:
+        - .local.env
+      ports:
+          - 15432:80
+      volumes:
+          - pgadmin:/var/lib/pgadmin
+      depends_on:
+          - postgres
+
+volumes:
+    postgres:
+    pgadmin:

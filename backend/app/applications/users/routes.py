@@ -13,6 +13,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from app.settings.config import settings
 
 import logging
+
+
 logger = logging.getLogger(__name__)
 
 router = APIRouter()

@@ -93,3 +93,4 @@ websockets
 XlsxWriter
 yarl
 zipp
+python-decouple
