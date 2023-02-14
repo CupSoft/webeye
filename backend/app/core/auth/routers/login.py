@@ -5,9 +5,10 @@ from fastapi import APIRouter, Body, HTTPException, BackgroundTasks
 from app.applications.users.models import User
 from app.applications.users.utils import update_last_login
 from app.core.auth.schemas import JWTToken, CredentialsSchema, Msg
-from app.core.auth.utils.contrib import (generate_password_reset_token, send_reset_password_email,
-                                         verify_password_reset_token, authenticate,
-                                         )
+from app.core.auth.utils.contrib import (
+    generate_password_reset_token, send_reset_password_email,
+    verify_password_reset_token, authenticate,
+    )
 from app.core.auth.utils.jwt import create_access_token
 from app.core.auth.utils.password import get_password_hash
 from app.settings.config import settings

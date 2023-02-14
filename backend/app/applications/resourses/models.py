@@ -8,17 +8,15 @@ from app.core.base.base_models import BaseCreatedUpdatedAtModel, UUIDDBModel, Ba
 from app.core.auth.utils import password
 
 
-class User(BaseDBModel, BaseCreatedUpdatedAtModel, UUIDDBModel):
+class Resource(BaseDBModel, BaseCreatedUpdatedAtModel, UUIDDBModel):
 
-    username = fields.CharField(max_length=20, unique=True)
+    name = fields.CharField(max_length=255, unique=True)
     email = fields.CharField(max_length=255, unique=True)
-    first_name = fields.CharField(max_length=50, null=True)
-    last_name = fields.CharField(max_length=50, null=True)
-    password_hash = fields.CharField(max_length=128, null=True)
-    last_login = fields.DatetimeField(null=True)
+    moderators = fields.ManyToManyField(
+        "users.models.User", related_name="resources"
+    )
     is_active = fields.BooleanField(default=True)
     is_superuser = fields.BooleanField(default=False)
-    resources: fields.ManyToManyRelation["Resource"]
 
     def full_name(self) -> str:
         if self.first_name or self.last_name:
@@ -58,7 +56,7 @@ class User(BaseDBModel, BaseCreatedUpdatedAtModel, UUIDDBModel):
         computed = ["full_name"]
 
 
-class Admin(BaseDBModel, BaseCreatedUpdatedAtModel, UUIDDBModel):
+class ResourceNode(BaseDBModel, BaseCreatedUpdatedAtModel, UUIDDBModel):
     
     user: fields.ForeignKeyRelation['User'] = fields.OneToOneField(
         'models.User', on_delete=fields.CASCADE
