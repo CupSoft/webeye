@@ -1,15 +1,7 @@
-FROM python:3.7-alpine as bigimage
-COPY ./app ./app
-RUN apk add linux-headers g++ build-base libressl-dev libxslt-dev libgcrypt-dev musl-dev libffi-dev \
-libxml2 libxslt libc-dev
-RUN pip install --upgrade pip
-RUN pip wheel --wheel-dir=/root/wheels --no-cache-dir -r ./app/requirements.txt
-FROM python:3.7-alpine as smallimage
-COPY --from=bigimage /root/wheels /root/wheels
-COPY ./app ./app
-RUN pip install \
-      --no-index \
-      --find-links=/root/wheels --no-cache-dir -r ./app/requirements.txt
+FROM python:3.10-alpine as smallimage
+RUN pip install -U pip wheel setuptools
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 ENV PYTHONUNBUFFERED 1
-COPY ./app ./app
-CMD ["celery", "worker", "-A", "app.core.celery_app", "-l", "info"]
+COPY . .
+CMD ["celery", "-A", "app.core.celery_app", "worker", "-l", "info"]

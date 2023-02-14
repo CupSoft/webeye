@@ -24,15 +24,3 @@ services:
       - web
     volumes:
       - ./app:/app
-
-  flower:
-    image: flower:latest-local
-    build:
-      context: .
-      dockerfile: flower.Dockerfile
-    env_file:
-      - .local.env
-    volumes:
-      - ./app:/app
-    ports:
-      - 8888:8888
