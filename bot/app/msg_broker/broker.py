@@ -4,6 +4,7 @@ import logging
 from asyncio import sleep
 
 import redis.asyncio as redis
+from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 from aiogram_dialog import DialogRegistry
 
 from app.db.db_user.user_func import User
@@ -20,12 +21,16 @@ async def init_redis_sub(bot, registry, host, port, password):
 
 async def send_notification(data, bot, registry: DialogRegistry):
     print(f"(Reader) Message Received: {data}")
+    kb = [[KeyboardButton(text="Вызвать меню")], ]
+    keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
     tg_ids = await User.get_all_tg_id()  # Потом будут получатся из data["tg_id"]
     for tg_id in tg_ids:
         status_icon = "🔴"
         if data["status"] == "warning":
             status_icon = "🟡"
-        await bot.send_message(tg_id, f"У ресурса наблюдаются проблемы:\n{data['name']} {status_icon}")
+        msg = await bot.send_message(tg_id, f"У ресурса наблюдаются проблемы:\n{data['name']} {status_icon}",
+                                     reply_markup=keyboard)
+        print()
 
 
 async def reader(channel: redis.client.PubSub, bot, registry):
