@@ -4,7 +4,6 @@ from aiogram.fsm.state import StatesGroup, State
 class RegistrationSG(StatesGroup):
     main = State()
     login = State()
-    password = State()
 
 
 class MenuSG(StatesGroup):
@@ -16,4 +15,12 @@ class InfoSG(StatesGroup):
 
 
 class RemovalSG(StatesGroup):
+    main = State()
+
+
+class SubscriptionsSG(StatesGroup):
+    main = State()
+
+
+class ResourcesSG(StatesGroup):
     main = State()

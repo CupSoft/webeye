@@ -14,8 +14,8 @@ class User(user_models.User):
             return False
 
     @classmethod
-    async def register(cls, telegram_id, name, email, jwt_token):
-        await User(telegram_id=telegram_id, name=name, email=email, jwt_token=jwt_token).save()
+    async def register(cls, telegram_id: int, name: str, jwt_token: str):
+        await User(telegram_id=telegram_id, name=name, jwt_token=jwt_token).save()
 
     @classmethod
     async def get_by_tg(cls, telegram_id: int) -> Union[user_models.User, bool]:
@@ -23,6 +23,10 @@ class User(user_models.User):
             return await cls.get(telegram_id=telegram_id)
         except DoesNotExist:
             return False
+
+    @classmethod
+    async def get_all_tg_id(cls):
+        return await cls.all().values_list("telegram_id", flat=True)
 
     @classmethod
     async def get_count(cls) -> int:

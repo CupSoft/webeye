@@ -10,6 +10,7 @@ from aiogram_dialog import DialogRegistry
 from redis import Redis
 
 from app import db
+from app.msg_broker.broker import init_redis_sub
 from app.settings import settings
 from app.commands import setup_bot_commands, remove_bot_commands
 from app.db import init_orm, close_orm
@@ -55,7 +56,7 @@ async def main():
         await db.migrate_models(tortoise_config)
     await init_orm(tortoise_config)
 
-    # Инициализация REDIS
+    # Инициализация REDIS для FSM
     if settings().USE_REDIS:
         storage = RedisStorage(
             redis=Redis(host=settings().REDIS_HOST, port=settings().REDIS_PORT, db=0,
@@ -77,6 +78,8 @@ async def main():
     registry = DialogRegistry(dp)
     register_dialogs(registry)
     await setup_bot_commands(bot)
+    # Инициализация REDIS для sub/pub
+    asyncio.create_task(init_redis_sub(bot, registry))
 
     await dp.start_polling(bot, on_shutdown=on_shutdown, on_startup=on_startup)
 

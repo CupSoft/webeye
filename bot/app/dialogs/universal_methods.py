@@ -2,6 +2,9 @@ from asyncio import sleep
 
 from aiogram_dialog import DialogManager
 
+from app.db.db_user.user_func import User
+from app.services.restapi.restapi import api_get_jwt
+
 
 def get_tg_id_from_manager(dialog_manager: DialogManager):
     return dialog_manager.middleware_data["event_from_user"].id
@@ -10,3 +13,9 @@ def get_tg_id_from_manager(dialog_manager: DialogManager):
 async def del_message_by(message, seconds):
     await sleep(seconds)
     await message.delete()
+
+
+async def login_user(tg_id: int, name: str, short_jwt: str):
+    print(f"login_user: {tg_id}, {name}, {short_jwt}")
+    jwt = await api_get_jwt(short_jwt)
+    await User.register(tg_id, name, jwt)
