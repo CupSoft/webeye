@@ -15,6 +15,7 @@ pydentic = "^0.0.1.dev3"
 tortoise-orm = "^0.19.3"
 aerich = "^0.7.1"
 pydantic = { extras = ["dotenv"], version = "^1.10.4" }
+asyncio = "^3.4.3"
 
 
 

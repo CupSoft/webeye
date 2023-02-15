@@ -13,6 +13,7 @@ MenuMainWin = Window(
         Start(Const("Популярные ресурсы"), state=ResourcesSG.main, id="resources_btn"),
         Button(Format("{not_btn_text}"), on_click=change_notifications, id="notifications_btn"),
         Start(Const("Удалить аккаунт"), state=RemovalSG.main, id="removal_user_btn"),
+        width=2,
     ),
     getter=getter_menu,
     state=MenuSG.main,
