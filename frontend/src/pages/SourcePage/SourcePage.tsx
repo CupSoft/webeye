@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import styles from './SourcePage.module.css'
+import styles from './SourcePage.module.scss'
 
 const SourcePage = () => {
   const params = useParams()
