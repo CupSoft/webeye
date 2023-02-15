@@ -1,0 +1,26 @@
+.header {
+  @apply flex justify-center items-center px-2 py-3.5;
+
+  .title {
+    min-width: 4rem;
+    a {
+      @apply flex flex-wrap justify-center items-center font-bold text-xl hover:opacity-90 transition-all;
+    }
+  }
+
+  .navigation {
+    @apply flex flex-wrap justify-start items-center w-1/2 mr-3;
+
+    a {
+      @apply p-2 whitespace-nowrap hover:opacity-80 transition-all;
+    }
+  }
+
+  .buttons {
+    @apply flex flex-wrap justify-end items-center ml-3.5 -mr-1.5 -m-2 w-1/2;
+  }
+
+  span {
+    @apply m-0;
+  }
+}

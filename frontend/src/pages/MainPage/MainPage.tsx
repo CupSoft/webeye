@@ -1,6 +1,6 @@
 import React from 'react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
-import styles from './MainPage.module.css'
+import styles from './MainPage.module.scss'
 
 const MainPage = () => {
   const data = [
@@ -12,7 +12,7 @@ const MainPage = () => {
   ];
   return (
     <div>
-      <LineChart width={600} height={300} data={data}>
+      <LineChart width={300} height={300} data={data}>
         <Line type="monotone" dataKey="uv" stroke="#8884d8" />
         <CartesianGrid stroke="#ccc" />
         <XAxis dataKey="name" />

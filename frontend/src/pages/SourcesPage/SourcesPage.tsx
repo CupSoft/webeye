@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './SourcesPage.module.css'
+import styles from './SourcesPage.module.scss'
 
 const SourcesPage = () => {
   return (

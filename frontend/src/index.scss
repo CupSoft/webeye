@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply text-base m-0 p-0 box-border text-white bg-gray-dark;
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+hr {
+  @apply border-gray-light py-2;
+}
+
+body, html {
+  overflow-x: hidden;
+  margin-right: calc(-1 * (100vw - 100%));
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-none;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-500 bg-opacity-50 rounded-3xl hover:bg-gray-600;
+}
+::-webkit-scrollbar {
+  @apply w-0;
+}
+
+.col {
+  @apply flex-col w-max;
+}
+
+.row {
+  @apply flex-row w-max;
+}

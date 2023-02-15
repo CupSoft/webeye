@@ -1,0 +1,31 @@
+.btn {
+  @apply py-2.5 rounded-3xl m-2 w-auto whitespace-nowrap;
+}
+
+.fill_purple {
+  @apply border-2 bg-purple border-purple hover:bg-opacity-0 transition-all;
+}
+
+.purple {
+  @apply border-2 border-purple hover:bg-purple transition-all;
+}
+
+.red {
+  @apply border-2 border-red transition-all;
+}
+
+.green {
+  @apply text-green hover:opacity-90 transition-all;
+}
+
+.blue {
+  @apply border-2 border-blue hover:bg-blue transition-all; 
+}
+
+.lg {
+  @apply px-12
+}
+
+.sm {
+  @apply px-4;
+}
