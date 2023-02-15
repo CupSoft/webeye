@@ -18,7 +18,7 @@ class BaseDBModel(models.Model):
 
 
 class UUIDDBModelMixin:
-    uuid = fields.UUIDField(unique=True, pk=False)
+    hashed_id = fields.UUIDField(unique=True, pk=False)
 
 
 class BaseCreatedAtModelMixin:

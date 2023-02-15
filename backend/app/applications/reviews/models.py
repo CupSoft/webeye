@@ -8,10 +8,10 @@ from app.core.base.base_models import BaseCreatedUpdatedAtModelMixin, UUIDDBMode
 
 class Review(BaseDBModel, BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin):
     resource: fields.ForeignKeyRelation['Resource'] = fields.ForeignKeyField(
-        'models.Resource', related_name='reviews', to_field='uuid', on_delete=fields.CASCADE
+        'models.Resource', related_name='reviews', to_field='hashed_id', on_delete=fields.CASCADE
     )
     user: fields.ForeignKeyRelation['User'] = fields.ForeignKeyField(
-        'models.User', related_name='reviews', to_field='uuid', on_delete=fields.CASCADE
+        'models.User', related_name='reviews', to_field='hashed_id', on_delete=fields.CASCADE
     )
     text = fields.CharField(max_length=150)
     stars = fields.IntField()

@@ -23,7 +23,7 @@ class Resource(BaseDBModel, BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin):
 class ResourceNode(BaseDBModel, BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin):
     
     resource: fields.ForeignKeyRelation['Resource'] = fields.ForeignKeyField(
-        'models.Resource', related_name='nodes', to_field='uuid', on_delete=fields.CASCADE
+        'models.Resource', related_name='nodes', to_field='hashed_id', on_delete=fields.CASCADE
     )
     url = fields.CharField(max_length=255)
     checks: fields.ReverseRelation['Check']

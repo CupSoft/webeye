@@ -16,7 +16,7 @@ class Settings:
     APPLICATIONS = [
         'users',
         'resources',
-        'checks',
+        'verifications',
         'reviews',
         'subscriptions',
     ]
