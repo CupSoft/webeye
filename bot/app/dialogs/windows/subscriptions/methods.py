@@ -20,14 +20,25 @@ t_resources = [
     TestResource(4, "РГПУ Герцена", False),
 ]
 for i in range(50):
-    t_resources.append(TestResource(i + 4, str(i), True))
+    t_resources.append(TestResource(i + 5, str(i), True))
+
+tmp_url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
 
-async def getter_subscriptions(dialog_manager: DialogManager, **kwargs):
+async def getter_main_subscriptions(dialog_manager: DialogManager, **kwargs):
     resources = t_resources
     return {"resources": resources}
 
 
-async def resource_info(message: Message, dialog: DialogProtocol, manager: DialogManager, resource_id: int):
-    print(resource_id)
-    pass
+async def getter_info_subscriptions(dialog_manager: DialogManager, **kwargs):
+    resource_id = dialog_manager.dialog_data["current_resource"]
+    resource = t_resources[int(resource_id) - 1]
+    status = "все в порядке🟢"
+    if not resource.is_active:
+        status = "наблюдаются сбои🔴"
+    return {"res_name": resource.name, "res_url": tmp_url, "status": status}
+
+
+async def start_resource_info(message: Message, dialog: DialogProtocol, manager: DialogManager, resource_id: int):
+    manager.dialog_data["current_resource"] = resource_id
+    await manager.next()

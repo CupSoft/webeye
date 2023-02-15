@@ -20,6 +20,7 @@ class RemovalSG(StatesGroup):
 
 class SubscriptionsSG(StatesGroup):
     main = State()
+    info = State()
 
 
 class ResourcesSG(StatesGroup):

@@ -14,7 +14,7 @@ from app.dialogs.windows.bot_info.bot_info import InfoMainWin
 from app.dialogs.windows.menu.menu import MenuMainWin
 from app.dialogs.windows.registration.registration import RegMainWin, RegLoginWin
 from app.dialogs.windows.removal_user.removal import RemovalMainWin
-from app.dialogs.windows.subscriptions.subscriptions import SubscriptionsMainWin
+from app.dialogs.windows.subscriptions.subscriptions import SubscriptionsMainWin, SubscriptionsInfoWin
 
 dlg_router = Router()
 
@@ -51,7 +51,7 @@ async def handle_ping(message: Message):
 
 async def error_handler(event, dialog_manager: DialogManager):
     if isinstance(event.exception, UnknownIntent):
-        # Ловим ошибку устаревшего callback
+        # Handling an error related to an outdated callback
         await handle_start_query(event.update.callback_query, dialog_manager)
     else:
         return UNHANDLED
@@ -61,4 +61,4 @@ RegistrationDLG = Dialog(RegMainWin, RegLoginWin)
 InfoDLG = Dialog(InfoMainWin)
 MenuDLG = Dialog(MenuMainWin)
 RemovalDLG = Dialog(RemovalMainWin)
-SubscriptionsDLG = Dialog(SubscriptionsMainWin)
+SubscriptionsDLG = Dialog(SubscriptionsMainWin, SubscriptionsInfoWin)
