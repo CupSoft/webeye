@@ -1,13 +1,22 @@
 .btn {
   @apply py-2.5 rounded-3xl m-2 w-auto whitespace-nowrap;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .fill_purple {
-  @apply border-2 bg-purple border-purple hover:bg-opacity-0 transition-all;
+  @apply border-2 bg-purple border-purple hover:bg-opacity-0 transition-all disabled:hover:bg-purple;
+}
+
+.squared {
+  @apply rounded-2xl;
 }
 
 .purple {
-  @apply border-2 border-purple hover:bg-purple transition-all;
+  @apply border-2 border-purple hover:bg-purple transition-all disabled:hover:bg-opacity-0;
 }
 
 .red {
@@ -23,7 +32,11 @@
 }
 
 .lg {
-  @apply px-12
+  @apply px-4 flex flex-grow items-center justify-center max-w-xs;
+}
+
+.md {
+  @apply px-12;
 }
 
 .sm {

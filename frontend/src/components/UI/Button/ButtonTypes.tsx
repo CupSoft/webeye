@@ -4,4 +4,5 @@ export type ButtonPropsType = React.ButtonHTMLAttributes<HTMLButtonElement> & Re
   btnType?: string;
   size?: string;
   children: string;
+  squared?: boolean;
 }

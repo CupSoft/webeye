@@ -10,13 +10,18 @@ const Header = () => {
   const isAuth = false
 
   function signInClickHandler() {
-    navigate(AUTH_ROUTE)
+    if (isAuth) {
+      navigate(MAIN_ROUTE)
+      
+    } else {
+      navigate(AUTH_ROUTE)
+    }
   }
 
   return (
     <>
       <div className={cn(styles.header)}>
-        <span className={cn(styles.navigation, 'row')}>
+        <span className={cn(styles.navigation)}>
           <NavLink to={MAIN_ROUTE}>Главная</NavLink>
           <NavLink to={SOURCES_ROUTE}>Все ВУЗы</NavLink>
         </span>
@@ -25,12 +30,10 @@ const Header = () => {
         </span>
         <span className={cn(styles.buttons)}>
           <Button btnType={'blue'}>Телеграм бот</Button>
-          {!isAuth && 
-            <Button
-              size={'lg'}
-              onClick={signInClickHandler}
-            >Вход</Button>
-          }
+          <Button
+            size='md'
+            onClick={signInClickHandler}
+          >{isAuth ? 'Выйти' : 'Войти'}</Button>
         </span>
       </div>
       <hr/>

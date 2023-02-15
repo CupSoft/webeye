@@ -1,0 +1,19 @@
+.container {
+  @apply flex flex-col items-center justify-center h-full;
+
+  .form {
+    @apply pb-2 w-auto -m-2;
+
+    .inputs {
+      @apply pr-2 pl-2;
+    }
+    
+    .btns {
+      @apply flex flex-grow flex-row;
+
+      .test {
+        color: red;
+      }
+    }
+  }
+}

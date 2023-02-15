@@ -9,7 +9,7 @@
   }
 
   .navigation {
-    @apply flex flex-wrap justify-start items-center w-1/2 mr-3;
+    @apply flex flex-row flex-wrap justify-start items-center w-1/2 mr-3;
 
     a {
       @apply p-2 whitespace-nowrap hover:opacity-80 transition-all;
