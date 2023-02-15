@@ -5,9 +5,9 @@ from decouple import config
 
 class Settings:
     VERSION = '0.1.0'
-    APP_TITLE = 'Template Application'
-    PROJECT_NAME = 'Template Application'
-    APP_DESCRIPTION = 'TG - @AKuzyashin\nhttps://github.com/Kuzyashin'
+    APP_TITLE = 'Preprof'
+    PROJECT_NAME = 'Name'
+    APP_DESCRIPTION = 'Project for preprof'
 
     SERVER_HOST = 'localhost'
 
@@ -16,6 +16,9 @@ class Settings:
     APPLICATIONS = [
         'users',
         'resources',
+        'checks',
+        'reviews',
+        'subscriptions',
     ]
 
     PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))

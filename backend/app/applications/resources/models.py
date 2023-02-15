@@ -3,31 +3,30 @@ from typing import Optional
 from tortoise import fields
 from tortoise.exceptions import DoesNotExist
 
-from app.applications.users.schemas import BaseUserCreate
-from app.core.base.base_models import BaseCreatedUpdatedAtModel, UUIDDBModel, BaseDBModel
-from app.core.auth.utils import password
+from app.core.base.base_models import BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin, BaseDBModel
 
 
-class Resource(BaseDBModel, BaseCreatedUpdatedAtModel, UUIDDBModel):
+class Resource(BaseDBModel, BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin):
 
     name = fields.CharField(max_length=255, unique=True)
-    email = fields.CharField(max_length=255, unique=True)
+    is_active = fields.BooleanField(default=True)
     moderators = fields.ManyToManyField(
         "models.User", related_name="resources"
     )
-    is_active = fields.BooleanField(default=True)
+    nodes: fields.ReverseRelation['ResourceNode']
+    reviews: fields.ReverseRelation["Review"]
 
     class Meta:
         table = 'resources'
 
 
-class ResourceNode(BaseDBModel, BaseCreatedUpdatedAtModel, UUIDDBModel):
+class ResourceNode(BaseDBModel, BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin):
     
-    user: fields.ForeignKeyRelation['Resource'] = fields.OneToOneField(
-        'models.Resource', on_delete=fields.CASCADE
+    resource: fields.ForeignKeyRelation['Resource'] = fields.ForeignKeyField(
+        'models.Resource', related_name='nodes', to_field='uuid', on_delete=fields.CASCADE
     )
+    url = fields.CharField(max_length=255)
+    checks: fields.ReverseRelation['Check']
     
     class Meta:
         table = 'resource_nodes'
-        
-    

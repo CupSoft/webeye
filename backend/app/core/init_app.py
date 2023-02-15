@@ -33,6 +33,7 @@ def get_app_list():
 
 def get_tortoise_config() -> dict:
     app_list = get_app_list()
+    print(app_list)
     app_list.append('aerich.models')
     config = {
         'connections': settings.DB_CONNECTIONS,

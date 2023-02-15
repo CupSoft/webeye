@@ -4,11 +4,11 @@ from tortoise import fields
 from tortoise.exceptions import DoesNotExist
 
 from app.applications.users.schemas import BaseUserCreate
-from app.core.base.base_models import BaseCreatedUpdatedAtModel, UUIDDBModel, BaseDBModel
+from app.core.base.base_models import BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin, BaseDBModel
 from app.core.auth.utils import password
 
 
-class User(BaseDBModel, BaseCreatedUpdatedAtModel, UUIDDBModel):
+class User(BaseDBModel, BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin):
 
     username = fields.CharField(max_length=20, unique=True)
     email = fields.CharField(max_length=255, unique=True)
@@ -18,7 +18,9 @@ class User(BaseDBModel, BaseCreatedUpdatedAtModel, UUIDDBModel):
     last_login = fields.DatetimeField(null=True)
     is_active = fields.BooleanField(default=True)
     is_superuser = fields.BooleanField(default=False)
-    resources: fields.ManyToManyRelation["Resource"]
+    resources: fields.ReverseRelation["Resource"]
+    reviews: fields.ReverseRelation["Review"]
+
 
     def full_name(self) -> str:
         if self.first_name or self.last_name:
@@ -58,7 +60,7 @@ class User(BaseDBModel, BaseCreatedUpdatedAtModel, UUIDDBModel):
         computed = ["full_name"]
 
 
-class Admin(BaseDBModel, BaseCreatedUpdatedAtModel, UUIDDBModel):
+class Admin(BaseDBModel, BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin):
     
     user: fields.ForeignKeyRelation['User'] = fields.OneToOneField(
         'models.User', on_delete=fields.CASCADE

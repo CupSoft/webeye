@@ -17,14 +17,14 @@ class BaseDBModel(models.Model):
         abstract = True
 
 
-class UUIDDBModel:
-    hashed_id = fields.UUIDField(unique=True, pk=False)
+class UUIDDBModelMixin:
+    uuid = fields.UUIDField(unique=True, pk=False)
 
 
-class BaseCreatedAtModel:
+class BaseCreatedAtModelMixin:
     created_at = fields.DatetimeField(auto_now_add=True)
 
 
-class BaseCreatedUpdatedAtModel:
+class BaseCreatedUpdatedAtModelMixin:
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
