@@ -232,15 +232,17 @@ files = [
 ]
 
 [[package]]
-name = "atlastk"
-version = "0.13.2"
-description = "The quick and easy way to add versatile graphical interfaces and networking capabilities to your Python programs. Works even on your Android smartphone or tablet."
+name = "asyncio"
+version = "3.4.3"
+description = "reference implementation of PEP 3156"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "atlastk-0.13.2-py3-none-any.whl", hash = "sha256:387c3b644a8145e6efd1cf9ff7add9226743571420ce6218cae34ca62ed9c833"},
-    {file = "atlastk-0.13.2.tar.gz", hash = "sha256:1e805658930f2546fbedddd406ff27028f772b2ceb104887cc54ba1ab34ffad8"},
+    {file = "asyncio-3.4.3-cp33-none-win32.whl", hash = "sha256:b62c9157d36187eca799c378e572c969f0da87cd5fc42ca372d92cdb06e7e1de"},
+    {file = "asyncio-3.4.3-cp33-none-win_amd64.whl", hash = "sha256:c46a87b48213d7464f22d9a497b9eef8c1928b68320a2fa94240f969f6fec08c"},
+    {file = "asyncio-3.4.3-py3-none-any.whl", hash = "sha256:c4d18b22701821de07bd6aea8b53d21449ec0ec5680645e5317062ea21817d2d"},
+    {file = "asyncio-3.4.3.tar.gz", hash = "sha256:83360ff8bc97980e4ff25c964c7bd3923d333d177aa4f7fb736b019f26c7cb41"},
 ]
 
 [[package]]
@@ -834,21 +836,6 @@ files = [
 ]
 
 [[package]]
-name = "tortoise"
-version = "0.1.1"
-description = "Turtle graphics on the web."
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "tortoise-0.1.1-py3-none-any.whl", hash = "sha256:bcb58a56d6796cad0db330104450df2caf2ea9e98d844bb2906274bd15c12804"},
-    {file = "tortoise-0.1.1.tar.gz", hash = "sha256:a4ebd69b152d266174b3b0f2a22e3fb8995101eb749d3114813a98f405ab10bb"},
-]
-
-[package.dependencies]
-atlastk = "*"
-
-[[package]]
 name = "tortoise-orm"
 version = "0.19.3"
 description = "Easy async ORM for python, built with relations in mind"
@@ -977,4 +964,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "d6e94b03777d7c69ad1dd1a60b606f945a9eb3950dec097d23430306aeba43a5"
+content-hash = "8616a896bac1d8b8fe81231a8367ebed9e63e41c198c1bff65845618902e03c7"

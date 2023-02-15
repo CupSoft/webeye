@@ -9,12 +9,12 @@ class Settings(BaseSettings):
 
     ADMIN_ID: int
 
-    USE_REDIS: bool = False
+    USE_REDIS: bool = True  # Without redis, the API connection does not work
     REDIS_HOST: str = "localhost"
     REDIS_PORT: int = 6379
     REDIS_PASSWORD: str = ""
 
-    DB_USERNAME: str = "root"  # если используется sqlite, то не нужно
+    DB_USERNAME: str = "root"  # if sqlite is used, then it is not necessary
     DB_PASSWORD: str = "root"
     DB_HOST: str = "localhost"
     DB_PORT: int = 3306
