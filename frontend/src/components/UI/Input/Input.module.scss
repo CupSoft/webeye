@@ -1,3 +1,5 @@
 .input {
-  @apply p-2.5 rounded-xl mb-2 mt-2 w-full bg-gray-700 placeholder:text-sm;
+  @apply p-3 border-2 border-gray-input rounded-xl mb-2.5 mt-2.5 w-full bg-gray-input placeholder:text-sm placeholder:text-white/[.12] focus:bg-focus-input transition-all;
+
+  outline: none;
 }

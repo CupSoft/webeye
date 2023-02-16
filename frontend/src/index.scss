@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 * {
-  @apply text-base m-0 p-0 box-border text-white bg-gray-dark;
+  @apply text-base m-0 p-0 box-border text-gray-50 bg-gray-dark;
   font-family: 'Inter', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
