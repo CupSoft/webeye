@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { api } from '../services/apiService/apiService'
+import { isAuthReducer } from './reducers/isAuthReducer'
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
-    [api.reducerPath]: api.reducer
+    [api.reducerPath]: api.reducer,
+    isAuth: isAuthReducer
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(api.middleware)
 })

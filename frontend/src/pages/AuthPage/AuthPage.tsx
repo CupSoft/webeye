@@ -1,10 +1,10 @@
-import React from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../app/hooks';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import { emailPattern, SOURCES_ROUTE } from '../../utils/constants';
-import styles from './AuthPage.module.scss'
+import styles from './AuthPage.module.scss';
 
 const AuthPage = () => {
   const {
@@ -12,11 +12,12 @@ const AuthPage = () => {
     handleSubmit,
     formState: {errors, isDirty, isValid}
   } = useForm({mode: 'onBlur'})
-
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   function onSubmit(data: FieldValues) {
     console.log(data)
+    dispatch({type: 'auth', payload: true})
     navigate(SOURCES_ROUTE)
   }
 
