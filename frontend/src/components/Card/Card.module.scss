@@ -1,0 +1,26 @@
+.container {
+  @apply flex flex-col items-start w-full bg-gray-card border border-light-gray-card rounded-md p-5 m-2.5 hover:bg-gray-input;
+
+  &:hover {
+    transform: scale(1.02);
+    cursor: pointer;
+    transition: all .1s ease-in-out;
+  }
+
+  .icon {
+    @apply pb-5;
+  }
+
+  .title {
+    @apply text-xl font-bold pb-2.5;
+  }
+
+  .body {
+    @apply text-light-text;
+  }
+
+}
+
+.container.sm {
+  @apply w-full max-w-sm h-auto;
+}

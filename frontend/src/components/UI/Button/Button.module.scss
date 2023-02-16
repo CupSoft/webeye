@@ -1,5 +1,5 @@
 .btn {
-  @apply py-2.5 rounded-3xl m-2 w-auto whitespace-nowrap;
+  @apply py-3 rounded-3xl m-2.5 w-auto whitespace-nowrap;
 
   &:disabled {
     opacity: 0.5;

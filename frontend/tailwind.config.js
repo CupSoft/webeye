@@ -6,13 +6,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'purple': '#7214FF',
+        'purple': '#8390ca',
         'purple-dark': '#6004EE',
         'green': '#41E88D',
         'red': '#FF334B',
         'gray-light': '#8f9bb773',
-        'blue': '#2D55FB',
-        'gray-dark': '#1b2434'
+        'blue': '#657BDB',
+        'gray-dark': '#16213A',
+        'gray-card': '#1B253E',
+        'gray-input': '#212D48',
+        'focus-input': '#2C3854',
+        'light-gray-card': '#282D45',
+        'light-text': '#949EB5'
       },
       transitionTimingFunction: {
         DEFAULT: 'ease-in-out'

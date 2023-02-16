@@ -3,14 +3,17 @@ import cn from 'classnames'
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AUTH_ROUTE, MAIN_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
 import Button from '../UI/Button/Button';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { isAuthSelector } from '../../app/selectors/isAuthSelector';
 
 const Header = () => {
   const navigate = useNavigate()
-
-  const isAuth = false
+  const dispatch = useAppDispatch()
+  const isAuth = useAppSelector(isAuthSelector)
 
   function signInClickHandler() {
     if (isAuth) {
+      dispatch({type: 'auth', payload: false})
       navigate(MAIN_ROUTE)
       
     } else {
