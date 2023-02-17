@@ -55,15 +55,15 @@
 
     &:after {
       content: '.';
-      color: none;
+      color: rgba(0, 0, 0, 0);
       height: .9rem;
       width: .9rem;
       display: inline-flex;
       align-items: center;
       margin: .2rem 0 0 .3rem;
-      /* -webkit-mask: url('./../../assets/starIcon.svg') no-repeat 50% 50%; */
+      -webkit-mask: url('./../../assets/starFillIcon.svg') no-repeat 50% 50%;
       mask: url('./../../assets/starFillIcon.svg') no-repeat 50% 50%;
-      /* -webkit-mask-size: cover; */
+      -webkit-mask-size: cover;
       mask-size: cover;
       background-color: #ffffffe5;
     }

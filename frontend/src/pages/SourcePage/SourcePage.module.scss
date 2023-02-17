@@ -7,7 +7,7 @@
   }
 
   .title {
-    @apply flex flex-row items-center w-full pt-1;
+    @apply flex flex-wrap flex-row items-center w-full pt-1;
   }
 
   .chart {
@@ -24,15 +24,15 @@
 
     &:after {
       content: '.';
-      color: none;
+      color: rgba(0, 0, 0, 0);
       height: 2rem;
       width: 2rem;
       display: inline-flex;
       align-items: center;
       margin: .2rem 0 0 .5rem;
-      /* -webkit-mask: url('./../../assets/starIcon.svg') no-repeat 50% 50%; */
-      mask: url('./../../assets/starFillIcon.svg') no-repeat 50% 50%;
-      /* -webkit-mask-size: cover; */
+      -webkit-mask: url('./../../assets/starIcon.svg') no-repeat 50% 50%;
+      mask: url('./../../assets/starIcon.svg') no-repeat 50% 50%;
+      -webkit-mask-size: cover;
       mask-size: cover;
       background: linear-gradient(0deg, rgba(230, 230, 230, .8) 10%, white 90%);
     }
@@ -40,5 +40,33 @@
 
   .cards {
     @apply flex flex-row justify-start w-full pt-3;
+  }
+
+  .download_btn:after {
+    @apply bg-gray-50;
+    content: '.';
+    color: rgba(0, 0, 0, 0);
+    height: 1.3rem;
+    width: 1.3rem;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 -.1rem 0 .5rem;
+    -webkit-mask: url('./../../assets/downloadIcon.svg') no-repeat 50% 50%;
+    mask: url('./../../assets/downloadIcon.svg') no-repeat 50% 50%;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+  }
+}
+
+@media (max-width: 425px) {
+  .rating {
+    font-size: 2rem !important;
+    padding-bottom: .45rem;
+    margin-left: -.1rem !important;
+
+    &:after {
+      height: 1.5rem !important;
+      width: 1.5rem !important;
+    }
   }
 }

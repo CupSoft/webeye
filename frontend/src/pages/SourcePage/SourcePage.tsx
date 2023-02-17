@@ -39,8 +39,8 @@ const SourcePage = () => {
           {id !== -1 ? source.name : 'Ресурс'}
         </h1>
         <span className={styles.rating}>{source.rating}</span>
-        <Button btnType='red'>
-          Сообщить о недоступности
+        <Button btnType='turquoise'>
+          <span className={styles.download_btn}>Получить отчёт</span>
         </Button>
       </div>
       <ResponsiveContainer width='100%' height={500}>
