@@ -3,6 +3,7 @@ from typing import Tuple
 from passlib import pwd
 from passlib.context import CryptContext
 
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
