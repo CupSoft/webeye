@@ -3,29 +3,29 @@ services:
   web:
     image: web:latest-local
     env_file:
-      - .local.env
+      - .env
     build:
       context: .
-      dockerfile: backend.Dockerfile
+      dockerfile: Dockerfile
     depends_on:
       - postgres
     ports:
-      - 8000:8000
+      - "8000:8000"
 
   postgres:
     image: postgres:latest
     restart: always
     env_file:
-      - .local.env
+      - .env
     volumes:
       - postgres:/var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4:latest
     env_file:
-      - .local.env
+      - .env
     ports:
-      - 15432:80
+      - "15432:80"
     volumes:
       - pgadmin:/var/lib/pgadmin
     depends_on:

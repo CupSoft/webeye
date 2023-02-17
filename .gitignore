@@ -1,1 +1,5 @@
 .idea
+postgres.env
+backend.env
+postman.env
+bot.env
