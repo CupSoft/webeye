@@ -6,10 +6,11 @@ from typing import Optional
 from pydantic import BaseModel, UUID4, validator
 
 
-class Status(str, Enum):
-    ok = 'OK'
-    partial = 'partial'
-    critical = 'critical'
+class RequestType(str, Enum):
+    get = 'GET'
+    post = 'POST'
+    patch = 'PATCH'
+    delete = 'DELETE'
 
 
 class BaseProperties(BaseModel):
@@ -24,28 +25,31 @@ class BaseProperties(BaseModel):
         )
 
 
-class BaseResource(BaseProperties):
+class BaseCheck(BaseProperties):
     name: str
     period: int
     expectation: str
+    request_type: RequestType
     hashed_id: Optional[UUID4] = None
     created_at: Optional[datetime]
 
 
-class BaseCheckCreate(BaseResource):
+class BaseCheckCreate(BaseProperties):
     name: str
     period: int
     expectation: str
+    request_type: RequestType
     hashed_id: Optional[UUID4] = None
 
 
-class BaseCheckUpdate(BaseResource):
+class BaseCheckUpdate(BaseProperties):
     name: str
     period: int
     expectation: str
+    request_type: RequestType
 
 
-class BaseCheckDB(BaseResource):
+class BaseCheckDB(BaseCheck):
     id: int
     hashed_id: UUID4
     updated_at: datetime
@@ -54,7 +58,7 @@ class BaseCheckDB(BaseResource):
         orm_mode = True
 
 
-class BaseCheckOut(BaseResource):
+class BaseCheckOut(BaseCheck):
     id: int
 
     class Config:

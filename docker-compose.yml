@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    env_file:
+      - postgres.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis
+    restart: always
+
+  api:
+    image: pre-prof_cupteam_webeye/api
+    restart: always
+    env_file:
+      - backend.env
+    depends_on:
+      - postgres
+      - redis
+    links:
+      - postgres
+      - redis
+
+  postman:
+    image: pre-prof_cupteam_webeye/postman
+    restart: always
+    env_file:
+      - postman.env
+    links:
+      - redis
+
+  frontend:
+    image: pre-prof_cupteam_webeye/frontend
+    restart: always
+    ports:
+      - "8490:3000"
+    depends_on:
+      - api
+    links:
+      - api
+
+  bot:
+    image: pre-prof_cupteam_webeye/bot
+    restart: always
+    env_file:
+      - bot.env
+    depends_on:
+      - api
+    links:
+      - api
+      - redis
+      - postgres
+
+volumes:
+  pgdata:

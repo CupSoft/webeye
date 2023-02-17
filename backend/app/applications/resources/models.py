@@ -4,15 +4,13 @@ from tortoise import fields
 from tortoise.exceptions import DoesNotExist
 
 from app.core.base.base_models import BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin, BaseDBModel
+from app.applications.resources.schemas import Status
 
 
 class Resource(BaseDBModel, BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin):
 
     name = fields.CharField(max_length=255, unique=True)
-    is_active = fields.BooleanField(default=True)
-    moderators = fields.ManyToManyField(
-        "models.User", related_name="resources"
-    )
+    status = fields.CharEnumField(Status)
     nodes: fields.ReverseRelation['ResourceNode']
     reviews: fields.ReverseRelation["Review"]
 
