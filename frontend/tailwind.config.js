@@ -9,7 +9,7 @@ module.exports = {
         'purple': '#8390ca',
         'purple-dark': '#6004EE',
         'green': '#41E88D',
-        'red': '#FF334B',
+        'red': '#FF5367',
         'gray-light': '#8f9bb773',
         'blue': '#657BDB',
         'gray-dark': '#16213A',
@@ -17,7 +17,8 @@ module.exports = {
         'gray-input': '#212D48',
         'focus-input': '#2C3854',
         'light-gray-card': '#282D45',
-        'light-text': '#949EB5'
+        'light-text': '#949EB5',
+        'turquoise': '#48A3D6'
       },
       transitionTimingFunction: {
         DEFAULT: 'ease-in-out'

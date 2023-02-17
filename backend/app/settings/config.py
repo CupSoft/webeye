@@ -16,7 +16,7 @@ class Settings:
     APPLICATIONS = [
         'users',
         'resources',
-        'verifications',
+        'checks',
         'reviews',
         'subscriptions',
     ]
@@ -34,17 +34,8 @@ class Settings:
 
     DB_URL = f"postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     DB_CONNECTIONS = {
-            'default': {
-                'credentials': {
-                    "engine": "tortoise.backends.asyncpg",
-                    'host': DB_HOST,
-                    'port': DB_PORT,
-                    'user': DB_USER,
-                    'password': DB_PASS,
-                    'database': DB_NAME,
-                }
-            },
-        }
+        'default': DB_URL,
+    }
 
     SECRET_KEY = '3488a63e1765035d386f05409663f55c83bfae3b3c61a932744b20ad14244dcf'  # openssl rand -hex 32
     JWT_ALGORITHM = 'HS25'

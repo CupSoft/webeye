@@ -18,7 +18,7 @@ services:
     env_file:
       - .env
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - webeye_backend_dev_pgdata:/var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -27,10 +27,10 @@ services:
     ports:
       - "15432:80"
     volumes:
-      - pgadmin:/var/lib/pgadmin
+      - webeye_backend_dev_pgadmin:/var/lib/pgadmin
     depends_on:
       - postgres
 
 volumes:
-  postgres:
-  pgadmin:
+  webeye_backend_dev_pgdata:
+  webeye_backend_dev_pgadmin:

@@ -6,7 +6,7 @@ const Input = ({name, options, register, ...props}: InputPropsType) => {
   return (
     <input
       {...props}
-      {...register(name as string, options)}
+      {...register(name, options)}
       className={styles.input}
     />
   );

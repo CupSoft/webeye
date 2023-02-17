@@ -7,8 +7,11 @@ from tortoise.contrib.fastapi import register_tortoise
 from app.core.exceptions import APIException, on_api_exception
 from app.settings.config import settings
 from app.settings.log import DEFAULT_LOGGING
+
 from app.core.auth.routers.login import router as login_router
 from app.applications.users.routes import router as users_router
+from app.applications.checks.routes import router as checks_routes
+from app.applications.resources.routes import router as resources_routes
 
 
 def configure_logging(log_settings: dict = None):
@@ -33,7 +36,6 @@ def get_app_list():
 
 def get_tortoise_config() -> dict:
     app_list = get_app_list()
-    print(app_list)
     app_list.append('aerich.models')
     config = {
         'connections': settings.DB_CONNECTIONS,
@@ -70,3 +72,6 @@ def register_exceptions(app: FastAPI):
 def register_routers(app: FastAPI):
     app.include_router(login_router, prefix='/api/auth/login')
     app.include_router(users_router, prefix='/api/auth/users')
+    app.include_router(checks_routes, prefix='/checks')
+    app.include_router(resources_routes, prefix='/resources')
+

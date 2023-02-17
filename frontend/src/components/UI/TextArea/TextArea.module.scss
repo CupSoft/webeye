@@ -1,0 +1,5 @@
+.textarea {
+  @apply p-3 border-2 border-gray-input rounded-xl mb-2.5 mt-2.5 w-full bg-gray-input placeholder:text-sm placeholder:text-white/[.12] focus:bg-focus-input transition-all outline-none resize-none;
+
+  min-height: 6.5rem;
+}

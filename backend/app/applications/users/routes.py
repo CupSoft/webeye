@@ -74,8 +74,6 @@ async def update_user_me(
     if user_in.password is not None:
         hashed_password = get_password_hash(user_in.password)
         current_user.hashed_password = hashed_password
-    if user_in.username is not None:
-        current_user.username = user_in.username
     if user_in.email is not None:
         current_user.email = user_in.email
     await current_user.save()
