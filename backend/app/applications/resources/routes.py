@@ -27,5 +27,5 @@ async def read_resources():
     """
     Get resource list.
     """
-    users = await Resource.all()
-    return users
+    resources = await Resource.all()
+    return resources
