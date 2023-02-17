@@ -9,9 +9,3 @@
     @apply flex flex-row flex-wrap justify-center -m-2.5 -mt-1 pb-2;
   }
 }
-
-@media (max-width: 425px) {
-  .title {
-    font-size: 2.7rem !important;
-  }
-}
