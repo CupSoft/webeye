@@ -13,39 +13,59 @@ const ReviewCard = ({sourceId, ...props}: ReviewCardPropsType) => {
   const navigate = useNavigate()
   const isAuth = useAppSelector(isAuthSelector)
   const [reviewValue, setReviewValue] = useState('')
+  const [unavailableValue, setUnavailableValue] = useState('')
 
-  function leaveReviewClickHandler() {
+  function btnsClickHandler(btnType: string) {
     if (!isAuth) {
       navigate(AUTH_ROUTE + `?next_page=${SOURCES_ROUTE + '/' + sourceId}`)
     }
 
-    console.log(reviewValue)
+    console.log(btnType === 'review' ? reviewValue : unavailableValue)
   }
 
   function onReviewChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setReviewValue(event.target.value)
   }
 
+  function onUnavailableChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    setUnavailableValue(event.target.value)
+  }
+
   return (
-    <Card title='Оставьте отзыв' {...props}>
+    <Card title='Оставьте отзыв или сообщите о недоступности ресурса' {...props}>
       <div className={styles.wrapper}>
         <span className={styles.description}>
           Сообщайте о недоступности ресурсов и оставляйте отзывы, пополняя общую базу данных
         </span>
-        {isAuth && 
-          <div className={styles.textarea_wrapper}>
-            <TextArea
-              name='reviews'
-              placeholder='Оставьте отзыв...'
-              maxLength={255}
-              onChange={onReviewChange}
-            />
-          </div>
-        }
-        
+        <div className={styles.textarea_wrapper}>
+          <TextArea
+            name='reviews'
+            placeholder='Сообщите о недоступности...'
+            maxLength={255}
+            onChange={onUnavailableChange}
+            disabled={!isAuth}
+          />
+        </div>
+        <Button 
+          btnType='red'
+          onClick={() => btnsClickHandler('unavailable')}
+          disabled={unavailableValue.length < 1 && isAuth}
+        >
+          {isAuth 
+            ? 'Сообщить о недоступности' : 'Авторизоваться и сообщить о недоступности'
+          }
+        </Button>
+        <div className={styles.textarea_wrapper}>
+          <TextArea
+            name='reviews'
+            placeholder='Оставьте отзыв...'
+            maxLength={255}
+            onChange={onReviewChange}
+          />
+        </div>
         <Button 
           btnType='fill_purple'
-          onClick={leaveReviewClickHandler}
+          onClick={() => btnsClickHandler('review')}
           disabled={reviewValue.length < 1 && isAuth}
         >
           {isAuth 
