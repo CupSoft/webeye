@@ -14,8 +14,6 @@ const Header = () => {
   function signInClickHandler() {
     if (isAuth) {
       dispatch({type: 'auth', payload: false})
-      navigate(MAIN_ROUTE)
-      
     } else {
       navigate(AUTH_ROUTE)
     }

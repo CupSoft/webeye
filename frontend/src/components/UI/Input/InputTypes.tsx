@@ -9,5 +9,6 @@ type InputValidationOptions = {
 }
 export type InputPropsType = React.InputHTMLAttributes<HTMLInputElement> & React.ClassAttributes<HTMLInputElement> & {
   options: InputValidationOptions,
-  register: UseFormRegister<FieldValues>
+  register: UseFormRegister<FieldValues>,
+  name: string
 }

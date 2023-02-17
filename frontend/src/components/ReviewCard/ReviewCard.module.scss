@@ -1,0 +1,11 @@
+.description {
+  @apply text-light-text p-2.5 pb-2;
+}
+
+.wrapper {
+  @apply flex flex-col -m-2;
+}
+
+.textarea_wrapper {
+  @apply pr-2 pl-2;
+}

@@ -1,0 +1,44 @@
+.container {
+  @apply flex flex-col items-center pb-3.5;
+
+  .chart_tooltip {
+    background: #222d47 !important;
+    border-radius: .5rem !important;
+  }
+
+  .title {
+    @apply flex flex-row items-center w-full pt-1;
+  }
+
+  .chart {
+    @apply pt-2;
+    width: 100px !important;
+  }
+
+  .rating {
+    @apply text-left text-4xl font-bold mt-1 ml-1 mr-auto;
+    white-space: nowrap;
+    background: linear-gradient(0deg, rgba(230, 230, 230, .8) 20%, white 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    &:after {
+      content: '.';
+      color: none;
+      height: 2rem;
+      width: 2rem;
+      display: inline-flex;
+      align-items: center;
+      margin: .2rem 0 0 .5rem;
+      /* -webkit-mask: url('./../../assets/starIcon.svg') no-repeat 50% 50%; */
+      mask: url('./../../assets/starFillIcon.svg') no-repeat 50% 50%;
+      /* -webkit-mask-size: cover; */
+      mask-size: cover;
+      background: linear-gradient(0deg, rgba(230, 230, 230, .8) 10%, white 90%);
+    }
+  }
+
+  .cards {
+    @apply flex flex-row justify-start w-full pt-3;
+  }
+}

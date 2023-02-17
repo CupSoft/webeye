@@ -2,7 +2,7 @@ import styles from './Card.module.scss';
 import communityIcon from './../../assets/cardIcons/communityIcon.svg';
 import handshakeIcon from './../../assets/cardIcons/handshakeIcon.svg';
 import sourcesIcon from './../../assets/cardIcons/sourcesIcon.svg';
-import { IconsType } from './CardTypes';
+import { CardPropsType, IconsType } from './CardTypes';
 import cn from 'classnames'
 
 const icons: IconsType = {
@@ -11,7 +11,7 @@ const icons: IconsType = {
   sources: sourcesIcon,
 }
 
-const Card = ({icon='', size='sm', title='Карточка', children='', ...props}) => {
+const Card = ({icon='', size='sm', title='Карточка', children='', ...props}: CardPropsType) => {
   return (
     <div className={cn(styles.container, styles[size])} {...props}>
       {icon && <img className={styles.icon} src={icons[icon]} alt='Сообщество'/>}
