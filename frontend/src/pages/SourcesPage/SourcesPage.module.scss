@@ -1,0 +1,7 @@
+.container {
+  @apply flex flex-col items-center h-full w-full;
+
+  .table {
+    @apply w-full max-w-6xl bg-gray-card border border-light-gray-card rounded-lg pt-1.5 pb-1.5 mt-5;
+  }
+}

@@ -22,6 +22,14 @@ body, html, #root {
   height: 100vh;
 }
 
+.page_title {
+  @apply text-6xl font-bold p-3 -mt-3;
+
+  background: linear-gradient(0deg, rgba(230, 230, 230, .8) 20%, white 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 ::-webkit-scrollbar-track {
   @apply bg-none;
 }
