@@ -1,6 +1,5 @@
 version: "3.8"
 services:
-
   web:
     image: web:latest-local
     env_file:
@@ -12,17 +11,6 @@ services:
       - postgres
     ports:
       - 8000:8000
-
-  celery:
-    image: celery:latest-local
-    env_file:
-      - .local.env
-    build:
-      context: .
-      dockerfile: celery.Dockerfile
-    depends_on:
-      - web
-
 
   postgres:
     image: postgres:latest
