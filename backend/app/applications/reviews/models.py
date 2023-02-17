@@ -1,17 +1,14 @@
-from typing import Optional
-
 from tortoise import fields
-from tortoise.exceptions import DoesNotExist
 
-from app.core.base.base_models import BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin, BaseDBModel
+from app.core.base.base_models import BaseModel
 
 
-class Review(BaseDBModel, BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin):
+class Review(BaseModel):
     resource: fields.ForeignKeyRelation['Resource'] = fields.ForeignKeyField(
-        'models.Resource', related_name='reviews', to_field='hashed_id', on_delete=fields.CASCADE
+        'models.Resource', related_name='reviews', to_field='uuid', on_delete=fields.CASCADE
     )
     user: fields.ForeignKeyRelation['User'] = fields.ForeignKeyField(
-        'models.User', related_name='reviews', to_field='hashed_id', on_delete=fields.CASCADE
+        'models.User', related_name='reviews', to_field='uuid', on_delete=fields.CASCADE
     )
     text = fields.CharField(max_length=150)
     stars = fields.IntField()

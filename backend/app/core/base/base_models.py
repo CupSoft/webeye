@@ -2,8 +2,8 @@ from tortoise import models
 from tortoise import fields
 
 
-class BaseDBModel(models.Model):
-    id = fields.BigIntField(pk=True, index=True)
+class BaseModel(models.Model):
+    uuid = fields.UUIDField(unique=True, pk=True)
 
     async def to_dict(self):
         d = {}
@@ -15,16 +15,3 @@ class BaseDBModel(models.Model):
 
     class Meta:
         abstract = True
-
-
-class UUIDDBModelMixin:
-    hashed_id = fields.UUIDField(unique=True, pk=False)
-
-
-class BaseCreatedAtModelMixin:
-    created_at = fields.DatetimeField(auto_now_add=True)
-
-
-class BaseCreatedUpdatedAtModelMixin:
-    created_at = fields.DatetimeField(auto_now_add=True)
-    updated_at = fields.DatetimeField(auto_now=True)
