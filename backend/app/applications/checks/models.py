@@ -4,7 +4,7 @@ from tortoise import fields
 from tortoise.exceptions import DoesNotExist
 
 from app.core.base.base_models import BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin, BaseDBModel
-from app.applications.verifications.schemas import RequestType
+from app.applications.checks.schemas import RequestType
 
 
 class Check(BaseDBModel, BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin):
@@ -24,7 +24,7 @@ class Check(BaseDBModel, BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin):
 
 class CheckResult(BaseDBModel, BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin):
     
-    Verification: fields.ForeignKeyRelation['Check'] = fields.ForeignKeyField(
+    verification: fields.ForeignKeyRelation['Check'] = fields.ForeignKeyField(
         'models.Check', related_name='results', to_field='hashed_id', on_delete=fields.CASCADE
     )
     response = fields.CharField(max_length=255)

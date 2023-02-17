@@ -18,7 +18,6 @@ class User(BaseDBModel, BaseCreatedUpdatedAtModelMixin, UUIDDBModelMixin):
     last_login = fields.DatetimeField(null=True)
     is_active = fields.BooleanField(default=True)
     is_superuser = fields.BooleanField(default=False)
-    resources: fields.ReverseRelation["Resource"]
     reviews: fields.ReverseRelation["Review"]
 
 
