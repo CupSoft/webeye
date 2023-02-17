@@ -26,26 +26,18 @@ class BaseProperties(BaseModel):
 
 class BaseResource(BaseProperties):
     name: str
-    period: int
-    expectation: str
-    hashed_id: Optional[UUID4] = None
-    created_at: Optional[datetime]
+    status: Status = 'OK'
 
 
-class BaseCheckCreate(BaseResource):
-    name: str
-    period: int
-    expectation: str
+class ResourceCreate(BaseResource):
     hashed_id: Optional[UUID4] = None
 
 
-class BaseCheckUpdate(BaseResource):
-    name: str
-    period: int
-    expectation: str
+class ResourceUpdate(BaseResource):
+    pass
 
 
-class BaseCheckDB(BaseResource):
+class ResourceDB(BaseResource):
     id: int
     hashed_id: UUID4
     updated_at: datetime
@@ -54,7 +46,7 @@ class BaseCheckDB(BaseResource):
         orm_mode = True
 
 
-class BaseCheckOut(BaseResource):
+class ResourceOut(BaseResource):
     id: int
 
     class Config:
