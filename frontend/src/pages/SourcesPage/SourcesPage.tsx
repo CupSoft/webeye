@@ -2,9 +2,16 @@ import SourceCard from '../../components/SourceCard/SourceCard';
 import styles from './SourcesPage.module.scss';
 
 const sources = [
-  {id: 1, name: 'Вышка', state: 'Normal', rating: 4.92},
-  {id: 2, name: 'МГТУ Баумана', state: 'Critical', rating: 4.78},
-  {id: 3, name: 'МФТИ', state: 'Partial', rating: 4.95},
+  {id: 1, name: 'Вышка', state: 'normal', rating: 4.92},
+  {id: 2, name: 'МГТУ Баумана', state: 'critical', rating: 4.78},
+  {id: 3, name: 'МФТИ', state: 'partial', rating: 4.95},
+  {id: 4, name: 'Вышка', state: 'normal', rating: 4.92},
+  {id: 5, name: 'МГТУ Баумана', state: 'critical', rating: 4.78},
+  {id: 6, name: 'МФТИ', state: 'partial', rating: 4.95},
+  {id: 7, name: 'Вышка', state: 'normal', rating: 4.92},
+  {id: 8, name: 'МГТУ Баумана', state: 'critical', rating: 4.78},
+  {id: 9, name: 'МФТИ', state: 'partial', rating: 4.95},
+  {id: 10, name: 'МФТИ', state: 'partial', rating: 4.95},
 ]
 
 const SourcesPage = () => {
