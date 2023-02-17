@@ -27,6 +27,18 @@ services:
       - postgres
       - redis
 
+  checker:
+    build:
+      context: checker
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - checker/.env
+    depends_on:
+      - api
+    links:
+      - api
+
   postman:
     build:
       context: postman
