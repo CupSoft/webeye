@@ -1,0 +1,26 @@
+[
+  {
+    "ip": "3.111.208.135",
+    "port": 80,
+    "type": "http",
+    "country": "India",
+    "username": "",
+    "password": ""
+  },
+  {
+    "ip": "49.0.2.242",
+    "port": 8090,
+    "type": "http",
+    "country": "Indonesia",
+    "username": "",
+    "password": ""
+  },
+  {
+    "ip": "89.58.39.225",
+    "port": 80,
+    "type": "http",
+    "country": "Germany",
+    "username": "",
+    "password": ""
+  }
+]
