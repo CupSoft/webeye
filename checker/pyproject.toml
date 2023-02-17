@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "checker"
+version = "0.1.0"
+description = ""
+authors = ["Artem <artem00561@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiohttp = "^3.8.4"
+pydantic = {extras = ["dotenv"], version = "^1.10.5"}
+coloredlogs = "^15.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
