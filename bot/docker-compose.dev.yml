@@ -15,7 +15,7 @@ services:
     env_file:
       - .env
     volumes:
-      - webeye_backend_pgdata:/var/lib/postgresql/data
+      - webeye_bot_pgdata:/var/lib/postgresql/data
 
 volumes:
-  webeye_backend_pgdata:
+  webeye_bot_pgdata:
