@@ -1,6 +1,5 @@
 version: "3.8"
 services:
-
   web:
     image: web:latest-local
     env_file:
@@ -8,38 +7,30 @@ services:
     build:
       context: .
       dockerfile: backend.Dockerfile
+    depends_on:
+      - postgres
     ports:
       - 8000:8000
 
-  celery:
-    image: celery:latest-local
+  postgres:
+    image: postgres:latest
+    restart: always
     env_file:
       - .local.env
-    build:
-      context: .
-      dockerfile: celery.Dockerfile
-    depends_on:
-      - web
-
-  postgres:
-      image: postgres:latest
-      restart: always
-      env_file:
-        - .local.env
-      volumes:
-          - postgres:/var/lib/postgresql/data
+    volumes:
+      - postgres:/var/lib/postgresql/data
 
   pgadmin:
-      image: dpage/pgadmin4:latest
-      env_file:
-        - .local.env
-      ports:
-          - 15432:80
-      volumes:
-          - pgadmin:/var/lib/pgadmin
-      depends_on:
-          - postgres
+    image: dpage/pgadmin4:latest
+    env_file:
+      - .local.env
+    ports:
+      - 15432:80
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    depends_on:
+      - postgres
 
 volumes:
-    postgres:
-    pgadmin:
+  postgres:
+  pgadmin:
