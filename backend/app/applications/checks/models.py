@@ -1,7 +1,7 @@
 from tortoise import fields
 
 from app.core.base.base_models import BaseModel
-from app.applications.checks.schemas import RequestType
+from app.applications.checks.schemas import RequestType, Location
 
 
 class Check(BaseModel):
@@ -25,7 +25,7 @@ class CheckResult(BaseModel):
     response = fields.CharField(max_length=255)
     result = fields.BooleanField(default=False)
     timestamp  = fields.DatetimeField()
-    location = fields.CharField(max_length=255)
+    location = fields.CharEnumField(Location)
     
     class Meta:
         table = 'check_results'

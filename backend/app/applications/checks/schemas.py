@@ -1,3 +1,4 @@
+import datetime
 from enum import Enum
 import uuid
 from typing import Optional
@@ -10,6 +11,12 @@ class RequestType(str, Enum):
     post = 'POST'
     head = 'HEAD'
     put = 'PUT'
+
+
+class Location(str, Enum):
+    russia = 'RUSSIA'
+    austria = 'AUSTRIA'
+    germany = 'GERMANY'
 
 
 class BaseProperties(BaseModel):
@@ -36,6 +43,25 @@ class CheckUpdate(BaseProperties):
 
 
 class CheckOut(Check):
+    uuid: UUID4
+
+    class Config:
+        orm_mode = True
+
+
+class CheckResult(BaseProperties):
+    response: str
+    location: Location
+    timestamp: datetime.datetime
+    result: bool = False
+    
+
+class CheckResultCreate(CheckResult):
+    uuid: Optional[UUID4] = None
+    check_uuid: UUID4
+
+
+class CheckResultOut(CheckResult):
     uuid: UUID4
 
     class Config:
