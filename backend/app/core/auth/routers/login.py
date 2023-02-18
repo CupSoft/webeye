@@ -11,7 +11,7 @@ from app.settings.config import settings
 router = APIRouter()
 
 
-@router.post("/access-token", response_model=JWTToken, tags=["login"])
+@router.post("/access-token", response_model=JWTToken)
 async def login_access_token(credentials: CredentialsSchema):
     user = await authenticate(credentials)
 
@@ -21,7 +21,7 @@ async def login_access_token(credentials: CredentialsSchema):
     
     return {
         "access_token": create_access_token(
-            data={"user_uuid": user.uuid}, expires_delta=access_token_expires
+            data={"user_uuid": str(user.uuid)}, expires_delta=access_token_expires
         ),
         "token_type": "bearer",
     }

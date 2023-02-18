@@ -14,7 +14,7 @@ class BaseProperties(BaseModel):
 class BaseUser(BaseProperties):
     uuid: Optional[UUID4] = None
     email: Optional[EmailStr] = None
-    is_superuser: Optional[bool] = False
+    is_admin: Optional[bool] = False
 
 
 class BaseUserCreate(BaseProperties):

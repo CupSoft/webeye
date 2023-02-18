@@ -29,18 +29,14 @@ async def get_current_user(token: str = Security(reusable_oauth2)) -> Optional[U
             status_code=HTTP_403_FORBIDDEN, detail="Could not validate credentials"
         )
         
-    user = await User.get(id=token_data.user_id)
+    user = await User.get(uuid=token_data.user_uuid)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
     return user
 
 
-async def get_current_active_user(current_user: User = Security(get_current_user)):    
-    return current_user
-
-
-async def get_current_active_admin(current_user: User = Security(get_current_user)):
+async def get_current_admin(current_user: User = Security(get_current_user)):
     if not current_user.is_admin:
         raise HTTPException(
             status_code=400, detail="The user doesn't have enough privileges"

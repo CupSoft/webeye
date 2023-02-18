@@ -1,4 +1,4 @@
-from app.core.auth.utils.contrib import get_current_active_admin, get_current_active_user
+from app.core.auth.utils.contrib import get_current_admin, get_current_user
 from app.core.auth.utils.password import get_password_hash
 
 from app.applications.users.models import User
@@ -16,11 +16,11 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
-@router.get("/", response_model=List[BaseUserOut], status_code=200, tags=['users'])
+@router.get("/", response_model=List[BaseUserOut], status_code=200)
 async def read_users(
     skip: int = 0,
     limit: int = 100,
-    current_user: User = Depends(get_current_active_admin),
+    current_user: User = Depends(get_current_admin),
 ):
     """
     Retrieve users.
@@ -29,11 +29,10 @@ async def read_users(
     return users
 
 
-@router.post("/", response_model=BaseUserOut, status_code=201, tags=['users'])
+@router.post("/", response_model=BaseUserOut, status_code=201)
 async def create_user(
     *,
     user_in: BaseUserCreate,
-    current_user: User = Depends(get_current_active_admin),
 ):
     """
     Create new user.
@@ -54,10 +53,10 @@ async def create_user(
     return created_user
 
 
-@router.put("/me", response_model=BaseUserOut, status_code=200, tags=['users'])
+@router.patch("/me", response_model=BaseUserOut, status_code=200)
 async def update_user_me(
     user_in: BaseUserUpdate,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(get_current_user)
 ):
     """
     Update own user.
@@ -71,9 +70,9 @@ async def update_user_me(
     return current_user
 
 
-@router.get("/me", response_model=BaseUserOut, status_code=200, tags=['users'])
+@router.get("/me", response_model=BaseUserOut, status_code=200)
 def read_user_me(
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Get current user.
@@ -81,10 +80,10 @@ def read_user_me(
     return current_user
 
 
-@router.get("/{uuid}", response_model=BaseUserOut, status_code=200, tags=['users'])
+@router.get("/{uuid}", response_model=BaseUserOut, status_code=200)
 async def read_user_by_id(
     user_id: int,
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Get a specific user by id.
@@ -99,11 +98,11 @@ async def read_user_by_id(
     return user
 
 
-@router.put("/{uuid}", response_model=BaseUserOut, status_code=200, tags=['users'])
+@router.patch("/{uuid}", response_model=BaseUserOut, status_code=200)
 async def update_user(
     uuid: int,
     user_in: BaseUserUpdate,
-    current_user: User = Depends(get_current_active_admin),
+    current_user: User = Depends(get_current_admin),
 ):
     """
     Update a user.
