@@ -1,6 +1,6 @@
 from app.applications.resources.models import Resource, ResourceNode
 from app.applications.resources.schemas import (
-    ResourceOut, ResourceCreate, ResourceUpdate, ResourceNodeOut, ResourceNodeCreate
+    ResourceOut, ResourceCreate, ResourceUpdate, ResourceNodeOut, ResourceNodeCreate, ResourceOutWithRating
 )
 from app.applications.reports.schemas import ReportOut
 from app.applications.social_reports.schemas import SocialReportOut
