@@ -9,9 +9,9 @@ from app.applications.checks.models import Check
 
 from app.applications.resources.models import ResourceNode
 
-from app.settings.config import settings
-
 from app.core.base.utils import exclude_keys
+
+from pydantic import UUID4
 
 import logging
 
@@ -66,3 +66,22 @@ async def create_resource(
     
     return check
 
+
+@router.delete("/{uuid}", status_code=200)
+async def delete_check(
+    uuid: UUID4,
+):
+    """
+    Delete check by uuid.
+    """
+    check = await Check.filter(uuid=uuid).first()
+    
+    if check is None:
+        raise HTTPException(
+            status_code=404,
+            detail="The check with this id does not exist",
+        )
+    
+    await check.delete()
+
+    return "Successfully deleted"
