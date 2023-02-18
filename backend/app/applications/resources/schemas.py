@@ -6,9 +6,9 @@ from pydantic import BaseModel, UUID4, validator
 
 
 class Status(str, Enum):
-    ok = 'OK'
-    partial = 'partial'
-    critical = 'critical'
+    ok = "OK"
+    partial = "partial"
+    critical = "critical"
 
 
 class BaseProperties(BaseModel):
@@ -19,18 +19,14 @@ class BaseProperties(BaseModel):
 
 class BaseResource(BaseProperties):
     name: str
-    status: Status = 'OK'
+    status: Status = "OK"
 
 
 class ResourceCreate(BaseResource):
     uuid: Optional[UUID4] = None
 
     class Config:
-        schema_extra = {
-            "example": {
-                "name": "HSE"
-            }
-        }
+        schema_extra = {"example": {"name": "HSE"}}
 
 
 class ResourceUpdate(BaseResource):

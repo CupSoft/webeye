@@ -24,6 +24,6 @@ class ReviewCreate(Review):
 
 class ReviewOut(Review):
     uuid: UUID4
-    
+
     class Config:
         orm_mode = True

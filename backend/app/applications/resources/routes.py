@@ -1,6 +1,11 @@
 from app.applications.resources.models import Resource, ResourceNode
 from app.applications.resources.schemas import (
-    ResourceOut, ResourceCreate, ResourceUpdate, ResourceNodeOut, ResourceNodeCreate, ResourceOutWithRating
+    ResourceOut,
+    ResourceCreate,
+    ResourceUpdate,
+    ResourceNodeOut,
+    ResourceNodeCreate,
+    ResourceOutWithRating,
 )
 from app.applications.reports.schemas import ReportOut
 from app.applications.social_reports.schemas import SocialReportOut
@@ -24,8 +29,8 @@ router = APIRouter()
 
 @router.get("/", response_model=List[ResourceOut], status_code=200)
 async def read_resources(
-        skip: int = 0,
-        limit: int = 100,
+    skip: int = 0,
+    limit: int = 100,
 ):
     """
     Get resource list.
@@ -39,7 +44,7 @@ async def read_resources(
 
         resource_dict = await resource.to_dict()
         try:
-            rating = float(f'{sum_star / len(resource.reviews):.2f}')
+            rating = float(f"{sum_star / len(resource.reviews):.2f}")
             res.append(ResourceOutWithRating(**resource_dict, rating=rating))
         except ZeroDivisionError:
             res.append(ResourceOutWithRating(**resource_dict))
@@ -48,9 +53,7 @@ async def read_resources(
 
 
 @router.post("/", response_model=ResourceOut, status_code=201)
-async def create_resource(
-        resource_in: ResourceCreate
-):
+async def create_resource(resource_in: ResourceCreate):
     """
     Create a resource
     """
@@ -69,7 +72,7 @@ async def create_resource(
 
 @router.get("/{uuid}", response_model=ResourceOut, status_code=200)
 async def read_resource(
-        uuid: UUID4,
+    uuid: UUID4,
 ):
     """
     Get resource by uuid.
@@ -86,10 +89,7 @@ async def read_resource(
 
 
 @router.patch("/{uuid}", response_model=ResourceOut, status_code=201)
-async def update_resource(
-        uuid: UUID4,
-        resource_in: ResourceUpdate
-):
+async def update_resource(uuid: UUID4, resource_in: ResourceUpdate):
     """
     Update a resource
     """
@@ -122,7 +122,7 @@ async def update_resource(
 
 @router.delete("/{uuid}", status_code=200)
 async def delete_resource(
-        uuid: UUID4,
+    uuid: UUID4,
 ):
     """
     Delete resource by uuid.
@@ -142,31 +142,30 @@ async def delete_resource(
 
 @router.get("/{uuid}/nodes", response_model=List[ResourceNodeOut], status_code=200)
 async def read_resource_nodes(
-        uuid: UUID4,
+    uuid: UUID4,
 ):
     """
     Get resource nodes by uuid.
     """
-    resource = await Resource.filter(uuid=uuid).prefetch_related('nodes').first()
+    resource = await Resource.filter(uuid=uuid).prefetch_related("nodes").first()
 
     if resource is None:
         raise HTTPException(
             status_code=404,
             detail="The resource with this uuid does not exist",
         )
-    
-    
+
     return list(resource.nodes)
 
 
 @router.get("/{uuid}/reports", response_model=List[ReportOut], status_code=200)
 async def read_resource_reports(
-        uuid: UUID4,
+    uuid: UUID4,
 ):
     """
     Get resource reports by uuid.
     """
-    resource = await Resource.filter(uuid=uuid).prefetch_related('reports').first()
+    resource = await Resource.filter(uuid=uuid).prefetch_related("reports").first()
 
     if resource is None:
         raise HTTPException(
@@ -179,12 +178,12 @@ async def read_resource_reports(
 
 @router.get("/{uuid}/social_reports", response_model=List[SocialReportOut], status_code=200)
 async def read_resource_social_reports(
-        uuid: UUID4,
+    uuid: UUID4,
 ):
     """
     Get resource social reports by uuid.
     """
-    resource = await Resource.filter(uuid=uuid).prefetch_related('social_network_resports').first()
+    resource = await Resource.filter(uuid=uuid).prefetch_related("social_network_resports").first()
 
     if resource is None:
         raise HTTPException(
@@ -197,12 +196,12 @@ async def read_resource_social_reports(
 
 @router.get("/{uuid}/reviews", response_model=List[ReviewOut], status_code=200)
 async def read_resource_reviews(
-        uuid: UUID4,
+    uuid: UUID4,
 ):
     """
     Get resource reviews by uuid.
     """
-    resource = await Resource.filter(uuid=uuid).prefetch_related('reviews').first()
+    resource = await Resource.filter(uuid=uuid).prefetch_related("reviews").first()
 
     if resource is None:
         raise HTTPException(
@@ -215,8 +214,8 @@ async def read_resource_reviews(
 
 @router.get("/nodes/", response_model=List[ResourceNodeOut], status_code=200)
 async def read_resources_nodes(
-        skip: int = 0,
-        limit: int = 100,
+    skip: int = 0,
+    limit: int = 100,
 ):
     """
     Get resource nodes list.
@@ -227,9 +226,7 @@ async def read_resources_nodes(
 
 
 @router.post("/nodes/", response_model=ResourceNodeOut, status_code=201)
-async def create_node(
-        resource_node_in: ResourceNodeCreate
-):
+async def create_node(resource_node_in: ResourceNodeCreate):
     """
     Create a resource node
     """
@@ -249,16 +246,14 @@ async def create_node(
             detail="The resource with this uuid does not exist",
         )
 
-    resource_node = await ResourceNode.create(
-        url=resource_node_in.url, uuid=resource_node_in.uuid, resource=resource
-    )
+    resource_node = await ResourceNode.create(url=resource_node_in.url, uuid=resource_node_in.uuid, resource=resource)
 
     return resource_node
 
 
 @router.delete("/nodes/{uuid}", status_code=200)
 async def delete_node(
-        uuid: UUID4,
+    uuid: UUID4,
 ):
     """
     Delete a resource node

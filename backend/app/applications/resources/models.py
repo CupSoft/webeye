@@ -8,10 +8,9 @@ from app.applications.resources.schemas import Status
 
 
 class Resource(BaseModel):
-
     name = fields.CharField(max_length=255, unique=True)
     status = fields.CharEnumField(Status)
-    nodes: fields.ReverseRelation['ResourceNode']
+    nodes: fields.ReverseRelation["ResourceNode"]
     reviews: fields.ReverseRelation["Review"]
     subscriptions: fields.ReverseRelation["Subscription"]
     reports: fields.ReverseRelation["Report"]
@@ -25,18 +24,17 @@ class Resource(BaseModel):
             return resource
         except DoesNotExist:
             return None
-        
+
     class Meta:
-        table = 'resources'
+        table = "resources"
 
 
 class ResourceNode(BaseModel):
-    
-    resource: fields.ForeignKeyRelation['Resource'] = fields.ForeignKeyField(
-        'models.Resource', related_name='nodes', to_field='uuid', on_delete=fields.CASCADE
+    resource: fields.ForeignKeyRelation["Resource"] = fields.ForeignKeyField(
+        "models.Resource", related_name="nodes", to_field="uuid", on_delete=fields.CASCADE
     )
     url = fields.CharField(max_length=255, unique=True)
-    checks: fields.ReverseRelation['Check']
-    
+    checks: fields.ReverseRelation["Check"]
+
     class Meta:
-        table = 'resource_nodes'
+        table = "resource_nodes"

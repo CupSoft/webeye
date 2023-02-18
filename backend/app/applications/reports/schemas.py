@@ -23,6 +23,6 @@ class ReportCreate(Report):
 
 class ReportOut(Report):
     uuid: UUID4
-    
+
     class Config:
         orm_mode = True

@@ -7,16 +7,16 @@ from pydantic import BaseModel, UUID4, validator
 
 
 class RequestType(str, Enum):
-    get = 'GET'
-    post = 'POST'
-    head = 'HEAD'
-    put = 'PUT'
+    get = "GET"
+    post = "POST"
+    head = "HEAD"
+    put = "PUT"
 
 
 class Location(str, Enum):
-    russia = 'RUSSIA'
-    austria = 'AUSTRIA'
-    germany = 'GERMANY'
+    russia = "RUSSIA"
+    austria = "AUSTRIA"
+    germany = "GERMANY"
 
 
 class BaseProperties(BaseModel):
@@ -41,7 +41,7 @@ class CheckCreate(BaseProperties):
             "example": {
                 "expectation": "200",
                 "request_type": "GET",
-                "resource_node_uuid": "fb7c10eb-0a5d-4bab-b769-713d93088c54"
+                "resource_node_uuid": "fb7c10eb-0a5d-4bab-b769-713d93088c54",
             }
         }
 
@@ -71,7 +71,7 @@ class CheckResult(BaseProperties):
     location: Location
     timestamp: datetime.datetime
     result: bool = False
-    
+
 
 class CheckResultCreate(CheckResult):
     uuid: Optional[UUID4] = None

@@ -7,8 +7,8 @@ from app.applications.resources.schemas import Status
 
 
 class SocialNetworks(str, Enum):
-    vk = 'VK'
-    ok = 'OK'
+    vk = "VK"
+    ok = "OK"
 
 
 class BaseProperties(BaseModel):
@@ -31,6 +31,6 @@ class SocialReportCreate(SocialReport):
 
 class SocialReportOut(SocialReport):
     uuid: UUID4
-    
+
     class Config:
         orm_mode = True
