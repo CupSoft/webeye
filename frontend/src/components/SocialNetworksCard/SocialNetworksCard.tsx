@@ -5,7 +5,7 @@ import styles from './SocialNetworksCard.module.scss'
 import { SocialNetworksCardPropsType } from './SocialNetworksCardTypes';
 
 const cards = [
-  {id: 1, link: 'https://vk.com', social: 'vk', state: 'critical', text: 'Вообще не работает'},
+  {id: 1, link: 'https://vk.com', social: 'vk', state: 'critical', text: 'Вообще не работаетasdsadakfhkajfksjdh fkjsdahfaskfhsajdkfhkj'},
   {id: 2, link: 'https://ok.ru', social: 'ok', state: 'partial', text: 'Работает частично'},
   {id: 3, link: 'https://ok.ru', social: 'ok', state: 'ok', text: 'Работает стабильно'},
 ]

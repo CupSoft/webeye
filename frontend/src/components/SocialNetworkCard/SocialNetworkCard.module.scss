@@ -1,5 +1,5 @@
 .container {
-  @apply flex flex-col justify-start w-full;
+  @apply flex flex-col justify-start w-full p-2.5 pr-2.5 hover:bg-focus-input;
 
   .social {
     mask-size: cover;
@@ -7,7 +7,38 @@
     background-color: #ffffffe5;
   }
 
+  .text {
+    @apply -mt-2.5;
+  }
+
+  .title {
+    @apply flex flex-row justify-start items-center;
+  }
+
+  .state {
+    &:before {
+      content: '';
+      display: inline-block;
+      border: .25rem solid;
+      margin: 0 .5rem .1rem 0;
+      border-radius: 100%;
+    }
+  }
+
+  .state.ok:before {
+    border-color: #00ff00;
+  }
+
+  .state.critical:before {
+    border-color: #ff0000;
+  }
+
+  .state.partial:before {
+    border-color: #ffff00;
+  }
+
   .social.ok {
+    @apply mb-1.5;
     height: 2rem;
     width: 1rem;
     -webkit-mask: url('./../../assets/socialIcons/okIcon.svg') no-repeat 50% 50%;
@@ -15,6 +46,7 @@
   }
 
   .social.vk {
+    @apply mb-0.5 -ml-1;
     width: 2rem;
     height: 2rem;
     -webkit-mask: url('./../../assets/socialIcons/vkIcon.svg') no-repeat 50% 50%;

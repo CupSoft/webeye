@@ -54,7 +54,7 @@ const SourcePage = () => {
           <span className={styles.download_btn}>Получить отчёт</span>
         </Button>
       </div>
-      <ResponsiveContainer width='100%' height={500}>
+      <ResponsiveContainer className={styles.chart_container}>
         <AreaChart
           className={styles.chart}
           data={data}

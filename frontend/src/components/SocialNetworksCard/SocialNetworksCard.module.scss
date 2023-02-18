@@ -1,3 +1,4 @@
 .table {
-  
+  @apply flex flex-col p-3 pt-0 max-h-52 mb-0 -m-2 mr-0;
+  overflow-y: auto;
 }
