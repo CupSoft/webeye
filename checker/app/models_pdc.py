@@ -1,31 +1,25 @@
 from typing import Literal
-from enum import Enum
 from pydantic import BaseModel
 from ipaddress import IPv4Address
-import json
-
-
-class ProxyTypeEnum(Enum):
-   http = 'http'
-   https = 'https'
-   socks = 'socks'
 
 
 class Proxy(BaseModel):
   ip: IPv4Address
   port: int
-  proxy_type: ProxyTypeEnum
+  protocol: Literal["http", "https"]
   country: str
   username: str
   password: str
 
   def __repr__(self) -> str:
-     return f"{self.proxy_type}://{self.username}:{self.password}@{self.ip}:{self.port}"
+    if self.username == '':
+        return  f"{self.protocol}://{self.ip}:{self.port}"
+    return f"{self.protocol}://{self.username}:{self.password}@{self.ip}:{self.port}"
 
 
 class Task(BaseModel):
     db_id: int
-    method: Literal["get"]
+    method: Literal["get", "post", "head"]
     url: str
     expectation_code: int
 

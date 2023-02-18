@@ -1,12 +1,9 @@
 from functools import lru_cache
 from typing import List
-from pydantic import BaseSettings
+from pydantic import BaseSettings, BaseModel
 from models_pdc import Proxy
 from pydantic.tools import parse_obj_as
-
-
-class ProxySettings(BaseSettings):
-    proxies: List[Proxy]
+import json
 
 
 class Settings(BaseSettings):
@@ -22,3 +19,8 @@ def settings():
         _env_file=".env",
         _env_file_encoding="utf-8"
     )
+
+@lru_cache()
+def proxy_settings():
+    with open('proxy.json') as f:
+        return parse_obj_as(List[Proxy], json.load(f))

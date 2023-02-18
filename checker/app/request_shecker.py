@@ -9,6 +9,7 @@ from app.models_pdc import Task, Answer
 
 async def request_dispatcher(session: ClientSession, tasks: list[Task]) -> list[Answer]:
     pack = [asyncio.ensure_future(get_request(session, task)) for task in tasks]
+    # TODO: make request from each proxy
     for task in tasks:
         if task.method == "get":
             pack.append(asyncio.ensure_future(my_request(session, task)))
