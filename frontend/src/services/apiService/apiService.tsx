@@ -1,33 +1,43 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { SourceDataTypes, UserDataTypes } from './apiServiceTypes'
+import { SourceDataTypes, SourceGetTypes, UserLoginRequestTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
 
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_API_LINK,
     prepareHeaders(headers) {
+      headers.set('Authorization', localStorage.getItem('token_type') ?? '' + localStorage.getItem('access_token' ?? ''))
       return headers
     }
   }),
   tagTypes: ['User', 'Source'],
   endpoints: (builder) => ({
-    postUser: builder.mutation<UserDataTypes, UserDataTypes>({
+    registerUser: builder.mutation<UserRegistrResponseTypes, UserRegistrRequestTypes>({
       query: (user) => ({
         method: 'POST',
-        url: 'registration',
+        url: 'auth/users',
         body: JSON.stringify(user),
         headers: {'Content-Type': 'application/json'}
       })
     }),
-    getSource: builder.mutation<string, string>({
-      query: (id) => ({ url: `source/${id}` })
+    loginUser: builder.mutation<UserLoginResponseTypes, FormData>({
+      query: (user) => ({
+        method: 'POST',
+        url: 'auth/login/access-token',
+        body: user,
+        headers: {'Content-Type': undefined}
+      })
     }),
-    getAllSources: builder.mutation<SourceDataTypes[], string>({
-      query: () => ({ url: `sources`})
+    getSource: builder.mutation<SourceGetTypes, string>({
+      query: (uuid) => ({ url: `resources/${uuid}` })
+    }),
+    getAllSources: builder.mutation<SourceDataTypes[], void>({
+      query: () => ({ url: `resources`})
     })
   })
 })
 
-export const { usePostUserMutation } = api
-export const { useGetSourceMutation } = api
+export const { useRegisterUserMutation } = api
+export const { useLoginUserMutation } = api
 export const { useGetAllSourcesMutation } = api
+export const { useGetSourceMutation } = api

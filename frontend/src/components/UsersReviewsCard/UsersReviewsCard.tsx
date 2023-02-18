@@ -10,7 +10,7 @@ const reviews = [
   {id: 5, text: 'Да', stars: 1, date: '27.02.2019'},
 ]
 
-const UsersReviewsCard = ({sourceId, ...props}: UsersReviewsCardPropsType) => {
+const UsersReviewsCard = ({sourceUuid, ...props}: UsersReviewsCardPropsType) => {
   return (
     <Card 
       title='Отзывы, которые пользователи оставили об этом ресурсе'

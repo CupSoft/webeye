@@ -1,12 +1,17 @@
 import { FieldValues, useForm } from 'react-hook-form';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
-import { emailPattern, MAIN_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
+import { useLoginUserMutation, useRegisterUserMutation } from '../../services/apiService/apiService';
+import { UserLoginRequestTypes, UserRegistrRequestTypes } from '../../services/apiService/apiServiceTypes';
+import { emailPattern, MAIN_ROUTE } from '../../utils/constants';
 import styles from './AuthPage.module.scss';
 
 const AuthPage = () => {
+  const [registerUser] = useRegisterUserMutation()
+  const [loginUser, {isLoading}] = useLoginUserMutation()
+
   const {
     register,
     handleSubmit,
@@ -16,7 +21,25 @@ const AuthPage = () => {
   const navigate = useNavigate()
   const params = new URLSearchParams(window.location.search)
 
-  function onSubmit(data: FieldValues) {
+  function onSubmit(data: FieldValues, type: 'login' | 'registr') {
+    const formData = new FormData()
+
+    formData.set('username', data.email)
+    formData.set('password', data.password)
+
+    if (type === 'registr') {
+      registerUser(data as UserRegistrRequestTypes).then(data => {
+        console.log(data)
+      })
+      loginUser(formData).then((data) => {
+        console.log(data)
+      })
+    } else {
+      loginUser(formData).then(data => {
+        console.log(data)
+      })
+    }
+
     dispatch({type: 'auth', payload: true})
     navigate(params.get('next_page') ?? MAIN_ROUTE)
   }
@@ -25,7 +48,6 @@ const AuthPage = () => {
     <div className={styles.container}>
       <form 
         className={styles.form}
-        onSubmit={handleSubmit(onSubmit)}
       >
         <div className={styles.inputs}>
           <Input
@@ -55,12 +77,14 @@ const AuthPage = () => {
             disabled={!isValid} 
             size='lg' 
             squared={true}
+            onClick={handleSubmit((data) => onSubmit(data, 'registr'))}
             id={styles.register_btn}
           >Зарегистрироваться</Button>
           <Button 
             disabled={!isValid}
             btnType='purple' 
             size='lg' 
+            onClick={handleSubmit((data) => onSubmit(data, 'login'))}
             squared={true}
             id={styles.login_btn}
           >Войти</Button>

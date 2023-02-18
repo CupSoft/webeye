@@ -10,7 +10,7 @@ const cards = [
   {id: 5, link: 'https://ok.ru', social: 'ok', state: 'ok', text: 'Работает стабильно'},
 ]
 
-const SocialNetworksCard = ({sourceId, ...props}: SocialNetworksCardPropsType) => {
+const SocialNetworksCard = ({sourceUuid, ...props}: SocialNetworksCardPropsType) => {
   return (
     <Card 
       title='Что пишут люди об этом ресурсе в социальных сетях?'

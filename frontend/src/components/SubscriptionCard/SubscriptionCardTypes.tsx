@@ -1,3 +1,3 @@
 export type SubscriptionCardPropsType = {
-  sourceId: number;
+  sourceUuid: string;
 }
