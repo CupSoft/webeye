@@ -7,6 +7,14 @@ class CredentialsSchema(BaseModel):
     email: Optional[str]
     password: str
 
+    class Config:
+        schema_extra = {
+            "example": {
+                "email": "my_email@gmail.com",
+                "password": "qwerty"
+            }
+        }
+
 
 class JWTToken(BaseModel):
     access_token: str
