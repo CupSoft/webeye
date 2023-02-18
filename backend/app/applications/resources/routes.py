@@ -2,6 +2,8 @@ from app.applications.resources.models import Resource, ResourceNode
 from app.applications.resources.schemas import (
     ResourceOut, ResourceCreate, ResourceUpdate, ResourceNodeOut, ResourceNodeCreate
 )
+from app.applications.reports.schemas import ReportOut
+from app.applications.social_reports.schemas import SocialReportOut
 from app.core.auth.utils.contrib import get_current_admin, get_current_user
 
 from app.applications.users.models import User
@@ -144,6 +146,50 @@ async def read_resource_nodes(
     res = []
     for node in resource.nodes:
         res.append(node)
+    
+    return res
+
+
+@router.get("/{uuid}/reports", response_model=List[ReportOut], status_code=200)
+async def read_resource_reports(
+    uuid: UUID4,
+):
+    """
+    Get resource reports by uuid.
+    """
+    resource = await Resource.filter(uuid=uuid).prefetch_related('reports').first()
+    
+    if resource is None:
+        raise HTTPException(
+            status_code=404,
+            detail="The resource with this id does not exist",
+        )
+    
+    res = []
+    for report in resource.reports:
+        res.append(report)
+    
+    return res
+
+
+@router.get("/{uuid}/social_reports", response_model=List[SocialReportOut], status_code=200)
+async def read_resource_social_reports(
+    uuid: UUID4,
+):
+    """
+    Get resource social reports by uuid.
+    """
+    resource = await Resource.filter(uuid=uuid).prefetch_related('social_network_resports').first()
+    
+    if resource is None:
+        raise HTTPException(
+            status_code=404,
+            detail="The resource with this id does not exist",
+        )
+    
+    res = []
+    for social_reports in resource.social_network_resports:
+        res.append(social_reports)
     
     return res
 
