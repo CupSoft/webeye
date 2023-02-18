@@ -1,4 +1,4 @@
-export type SocialNetworkCardPropsType = {
+export type SocialNetworkBadgePropsType = {
   link: string;
   social: 'vk' | 'ok' | string;
   text: string;

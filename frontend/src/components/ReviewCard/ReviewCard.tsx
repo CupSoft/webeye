@@ -5,19 +5,23 @@ import { isAuthSelector } from '../../app/selectors/isAuthSelector';
 import { AUTH_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
 import Card from '../Card/Card';
 import Button from '../UI/Button/Button';
+import Input from '../UI/Input/Input';
 import TextArea from '../UI/TextArea/TextArea';
 import styles from './ReviewCard.module.scss'
 import { ReviewCardPropsType } from './ReviewCardTypes';
+import cn from 'classnames'
 
 const ReviewCard = ({sourceId, ...props}: ReviewCardPropsType) => {
   const navigate = useNavigate()
   const isAuth = useAppSelector(isAuthSelector)
   const [reviewValue, setReviewValue] = useState('')
+  const [starsValue, setStarsValue] = useState('')
   const [unavailableValue, setUnavailableValue] = useState('')
   
   useEffect(() => {
     setUnavailableValue(localStorage.getItem('unavailable_value') || '')
     setReviewValue(localStorage.getItem('review_value') || '')
+    setStarsValue(localStorage.getItem('stars_value') || '')
   }, [isAuth])
 
   function btnsClickHandler(btnType: string) {
@@ -31,10 +35,17 @@ const ReviewCard = ({sourceId, ...props}: ReviewCardPropsType) => {
       localStorage.setItem('unavailable_value', '')
       setUnavailableValue('')
     } else {
-      console.log(reviewValue)
+      console.log(reviewValue, starsValue)
+      localStorage.setItem('stars_value', '')
       localStorage.setItem('review_value', '')
+      setStarsValue('')
       setReviewValue('')
     }
+  }
+
+  function onStarsChange(event: React.ChangeEvent<HTMLInputElement>) {
+    localStorage.setItem('stars_value', event.target.value)
+    setStarsValue(event.target.value)
   }
 
   function onReviewChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -81,10 +92,21 @@ const ReviewCard = ({sourceId, ...props}: ReviewCardPropsType) => {
             onChange={onReviewChange}
           />
         </div>
+        <div className={cn(styles.textarea_wrapper, styles.stars)}>
+          <input
+            onChange={onStarsChange}
+            type="number"
+            value={starsValue}
+            className={styles.number_input}
+            placeholder='1'
+            min='1'
+            max='5'
+          />
+        </div>
         <Button 
           btnType='fill_purple'
           onClick={() => btnsClickHandler('review')}
-          disabled={reviewValue.length < 1}
+          disabled={starsValue.length < 1}
         >
           {isAuth 
             ? 'Оставить отзыв' : 'Авторизоваться и оставить отзыв'

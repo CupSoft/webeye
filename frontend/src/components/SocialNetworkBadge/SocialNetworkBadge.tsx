@@ -1,8 +1,8 @@
 import cn from 'classnames';
-import styles from './SocialNetworkCard.module.scss';
-import { SocialNetworkCardPropsType } from './SocialNetworkCardTypes';
+import styles from './SocialNetworkBadge.module.scss';
+import { SocialNetworkBadgePropsType } from './SocialNetworkBadgeTypes';
 
-const SocialNetworkCard = ({link, social, text, state}: SocialNetworkCardPropsType) => {
+const SocialNetworkBadge = ({link, social, text, state}: SocialNetworkBadgePropsType) => {
   return (
     <a href={link} target="_blank" rel="noreferrer" className={styles.container}>
       <span className={styles.title}>
@@ -19,4 +19,4 @@ const SocialNetworkCard = ({link, social, text, state}: SocialNetworkCardPropsTy
   );
 };
 
-export default SocialNetworkCard;
+export default SocialNetworkBadge;

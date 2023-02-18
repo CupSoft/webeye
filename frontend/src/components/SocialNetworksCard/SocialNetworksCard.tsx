@@ -1,7 +1,5 @@
-import React from 'react';
 import Card from '../Card/Card';
-import SocialNetworkCard from '../SocialNetworkCard/SocialNetworkCard';
-import styles from './SocialNetworksCard.module.scss'
+import SocialNetworkBadge from '../SocialNetworkBadge/SocialNetworkBadge';
 import { SocialNetworksCardPropsType } from './SocialNetworksCardTypes';
 
 const cards = [
@@ -20,7 +18,7 @@ const SocialNetworksCard = ({sourceId, ...props}: SocialNetworksCardPropsType) =
       {...props}
     >
       <>
-        {cards.map(card => <SocialNetworkCard key={card.id} {...card}/>)}
+        {cards.map(card => <SocialNetworkBadge key={card.id} {...card}/>)}
       </>
     </Card>
   );

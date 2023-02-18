@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { SOURCES_ROUTE } from '../../utils/constants';
-import styles from './SourceCard.module.scss'
+import styles from './SourceBadge.module.scss'
 import cn from 'classnames'
-import { SourceCardPropsType } from './SourceCardTypes';
+import { SourceCardPropsType } from './SourceBadgeTypes';
 
 const SourceCard = ({id=1, state='ok', name='ВУЗ', rating=4.78, i=0}: SourceCardPropsType) => {
   return (
