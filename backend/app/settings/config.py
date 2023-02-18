@@ -59,10 +59,7 @@ class Settings:
     APPLICATIONS_MODULE = 'app.applications'
 
     CORS_ORIGINS = [
-        "http://localhost",
-        "http://localhost:8080",
-        "http://localhost:5000",
-        "http://localhost:3000",
+        "*"
     ]
     CORS_ALLOW_CREDENTIALS = True
     CORS_ALLOW_METHODS = ["*"]
