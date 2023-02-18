@@ -39,9 +39,9 @@ async def read_resources(
 
         try:
             rating = float(f'{sum_star / len(resource.reviews):.2f}')
-            res.append(ResourceOutWithRating(**resources.to_dict(), rating=rating))
+            res.append(ResourceOutWithRating(**resource.to_dict(), rating=rating))
         except ZeroDivisionError:
-            res.append(ResourceOutWithRating(**resources.to_dict()))
+            res.append(ResourceOutWithRating(**resource.to_dict()))
 
     return res
 
