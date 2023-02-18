@@ -22,6 +22,12 @@ print(response.text)
 
 response = requests.get(f'{url}/auth/users/me', headers=headers)
 
+print(response.text)
+
 response = requests.get(f'{url}/resources/', headers=headers)
+
+print(response.text)
+
+response = requests.get(f'{url}/resources/nodes/', headers=headers)
 
 print(response.text)

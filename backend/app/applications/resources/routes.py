@@ -106,6 +106,26 @@ async def update_resource(
     return resource
 
 
+@router.delete("/{uuid}", status_code=200)
+async def delete_resource(
+    uuid: UUID4,
+):
+    """
+    Delete resource by uuid.
+    """
+    resource = await Resource.filter(uuid=uuid).first()
+    
+    if resource is None:
+        raise HTTPException(
+            status_code=404,
+            detail="The resource with this id does not exist",
+        )
+    
+    await resource.delete()
+
+    return "Successfully deleted"
+
+
 @router.get("/{uuid}/nodes", response_model=List[ResourceNodeOut], status_code=200)
 async def read_resource_nodes(
     uuid: UUID4,
@@ -128,7 +148,20 @@ async def read_resource_nodes(
     return res
 
 
-@router.post("/nodes", response_model=ResourceNodeOut, status_code=201)
+@router.get("/nodes/", response_model=List[ResourceNodeOut], status_code=200)
+async def read_resources_nodes(
+    skip: int = 0,
+    limit: int = 100,
+):
+    """
+    Get resource nodes list.
+    """
+    resources_nodes = await ResourceNode.all().limit(limit).offset(skip)
+    
+    return resources_nodes
+
+
+@router.post("/nodes/", response_model=ResourceNodeOut, status_code=201)
 async def create_node(
     resource_node_in: ResourceNodeCreate
 ):
@@ -156,3 +189,23 @@ async def create_node(
     )
     
     return resource_node
+
+
+@router.delete("/nodes/{uuid}", status_code=200)
+async def delete_node(
+    uuid: UUID4,
+):
+    """
+    Delete a resource node
+    """
+    resource_node = await ResourceNode.filter(uuid=uuid).first()
+    
+    if resource_node is None:
+        raise HTTPException(
+            status_code=404,
+            detail="The resource node with this id does not exist",
+        )
+    
+    await resource_node.delete()
+    
+    return "Successfully deleted"
