@@ -15,6 +15,7 @@ class User(BaseModel):
     email = fields.CharField(max_length=255, unique=True)
     password_hash = fields.CharField(max_length=128, null=True)
     is_admin = fields.BooleanField(default=False)
+    tg_id = fields.BigIntField(null=True)
     reviews: fields.ReverseRelation["Review"]
     
 
@@ -37,3 +38,15 @@ class User(BaseModel):
 
     class Meta:
         table = 'users'
+
+
+class ShortTgToken(BaseModel):
+    
+    value = fields.CharField(max_length=32, unique=True)
+    date = fields.DatetimeField(auto_now_add=True)
+    user: fields.ForeignKeyRelation['User'] = fields.ForeignKeyField(
+        'models.User', related_name='tg_auth', to_field='uuid', on_delete=fields.CASCADE
+    )
+    
+    class Meta:
+        table = "short_tg_token"

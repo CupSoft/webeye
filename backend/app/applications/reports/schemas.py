@@ -16,7 +16,7 @@ class Report(BaseProperties):
     is_moderated: bool = False
 
 
-class ResportCreate(Report):
+class ReportCreate(Report):
     uuid: UUID4 = None
     resource_id: UUID4
     user_id: UUID4

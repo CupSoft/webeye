@@ -1,6 +1,7 @@
 from app.applications.resources.models import Resource, ResourceNode
 from app.applications.resources.schemas import (
-    ResourceOut, ResourceCreate, ResourceUpdate, ResourceNodeOut, ResourceNodeCreate
+    ResourceOut, ResourceCreate, ResourceUpdate, ResourceNodeOut, ResourceNodeCreate,
+    ResourceOutWithRating
 )
 from app.applications.reports.schemas import ReportOut
 from app.applications.social_reports.schemas import SocialReportOut
@@ -23,7 +24,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
-@router.get("/", response_model=List[ResourceOut], status_code=200)
+@router.get("/", response_model=List[ResourceOutWithRating], status_code=200)
 async def read_resources(
     skip: int = 0,
     limit: int = 100,
@@ -31,9 +32,18 @@ async def read_resources(
     """
     Get resource list.
     """
-    resources = await Resource.all().limit(limit).offset(skip)
+    resources = await Resource.all().prefetch_related("reviews").limit(limit).offset(skip)
+    res = []
+    for resource in resources:
+        sum_star = 0
+        for reviews in resource.reviews:
+            sum_star += reviews.star
+        
+        rating = float(f'{sum_star / len(resource.reviews):.2f}')
+        
+        res.append(ResourceOutWithRating(**resources.to_dict(), rating=rating))
     
-    return resources
+    return res
 
 
 @router.post("/", response_model=ResourceOut, status_code=201)
@@ -48,7 +58,7 @@ async def create_resource(
     if resource is not None:
         raise HTTPException(
             status_code=400,
-            detail="The resource with this name allready exist",
+            detail="The resource with this name already exist",
         )
     
     resource = await Resource.create(**resource_in.dict())
@@ -68,7 +78,7 @@ async def read_resource(
     if resource is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource with this id does not exist",
+            detail="The resource with this uuid does not exist",
         )
     
     return resource
@@ -96,7 +106,7 @@ async def update_resource(
         if resource_name is not None:
             raise HTTPException(
                 status_code=400,
-                detail="The resource with this name allready exist",
+                detail="The resource with this name already exist",
             )
 
         resource.name = resource_in.name
@@ -121,7 +131,7 @@ async def delete_resource(
     if resource is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource with this id does not exist",
+            detail="The resource with this uuid does not exist",
         )
     
     await resource.delete()
@@ -141,7 +151,7 @@ async def read_resource_nodes(
     if resource is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource with this id does not exist",
+            detail="The resource with this uuid does not exist",
         )
     
     res = []
@@ -163,7 +173,7 @@ async def read_resource_reports(
     if resource is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource with this id does not exist",
+            detail="The resource with this uuid does not exist",
         )
     
     res = []
@@ -185,7 +195,7 @@ async def read_resource_social_reports(
     if resource is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource with this id does not exist",
+            detail="The resource with this uuid does not exist",
         )
     
     res = []
@@ -207,7 +217,7 @@ async def read_resource_social_reports(
     if resource is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource with this id does not exist",
+            detail="The resource with this uuid does not exist",
         )
     
     res = []
@@ -242,7 +252,7 @@ async def create_node(
     if resource_node is not None:
         raise HTTPException(
             status_code=400,
-            detail="The resource node with this url allready exist",
+            detail="The resource node with this url already exist",
         )
 
     resource = await Resource.filter(uuid=resource_node_in.resource_uuid).first()
@@ -250,7 +260,7 @@ async def create_node(
     if resource is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource with this id does not exist",
+            detail="The resource with this uuid does not exist",
         )
     
     resource_node = await ResourceNode.create(
@@ -272,7 +282,7 @@ async def delete_node(
     if resource_node is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource node with this id does not exist",
+            detail="The resource node with this uuid does not exist",
         )
     
     await resource_node.delete()

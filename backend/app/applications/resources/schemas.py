@@ -46,6 +46,14 @@ class ResourceOut(BaseResource):
         orm_mode = True
 
 
+class ResourceOutWithRating(BaseResource):
+    uuid: UUID4
+    rating: float
+    
+    class Config:
+        orm_mode = True
+
+
 class BaseResourceNode(BaseProperties):
     url: str
 

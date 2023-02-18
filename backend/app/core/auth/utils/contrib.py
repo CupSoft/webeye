@@ -33,6 +33,12 @@ async def get_current_user(token: str = Security(reusable_oauth2)) -> Optional[U
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
+    # if datetime.utcnow() > token_data.exp:
+    #     raise HTTPException(
+    #         status_code=HTTP_403_FORBIDDEN,
+    #         detail="Your token is expired"
+    #     )
+    
     return user
 
 

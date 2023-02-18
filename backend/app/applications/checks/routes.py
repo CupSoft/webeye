@@ -5,7 +5,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 
 from app.applications.checks.schemas import (
-    CheckOut, CheckCreate, CheckResultCreate, CheckResultOut
+    CheckOut, CheckCreate, CheckResultCreate, CheckResultOut, CheckOutWithUrl
 )
 from app.applications.checks.models import Check, CheckResult
 
@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
-@router.get("/", response_model=List[CheckOut], status_code=200)
+@router.get("/", response_model=List[CheckOutWithUrl], status_code=200)
 async def read_checks(
     skip: int = 0,
     limit: int = 100,
@@ -31,9 +31,15 @@ async def read_checks(
     """
     Get check list.
     """
-    checks = await Check.all().limit(limit).offset(skip)
+    checks = await Check.all().limit(limit).offset(skip).prefetch_related('resource_node')
     
-    return checks
+    res = []
+    for check in checks:
+        dict_check = await check.to_dict()
+        dict_check['url'] =  check.resource_node.url
+        res.append(dict_check)
+    
+    return res
 
 
 @router.post("/", response_model=CheckOut, status_code=201)
@@ -49,7 +55,7 @@ async def create_check(
     if check is not None:
         raise HTTPException(
             status_code=400,
-            detail="The check with this id allready exist",
+            detail="The check with this uuid already exist",
         )
     
     resource_node = await ResourceNode.filter(uuid=check_in.resource_node_uuid).first()
@@ -57,7 +63,7 @@ async def create_check(
     if resource_node is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource node with this id does not exist",
+            detail="The resource node with this uuid does not exist",
         )
     
     check = await Check.create(
@@ -79,7 +85,7 @@ async def delete_check(
     if check is None:
         raise HTTPException(
             status_code=404,
-            detail="The check with this id does not exist",
+            detail="The check with this uuid does not exist",
         )
     
     await check.delete()
@@ -100,7 +106,7 @@ async def create_check_result(
     if check_result is not None:
         raise HTTPException(
             status_code=400,
-            detail="The check result with this id allready exist",
+            detail="The check result with this uuid already exist",
         )
     
     check = await Check.filter(uuid=check_result_in.check_uuid).first()
@@ -108,7 +114,7 @@ async def create_check_result(
     if check is None:
         raise HTTPException(
             status_code=404,
-            detail="The check with this id does not exist",
+            detail="The check with this uuid does not exist",
         )
     
     check_result = await CheckResult.create(
@@ -130,7 +136,7 @@ async def delete_check(
     if check_result is None:
         raise HTTPException(
             status_code=404,
-            detail="The check result with this id does not exist",
+            detail="The check result with this uuid does not exist",
         )
     
     await check_result.delete()
