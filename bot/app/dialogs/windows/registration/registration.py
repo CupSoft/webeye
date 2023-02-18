@@ -7,7 +7,7 @@ from app.dialogs.states import RegistrationSG, InfoSG
 from app.dialogs.windows.registration.methods import handle_token
 
 RegMainWin = Window(
-    Const("📎 Привет! Я бот сервиса ..."),
+    Const("📎 Привет! Я бот сервиса webeye. Отслеживайте состояние ваших любимых вузов 😍"),
     Group(Url(Const("Регистрация"), Const("https://www.youtube.com/watch?v=dQw4w9WgXcQ")),
           Next(Const("Авторизация")),
           Start(Const("Информация о боте"), state=InfoSG.main, id="info_btn"),

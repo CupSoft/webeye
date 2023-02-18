@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 from aiogram import Router
 from aiogram.dispatcher.event.bases import UNHANDLED
@@ -23,11 +24,11 @@ dlg_router = Router()
 async def handle_start_query(message: Message, dialog_manager: DialogManager):
     await del_keyboard(message)
     user_id = message.from_user.id
-    if "text" in message and len(message.text.split()) > 1:
+    if len(message.text.split()) > 1:
         try:
             await login_user(user_id, message.from_user.first_name, message.text.split()[1])
         except Exception as e:
-            print(e)
+            logging.error(e)
             warnings = await message.answer("❗️ Неверный токен")
             asyncio.create_task(del_message_by(warnings, 20))
 
