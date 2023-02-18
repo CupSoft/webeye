@@ -1,15 +1,16 @@
-import datetime
-
 from typing import List
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 
 from app.applications.reports.schemas import (
     ReportOut, ReportCreate
 )
 from app.applications.reports.models import Report
 
-from app.applications.resources.models import ResourceNode
+from app.applications.users.models import User
+
+from app.applications.resources.models import Resource
+from app.core.auth.utils.contrib import get_current_admin, get_current_user
 
 from app.core.base.utils import exclude_keys
 
@@ -26,6 +27,7 @@ router = APIRouter()
 async def read_reports(
         skip: int = 0,
         limit: int = 100,
+        current_user: User = Depends(get_current_admin)
 ):
     """
     Get list of reports.
@@ -36,8 +38,9 @@ async def read_reports(
 
 
 @router.post("/", response_model=ReportOut, status_code=201)
-async def create_check(
-        report_in: ReportCreate
+async def create_report(
+        report_in: ReportCreate,
+        current_user: User = Depends(get_current_user)
 ):
     """
     Create a report
@@ -51,87 +54,37 @@ async def create_check(
             detail="The report with this uuid already exist",
         )
 
-    resource_node = await ResourceNode.filter(uuid=report_in.resource_node_uuid).first()
+    resource = await Resource.filter(uuid=report_in.resource_uuid).first()
 
-    if resource_node is None:
+    if resource is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource node with this uuid does not exist",
+            detail="The resource with this uuid does not exist",
         )
 
     report = await Report.create(
-        **exclude_keys(report_in.dict(), {'resource_node_uuid'}), resource_node=resource_node
+        **exclude_keys(report_in.dict(), {'resource_uuid', 'user_uuid'}), user=current_user, resource=resource
     )
 
     return report
 
 
 @router.delete("/{uuid}", status_code=200)
-async def delete_check(
+async def delete_report(
         uuid: UUID4,
+        current_user: User = Depends(get_current_admin)
 ):
     """
-    Delete check by uuid.
+    Delete report by uuid.
     """
-    check = await Check.filter(uuid=uuid).first()
+    report = await Report.filter(uuid=uuid).first()
 
-    if check is None:
+    if report is None:
         raise HTTPException(
             status_code=404,
-            detail="The check with this uuid does not exist",
+            detail="The report with this uuid does not exist",
         )
 
-    await check.delete()
-
-    return "Successfully deleted"
-
-
-@router.post("/results/", response_model=CheckResultOut, status_code=201)
-async def create_check_result(
-        check_result_in: CheckResultCreate
-):
-    """
-    Create a check result
-    """
-
-    check_result = await CheckResult.filter(uuid=check_result_in.uuid).first()
-
-    if check_result is not None:
-        raise HTTPException(
-            status_code=400,
-            detail="The check result with this uuid already exist",
-        )
-
-    check = await Check.filter(uuid=check_result_in.check_uuid).first()
-
-    if check is None:
-        raise HTTPException(
-            status_code=404,
-            detail="The check with this uuid does not exist",
-        )
-
-    check_result = await CheckResult.create(
-        **exclude_keys(check_result_in.dict(), {'check_uuid'}), parent_check=check
-    )
-
-    return check_result
-
-
-@router.delete("/result/{uuid}", status_code=200)
-async def delete_check(
-        uuid: UUID4,
-):
-    """
-    Delete check result by uuid.
-    """
-    check_result = await CheckResult.filter(uuid=uuid).first()
-
-    if check_result is None:
-        raise HTTPException(
-            status_code=404,
-            detail="The check result with this uuid does not exist",
-        )
-
-    await check_result.delete()
+    await report.delete()
 
     return "Successfully deleted"
