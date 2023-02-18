@@ -1,5 +1,5 @@
 from app.applications.resources.models import Resource
-from app.applications.resources.schemas import ResourceOut
+from app.applications.resources.schemas import ResourceOut, ResourceCreate, ResourceUpdate
 
 from app.core.auth.utils.contrib import get_current_admin, get_current_user
 
@@ -32,6 +32,26 @@ async def read_resources(
     return resources
 
 
+@router.post("/", response_model=ResourceOut, status_code=201)
+async def create_resource(
+    resource_in: ResourceCreate
+):
+    """
+    Create a resource
+    """
+    resource = await Resource.get_by_name(name=resource_in.name)
+    
+    if resource is not None:
+        raise HTTPException(
+            status_code=400,
+            detail="The resource with this name allready exist",
+        )
+    
+    resource = await Resource.create(**resource_in.dict())
+    
+    return resource
+
+
 @router.get("/{uuid}", response_model=ResourceOut, status_code=200)
 async def read_resources(
     uuid: UUID4,
@@ -46,5 +66,40 @@ async def read_resources(
             status_code=404,
             detail="The resource with this id does not exist",
         )
+    
+    return resource
+
+
+@router.patch("/{uuid}", response_model=ResourceOut, status_code=201)
+async def create_resource(
+    uuid: UUID4,
+    resource_in: ResourceUpdate
+):
+    """
+    Update a resource
+    """
+    resource = await Resource.filter(uuid=uuid).first()
+    
+    if resource is None:
+        raise HTTPException(
+            status_code=404,
+            detail="The resource with this name does not exist",
+        )
+    
+    if resource_in.name is not None:   
+        resource_name = await Resource.get_by_name(name=resource_in.name)
+    
+        if resource_name is not None:
+            raise HTTPException(
+                status_code=400,
+                detail="The resource with this name allready exist",
+            )
+
+        resource.name = resource_in.name
+        
+    if resource_in.status is not None:
+        resource.status = resource_in.status
+        
+    await resource.save()
     
     return resource
