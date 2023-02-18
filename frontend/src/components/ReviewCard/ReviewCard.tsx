@@ -32,20 +32,23 @@ const ReviewCard = ({sourceId, ...props}: ReviewCardPropsType) => {
   }
 
   return (
-    <Card title='Оставьте отзыв или сообщите о недоступности ресурса' {...props}>
-      <div className={styles.wrapper}>
-        <span className={styles.description}>
-          Сообщайте о недоступности ресурсов и оставляйте отзывы, пополняя общую базу данных
-        </span>
-        <div className={styles.textarea_wrapper}>
-          <TextArea
-            name='reviews'
-            placeholder='Сообщите о недоступности...'
-            maxLength={255}
-            onChange={onUnavailableChange}
-            disabled={!isAuth}
-          />
-        </div>
+    <Card 
+      title='Оставьте отзыв или сообщите о недоступности ресурса'
+      description='Сообщайте о недоступности ресурсов и оставляйте отзывы, пополняя общую базу данных'
+      {...props}
+    >
+      <>
+        {isAuth &&
+          <div className={styles.textarea_wrapper}>
+            <TextArea
+              name='reviews'
+              placeholder='Сообщите о недоступности...'
+              maxLength={255}
+              onChange={onUnavailableChange}
+              disabled={!isAuth}
+            />
+          </div>
+        }
         <Button 
           btnType='red'
           onClick={() => btnsClickHandler('unavailable')}
@@ -55,14 +58,16 @@ const ReviewCard = ({sourceId, ...props}: ReviewCardPropsType) => {
             ? 'Сообщить о недоступности' : 'Авторизоваться и сообщить о недоступности'
           }
         </Button>
-        <div className={styles.textarea_wrapper}>
-          <TextArea
-            name='reviews'
-            placeholder='Оставьте отзыв...'
-            maxLength={255}
-            onChange={onReviewChange}
-          />
-        </div>
+        {isAuth &&
+          <div className={styles.textarea_wrapper}>
+            <TextArea
+              name='reviews'
+              placeholder='Оставьте отзыв...'
+              maxLength={255}
+              onChange={onReviewChange}
+            />
+          </div>
+        }
         <Button 
           btnType='fill_purple'
           onClick={() => btnsClickHandler('review')}
@@ -72,7 +77,7 @@ const ReviewCard = ({sourceId, ...props}: ReviewCardPropsType) => {
             ? 'Оставить отзыв' : 'Авторизоваться и оставить отзыв'
           }
         </Button>
-      </div>
+      </>
     </Card>
   );
 };

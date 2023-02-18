@@ -15,8 +15,29 @@
     width: 100px !important;
   }
 
+  .state:before {
+    content: '';
+    display: inline-block;
+    border: .7rem solid;
+    margin-bottom: .5rem;
+    margin-right: .6rem;
+    border-radius: 100%;
+  }
+
+  .state.ok:before {
+    border-color: #00ff00;
+  }
+
+  .state.critical:before {
+    border-color: #ff0000;
+  }
+
+  .state.partial:before {
+    border-color: #ffff00;
+  }
+
   .rating {
-    @apply text-left text-4xl font-bold mt-1 ml-1 mr-auto;
+    @apply text-left text-4xl font-bold mt-1 ml-1 pl-3.5 mr-auto;
     white-space: nowrap;
     background: linear-gradient(0deg, rgba(230, 230, 230, .8) 20%, white 80%);
     -webkit-background-clip: text;
@@ -39,7 +60,7 @@
   }
 
   .cards {
-    @apply flex flex-row justify-start w-full pt-3;
+    @apply flex flex-row flex-wrap justify-center w-full pt-3;
   }
 
   .download_btn:after {
@@ -68,5 +89,9 @@
       height: 1.5rem !important;
       width: 1.5rem !important;
     }
+  }
+
+  .state:before {
+    border-width: .5rem !important;
   }
 }

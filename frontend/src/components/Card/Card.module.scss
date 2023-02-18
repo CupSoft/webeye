@@ -1,5 +1,5 @@
 .container {
-  @apply flex flex-col items-start w-full bg-gray-card border border-light-gray-card rounded-md p-5 m-2.5 hover:bg-gray-input;
+  @apply flex flex-col items-start w-full bg-gray-card border border-light-gray-card rounded-md p-2.5 m-2.5 hover:bg-gray-input;
 
   &:hover {
     transform: scale(1.02);
@@ -8,15 +8,19 @@
   }
 
   .icon {
-    @apply pb-5;
+    @apply pb-5 p-2.5;
   }
 
   .title {
-    @apply text-xl font-bold pb-2.5;
+    @apply text-xl font-bold p-2.5 pb-0;
   }
 
   .body {
-    @apply text-light-text;
+    @apply flex flex-col w-full;
+  }
+
+  .description {
+    @apply text-light-text p-2.5;
   }
 
 }

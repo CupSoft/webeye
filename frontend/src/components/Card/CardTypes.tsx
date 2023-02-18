@@ -6,5 +6,6 @@ export type CardPropsType = {
   icon?: string;
   size?: string;
   title?: string;
-  children: string | React.ReactElement
+  children?: string | React.ReactElement | never[];
+  description?: string;
 }
