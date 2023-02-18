@@ -33,7 +33,11 @@ const SubscriptionCard = ({sourceId, ...props}: SubscriptionCardPropsType) => {
     <Card 
       title={
       <span>
-        {!isAuth && <u onClick={authClickHandler}>Авторизуйтесь</u>}
+        {!isAuth && 
+        <u
+          style={{cursor: 'pointer'}} 
+          onClick={authClickHandler}
+        >Авторизуйтесь</u>}
         {isAuth ? 'П' : ' и п'}одпишитесь на уведомления о недоступности ресурса
       </span>
       }

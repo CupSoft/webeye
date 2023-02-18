@@ -1,7 +1,5 @@
-import React from 'react';
 import Card from '../Card/Card';
 import SocialNetworkBadge from '../SocialNetworkBadge/SocialNetworkBadge';
-import styles from './SocialNetworksCard.module.scss'
 import { SocialNetworksCardPropsType } from './SocialNetworksCardTypes';
 
 const cards = [
