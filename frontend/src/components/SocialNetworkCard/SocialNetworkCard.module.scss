@@ -1,0 +1,23 @@
+.container {
+  @apply flex flex-col justify-start w-full;
+
+  .social {
+    mask-size: cover;
+    -webkit-mask-size: cover;
+    background-color: #ffffffe5;
+  }
+
+  .social.ok {
+    height: 2rem;
+    width: 1rem;
+    -webkit-mask: url('./../../assets/socialIcons/okIcon.svg') no-repeat 50% 50%;
+    mask: url('./../../assets/socialIcons/okIcon.svg') no-repeat 500% 50%;
+  }
+
+  .social.vk {
+    width: 2rem;
+    height: 2rem;
+    -webkit-mask: url('./../../assets/socialIcons/vkIcon.svg') no-repeat 50% 50%;
+    mask: url('./../../assets/socialIcons/vkIcon.svg') no-repeat 500% 50%;
+  }
+}

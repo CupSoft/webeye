@@ -4,3 +4,7 @@ export type SocialNetworkCardPropsType = {
   text: string;
   state: 'ok' | 'partial' | 'critical' | string;
 }
+
+export type IconsType = {
+  [key: string]: string
+}
