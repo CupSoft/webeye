@@ -48,7 +48,7 @@ class ResourceOut(BaseResource):
 
 class ResourceOutWithRating(BaseResource):
     uuid: UUID4
-    rating: float
+    rating: float = None
     
     class Config:
         orm_mode = True
