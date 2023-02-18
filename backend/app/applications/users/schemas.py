@@ -41,3 +41,12 @@ class BaseUserOut(BaseUser):
     
     class Config:
         orm_mode = True
+
+
+class TgToken(BaseProperties):
+    token: str
+
+
+class TgTokenWithId(BaseProperties):
+    token: str
+    id: int
