@@ -1,5 +1,5 @@
 .container {
-  @apply flex flex-col justify-start w-full p-2.5 pr-2.5 hover:bg-focus-input;
+  @apply flex flex-col justify-start w-full p-3 hover:bg-focus-input;
 
   .social {
     mask-size: cover;
@@ -9,6 +9,7 @@
 
   .text {
     @apply -mt-2.5;
+    word-wrap: break-word;
   }
 
   .title {

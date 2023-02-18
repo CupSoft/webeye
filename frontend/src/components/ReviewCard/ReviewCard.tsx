@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
 import { isAuthSelector } from '../../app/selectors/isAuthSelector';
@@ -14,20 +14,36 @@ const ReviewCard = ({sourceId, ...props}: ReviewCardPropsType) => {
   const isAuth = useAppSelector(isAuthSelector)
   const [reviewValue, setReviewValue] = useState('')
   const [unavailableValue, setUnavailableValue] = useState('')
+  
+  useEffect(() => {
+    setUnavailableValue(localStorage.getItem('unavailable_value') || '')
+    setReviewValue(localStorage.getItem('review_value') || '')
+  }, [isAuth])
 
   function btnsClickHandler(btnType: string) {
     if (!isAuth) {
       navigate(AUTH_ROUTE + `?next_page=${SOURCES_ROUTE + '/' + sourceId}`)
+      return
     }
 
-    console.log(btnType === 'review' ? reviewValue : unavailableValue)
+    if (btnType === 'unavailable') {
+      console.log(unavailableValue)
+      localStorage.setItem('unavailable_value', '')
+      setUnavailableValue('')
+    } else {
+      console.log(reviewValue)
+      localStorage.setItem('review_value', '')
+      setReviewValue('')
+    }
   }
 
   function onReviewChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    localStorage.setItem('review_value', event.target.value)
     setReviewValue(event.target.value)
   }
 
   function onUnavailableChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    localStorage.setItem('unavailable_value', event.target.value)
     setUnavailableValue(event.target.value)
   }
 
@@ -38,40 +54,37 @@ const ReviewCard = ({sourceId, ...props}: ReviewCardPropsType) => {
       {...props}
     >
       <>
-        {isAuth &&
-          <div className={styles.textarea_wrapper}>
-            <TextArea
-              name='reviews'
-              placeholder='Сообщите о недоступности...'
-              maxLength={255}
-              onChange={onUnavailableChange}
-              disabled={!isAuth}
-            />
-          </div>
-        }
+        <div className={styles.textarea_wrapper}>
+          <TextArea
+            name='unavailable'
+            value={unavailableValue}
+            placeholder='Сообщите о недоступности...'
+            maxLength={255}
+            onChange={onUnavailableChange}
+          />
+        </div>
         <Button 
           btnType='red'
           onClick={() => btnsClickHandler('unavailable')}
-          disabled={unavailableValue.length < 1 && isAuth}
+          disabled={unavailableValue.length < 1}
         >
           {isAuth 
             ? 'Сообщить о недоступности' : 'Авторизоваться и сообщить о недоступности'
           }
         </Button>
-        {isAuth &&
-          <div className={styles.textarea_wrapper}>
-            <TextArea
-              name='reviews'
-              placeholder='Оставьте отзыв...'
-              maxLength={255}
-              onChange={onReviewChange}
-            />
-          </div>
-        }
+        <div className={styles.textarea_wrapper}>
+          <TextArea
+            name='reviews'
+            value={reviewValue}
+            placeholder='Оставьте отзыв...'
+            maxLength={255}
+            onChange={onReviewChange}
+          />
+        </div>
         <Button 
           btnType='fill_purple'
           onClick={() => btnsClickHandler('review')}
-          disabled={reviewValue.length < 1 && isAuth}
+          disabled={reviewValue.length < 1}
         >
           {isAuth 
             ? 'Оставить отзыв' : 'Авторизоваться и оставить отзыв'
