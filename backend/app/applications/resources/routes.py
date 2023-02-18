@@ -1,6 +1,7 @@
 from app.applications.resources.models import Resource, ResourceNode
 from app.applications.resources.schemas import (
-    ResourceOut, ResourceCreate, ResourceUpdate, ResourceNodeOut, ResourceNodeCreate
+    ResourceOut, ResourceCreate, ResourceUpdate, ResourceNodeOut, ResourceNodeCreate,
+    ResourceOutWithRating
 )
 from app.applications.reports.schemas import ReportOut
 from app.applications.social_reports.schemas import SocialReportOut
@@ -23,7 +24,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
-@router.get("/", response_model=List[ResourceOut], status_code=200)
+@router.get("/", response_model=List[ResourceOutWithRating], status_code=200)
 async def read_resources(
     skip: int = 0,
     limit: int = 100,
@@ -31,9 +32,18 @@ async def read_resources(
     """
     Get resource list.
     """
-    resources = await Resource.all().limit(limit).offset(skip)
+    resources = await Resource.all().prefetch_related("reviews").limit(limit).offset(skip)
+    res = []
+    for resource in resources:
+        sum_star = 0
+        for reviews in resource.reviews:
+            sum_star += reviews.star
+        
+        rating = float(f'{sum_star / len(resource.reviews):.2f}')
+        
+        res.append(ResourceOutWithRating(**resources.to_dict(), rating=rating))
     
-    return resources
+    return res
 
 
 @router.post("/", response_model=ResourceOut, status_code=201)

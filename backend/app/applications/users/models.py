@@ -15,6 +15,7 @@ class User(BaseModel):
     email = fields.CharField(max_length=255, unique=True)
     password_hash = fields.CharField(max_length=128, null=True)
     is_admin = fields.BooleanField(default=False)
+    tg_id = fields.BigIntField(null=True)
     reviews: fields.ReverseRelation["Review"]
     
 

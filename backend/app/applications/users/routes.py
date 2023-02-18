@@ -100,7 +100,7 @@ async def read_user_by_id(
     user = await User.get(id=user_id)
     if user == current_user:
         return user
-    if not current_user.is_superuser:
+    if not current_user.is_admin:
         raise HTTPException(
             status_code=400, detail="The user doesn't have enough privileges"
         )
