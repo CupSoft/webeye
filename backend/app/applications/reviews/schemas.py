@@ -3,8 +3,6 @@ import uuid
 
 from pydantic import BaseModel, UUID4, validator
 
-from app.applications.resources.schemas import Status
-
 
 class BaseProperties(BaseModel):
     @validator("uuid", pre=True, always=True, check_fields=False)
