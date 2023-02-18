@@ -4,6 +4,7 @@ from app.applications.resources.schemas import (
 )
 from app.applications.reports.schemas import ReportOut
 from app.applications.social_reports.schemas import SocialReportOut
+from app.applications.reviews.schemas import ReviewOut
 from app.core.auth.utils.contrib import get_current_admin, get_current_user
 
 from app.applications.users.models import User
@@ -190,6 +191,28 @@ async def read_resource_social_reports(
     res = []
     for social_reports in resource.social_network_resports:
         res.append(social_reports)
+    
+    return res
+
+
+@router.get("/{uuid}/reviews", response_model=List[ReviewOut], status_code=200)
+async def read_resource_social_reports(
+    uuid: UUID4,
+):
+    """
+    Get resource reviews by uuid.
+    """
+    resource = await Resource.filter(uuid=uuid).prefetch_related('reviews').first()
+    
+    if resource is None:
+        raise HTTPException(
+            status_code=404,
+            detail="The resource with this id does not exist",
+        )
+    
+    res = []
+    for review in resource.reviews:
+        res.append(review)
     
     return res
 
