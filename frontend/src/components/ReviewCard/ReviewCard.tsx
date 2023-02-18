@@ -106,7 +106,9 @@ const ReviewCard = ({sourceId, ...props}: ReviewCardPropsType) => {
         <Button 
           btnType='fill_purple'
           onClick={() => btnsClickHandler('review')}
-          disabled={starsValue.length < 1}
+          disabled={
+            starsValue.length > 1 || +starsValue > 5 || +starsValue < 1
+          }
         >
           {isAuth 
             ? 'Оставить отзыв' : 'Авторизоваться и оставить отзыв'
