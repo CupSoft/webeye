@@ -1,12 +1,19 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { RootState } from '../../app/store'
 import { SourceDataTypes, SourceGetTypes, UserLoginRequestTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
 
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_API_LINK,
-    prepareHeaders(headers) {
-      headers.set('Authorization', localStorage.getItem('token_type') ?? '' + localStorage.getItem('access_token' ?? ''))
+    prepareHeaders(headers, {getState}) {
+      const token = (getState() as RootState).authToken
+      const token_type = localStorage.getItem('token_type')
+
+      if (token && token_type) {
+        headers.set('Authorization', `${token_type} ${token}`)
+      }
+
       return headers
     }
   }),
