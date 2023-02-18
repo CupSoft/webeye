@@ -1,21 +1,21 @@
+import cn from 'classnames';
 import React, { useState } from 'react';
-import Card from '../Card/Card';
-import styles from './SubscriptionCard.module.scss'
-import { SubscriptionCardPropsType } from './SubscriptionCardTypes';
-import cn from 'classnames'
+import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
 import { isAuthSelector } from '../../app/selectors/isAuthSelector';
 import { AUTH_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
-import { useNavigate } from 'react-router-dom';
+import Card from '../Card/Card';
+import styles from './SubscriptionCard.module.scss';
+import { SubscriptionCardPropsType } from './SubscriptionCardTypes';
 
-const SubscriptionCard = ({sourceId, ...props}: SubscriptionCardPropsType) => {
+const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => {
   const [emailChecked, setEmailChecked] = useState(false)
   const [botChecked, setBotChecked] = useState(false)
   const isAuth = useAppSelector(isAuthSelector)
   const navigate = useNavigate()
 
   function authClickHandler() {
-    navigate(AUTH_ROUTE + `?next_page=${SOURCES_ROUTE + '/' + sourceId}`)
+    navigate(AUTH_ROUTE + `?next_page=${SOURCES_ROUTE + '/' + sourceUuid}`)
   }
 
   function onCheckChange(event: React.ChangeEvent<HTMLInputElement>) {

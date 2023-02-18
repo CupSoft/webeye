@@ -18,7 +18,7 @@ async def del_message_by(message, seconds):
 
 async def login_user(tg_id: int, name: str, short_jwt: str):
     print(f"login_user: {tg_id}, {name}, {short_jwt}")
-    jwt = await api_get_jwt(short_jwt)
+    jwt = await api_get_jwt(short_jwt, tg_id)
     await User.register(tg_id, name, jwt)
 
 

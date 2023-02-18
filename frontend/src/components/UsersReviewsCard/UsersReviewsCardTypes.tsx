@@ -1,3 +1,3 @@
 export type UsersReviewsCardPropsType = {
-  sourceId: number;
+  sourceUuid: string;
 }

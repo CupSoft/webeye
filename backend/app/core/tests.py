@@ -3,21 +3,22 @@ import requests
 
 url = 'http://localhost:8000/api'
 creds = {
-    "email": "user@example.com",
+    "username": "user@example.com",
     "password": "string"
 }
-response = requests.post(f'{url}/auth/login/access-token', json=creds)
+response = requests.post(f'{url}/auth/login/access-token', data=creds)
 
+print(response.text)
 res_dict = response.json()
 
 token = res_dict['access_token']
 print(token)
 
 creds = {
-    "email": "admin@example.com",
+    "username": "admin@example.com",
     "password": "string"
 }
-response = requests.post(f'{url}/auth/login/access-token', json=creds)
+response = requests.post(f'{url}/auth/login/access-token', data=creds)
 
 res_dict = response.json()
 

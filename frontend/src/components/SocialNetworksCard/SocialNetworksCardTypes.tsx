@@ -1,3 +1,3 @@
 export type SocialNetworksCardPropsType = {
-  sourceId: number;
+  sourceUuid: string;
 }

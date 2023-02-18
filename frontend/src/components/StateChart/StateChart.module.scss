@@ -1,0 +1,12 @@
+.chart_tooltip {
+  background: #222d47 !important;
+  border-radius: .5rem !important;
+}
+
+.chart_container {
+  @apply -ml-7 pt-2 mb-1;
+  width: 100% !important;
+  height: 50vh !important;
+  min-height: 15rem;
+  max-width: 105rem;
+}

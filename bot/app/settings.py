@@ -6,6 +6,8 @@ from pydantic import BaseSettings
 class Settings(BaseSettings):
     TOKEN: str
     DB_PROTOCOL: str = "sqlite"  # sqlite / postgresql / mysql
+    API_HOST: str = "http://localhost"
+    API_PORT: int = 8000
 
     ADMIN_ID: int
 
