@@ -36,6 +36,15 @@ class CheckCreate(BaseProperties):
     request_type: RequestType
     resource_node_uuid: UUID4
 
+    class Config:
+        schema_extra = {
+            "example": {
+                "expectation": "200",
+                "request_type": "GET",
+                "resource_node_uuid": "fb7c10eb-0a5d-4bab-b769-713d93088c54"
+            }
+        }
+
 
 class CheckUpdate(BaseProperties):
     expectation: str = None
