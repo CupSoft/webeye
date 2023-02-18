@@ -48,7 +48,7 @@ async def create_resource(
     if resource is not None:
         raise HTTPException(
             status_code=400,
-            detail="The resource with this name allready exist",
+            detail="The resource with this name already exist",
         )
     
     resource = await Resource.create(**resource_in.dict())
@@ -96,7 +96,7 @@ async def update_resource(
         if resource_name is not None:
             raise HTTPException(
                 status_code=400,
-                detail="The resource with this name allready exist",
+                detail="The resource with this name already exist",
             )
 
         resource.name = resource_in.name
@@ -242,7 +242,7 @@ async def create_node(
     if resource_node is not None:
         raise HTTPException(
             status_code=400,
-            detail="The resource node with this url allready exist",
+            detail="The resource node with this url already exist",
         )
 
     resource = await Resource.filter(uuid=resource_node_in.resource_uuid).first()
