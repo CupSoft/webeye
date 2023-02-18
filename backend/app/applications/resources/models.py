@@ -10,6 +10,7 @@ class Resource(BaseModel):
     status = fields.CharEnumField(Status)
     nodes: fields.ReverseRelation['ResourceNode']
     reviews: fields.ReverseRelation["Review"]
+    subscriptions: fields.ReverseRelation["Subscription"]
 
     class Meta:
         table = 'resources'

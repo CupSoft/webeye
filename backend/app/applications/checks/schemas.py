@@ -11,6 +11,11 @@ class RequestType(str, Enum):
     post = 'POST'
     patch = 'PATCH'
     delete = 'DELETE'
+    
+    
+class SocialNetworks(str, Enum):
+    vk = 'VK'
+    ok = 'OK'
 
 
 class BaseProperties(BaseModel):

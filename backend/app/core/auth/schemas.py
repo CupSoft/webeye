@@ -1,10 +1,9 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, UUID4
 
 
 class CredentialsSchema(BaseModel):
-    username: Optional[str]
     email: Optional[str]
     password: str
 
@@ -15,11 +14,11 @@ class JWTToken(BaseModel):
 
 
 class JWTTokenData(BaseModel):
-    username: str = None
+    mail: str = None
 
 
 class JWTTokenPayload(BaseModel):
-    user_id: int = None
+    user_uuid: UUID4 = None
 
 
 class Msg(BaseModel):

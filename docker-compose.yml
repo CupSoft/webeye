@@ -25,6 +25,16 @@ services:
       - postgres
       - redis
 
+  checker:
+    image: pre-prof_cupteam_webeye/checker
+    restart: always
+    env_file:
+      - checker.env
+    depends_on:
+      - api
+    links:
+      - api
+
   postman:
     image: pre-prof_cupteam_webeye/postman
     restart: always
