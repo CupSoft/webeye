@@ -1,12 +1,13 @@
 import logging
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from tortoise.contrib.fastapi import register_tortoise
 
 from app.core.exceptions import APIException, on_api_exception
 from app.settings.config import settings
 from app.settings.log import DEFAULT_LOGGING
+from app.core.auth.utils.contrib import get_current_admin, get_current_user
 
 from app.core.auth.routers.login import router as login_router
 from app.applications.users.routes import router as users_router
@@ -70,8 +71,7 @@ def register_exceptions(app: FastAPI):
 
 
 def register_routers(app: FastAPI):
-    app.include_router(login_router, prefix='/api/auth/login')
-    app.include_router(users_router, prefix='/api/auth/users')
-    app.include_router(checks_routes, prefix='/checks')
-    app.include_router(resources_routes, prefix='/resources')
-
+    app.include_router(login_router, prefix='/api/auth/login', tags=["login"])
+    app.include_router(users_router, prefix='/api/auth/users', tags=["users"])
+    app.include_router(checks_routes, prefix='/api/checks', tags=["checks"], dependencies=[Depends(get_current_admin)])
+    app.include_router(resources_routes, prefix='/api/resources', tags=["resources"], dependencies=[Depends(get_current_admin)])

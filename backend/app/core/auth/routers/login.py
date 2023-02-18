@@ -11,7 +11,7 @@ from app.settings.config import settings
 router = APIRouter()
 
 
-@router.post("/access-token", response_model=JWTToken, tags=["login"])
+@router.post("/access-token", response_model=JWTToken)
 async def login_access_token(credentials: CredentialsSchema):
     user = await authenticate(credentials)
 
