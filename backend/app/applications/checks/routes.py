@@ -42,14 +42,15 @@ async def create_resource(
     Create a check
     """
     
-    if check_in.uuid is not None:
-        check = await Check.filter(uuid=check_in.uuid)
-    
-        if check is not None:
-            raise HTTPException(
-                status_code=400,
-                detail="The check with this id allready exist",
-            )
+    print(check_in.dict())
+
+    check = await Check.filter(uuid=check_in.uuid).first()
+
+    if check is not None:
+        raise HTTPException(
+            status_code=400,
+            detail="The check with this id allready exist",
+        )
     
     resource_node = await ResourceNode.filter(uuid=check_in.resource_node_uuid).first()
     

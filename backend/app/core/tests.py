@@ -31,3 +31,7 @@ print(response.text)
 response = requests.get(f'{url}/resources/nodes/', headers=headers)
 
 print(response.text)
+
+response = requests.get(f'{url}/checks/', headers=headers)
+
+print(response.text)

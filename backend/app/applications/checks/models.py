@@ -6,7 +6,6 @@ from app.applications.checks.schemas import RequestType
 
 class Check(BaseModel):
 
-    name = fields.CharField(max_length=255, unique=True)
     resource_node: fields.ForeignKeyRelation['ResourceNode'] = fields.ForeignKeyField(
         'models.ResourceNode', related_name='checks', to_field='uuid', on_delete=fields.CASCADE
     )
