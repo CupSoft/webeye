@@ -49,6 +49,14 @@ class CheckOut(Check):
         orm_mode = True
 
 
+class CheckOutWithUrl(Check):
+    uuid: UUID4
+    url: str
+
+    class Config:
+        orm_mode = True
+
+
 class CheckResult(BaseProperties):
     response: str
     location: Location
