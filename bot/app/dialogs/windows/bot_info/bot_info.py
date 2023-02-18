@@ -5,7 +5,8 @@ from aiogram_dialog.widgets.text import Const
 from app.dialogs.states import InfoSG
 
 InfoMainWin = Window(
-    Const("Информация о боте"),
+    Const("Бот предназначен для получения уведомлений о недоступности сайтов вузов. "
+          "Вы можете включить отслеживание интересующих вас вузов через сайт."),
     Group(Cancel(Const("Назад")),
           ),
     state=InfoSG.main,

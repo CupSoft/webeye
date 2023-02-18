@@ -5,7 +5,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 
 from app.applications.checks.schemas import (
-    CheckOut, CheckCreate, CheckResultCreate, CheckResultOut
+    CheckOut, CheckCreate, CheckResultCreate, CheckResultOut, CheckOutWithUrl
 )
 from app.applications.checks.models import Check, CheckResult
 
@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
-@router.get("/", response_model=List[CheckOut], status_code=200)
+@router.get("/", response_model=List[CheckOutWithUrl], status_code=200)
 async def read_checks(
     skip: int = 0,
     limit: int = 100,
@@ -31,9 +31,15 @@ async def read_checks(
     """
     Get check list.
     """
-    checks = await Check.all().limit(limit).offset(skip)
+    checks = await Check.all().limit(limit).offset(skip).prefetch_related('resource_node')
     
-    return checks
+    res = []
+    for check in checks:
+        dict_check = await check.to_dict()
+        dict_check['url'] =  check.resource_node.url
+        res.append(dict_check)
+    
+    return res
 
 
 @router.post("/", response_model=CheckOut, status_code=201)
