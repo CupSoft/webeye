@@ -8,4 +8,5 @@ export type CardPropsType = {
   title?: string;
   children?: string | React.ReactElement | never[];
   description?: string;
+  bodyFlexStart?: boolean;
 }

@@ -16,9 +16,13 @@
   }
 
   .body {
-    @apply flex flex-col w-full;
+    @apply flex flex-col w-full items-stretch;
     overflow-y: auto;
     max-height: 20rem;
+  }
+
+  .body.start {
+    @apply items-start;
   }
 
   .description {

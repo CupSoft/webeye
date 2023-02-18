@@ -1,0 +1,19 @@
+.checkbox_label {
+  @apply flex flex-row items-start p-3 pb-1.5 pt-1.5;
+}
+
+.checkbox {
+  @apply mt-1.5;
+}
+
+.checkbox_text {
+  @apply pl-2.5;
+}
+
+.tg_description, .tg_description * {
+  @apply text-light-text pl-1;
+}
+
+.not_auth {
+  opacity: .5;
+}
