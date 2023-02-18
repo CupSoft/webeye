@@ -54,10 +54,6 @@ class Settings:
     EMAILS_ENABLED = SMTP_HOST and SMTP_PORT and EMAILS_FROM_EMAIL
     LOGIN_URL = SERVER_HOST + '/api/auth/login/access-token'
 
-    RABBIT_LOGIN = config('RABBIT_HOST')
-    RABBIT_PASSWORD = config('RABBIT_PASSWORD')
-    RABBIT_HOST = config('RABBIT_HOST')
-
     REDIS_URL = config('REDIS_HOST')
 
     APPLICATIONS_MODULE = 'app.applications'
