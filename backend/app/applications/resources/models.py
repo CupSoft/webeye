@@ -14,6 +14,8 @@ class Resource(BaseModel):
     nodes: fields.ReverseRelation['ResourceNode']
     reviews: fields.ReverseRelation["Review"]
     subscriptions: fields.ReverseRelation["Subscription"]
+    reports: fields.ReverseRelation["Report"]
+    social_network_resports: fields.ReverseRelation["SocialNetworkReport"]
 
     @classmethod
     async def get_by_name(cls, name: str) -> Optional["Resource"]:
