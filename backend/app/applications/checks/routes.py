@@ -55,7 +55,7 @@ async def create_check(
     if check is not None:
         raise HTTPException(
             status_code=400,
-            detail="The check with this id already exist",
+            detail="The check with this uuid already exist",
         )
     
     resource_node = await ResourceNode.filter(uuid=check_in.resource_node_uuid).first()
@@ -106,7 +106,7 @@ async def create_check_result(
     if check_result is not None:
         raise HTTPException(
             status_code=400,
-            detail="The check result with this id already exist",
+            detail="The check result with this uuid already exist",
         )
     
     check = await Check.filter(uuid=check_result_in.check_uuid).first()
