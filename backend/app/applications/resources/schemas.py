@@ -44,3 +44,19 @@ class ResourceOut(BaseResource):
     
     class Config:
         orm_mode = True
+
+
+class BaseResourceNode(BaseProperties):
+    url: str
+
+
+class ResourceNodeCreate(BaseResourceNode):    
+    uuid: UUID4 = None
+    resource_uuid: UUID4
+
+
+class ResourceNodeOut(BaseResourceNode):
+    uuid: UUID4
+    
+    class Config:
+        orm_mode = True

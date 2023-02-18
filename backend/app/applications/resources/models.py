@@ -33,7 +33,7 @@ class ResourceNode(BaseModel):
     resource: fields.ForeignKeyRelation['Resource'] = fields.ForeignKeyField(
         'models.Resource', related_name='nodes', to_field='uuid', on_delete=fields.CASCADE
     )
-    url = fields.CharField(max_length=255)
+    url = fields.CharField(max_length=255, unique=True)
     checks: fields.ReverseRelation['Check']
     
     class Meta:
