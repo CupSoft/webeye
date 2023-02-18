@@ -145,8 +145,7 @@ async def generate_token(
 
 @router.post("/telegram/get_jwt", response_model=JWTToken, status_code=200)
 async def generate_jwt_by_short_token(
-    tg_token_in: TgTokenWithId,
-    current_user: User = Depends(get_current_admin),
+    tg_token_in: TgTokenWithId
 ):
     """
     Generates a jwt token from short token
