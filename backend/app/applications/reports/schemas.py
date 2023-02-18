@@ -1,4 +1,3 @@
-import datetime
 import uuid
 
 from pydantic import BaseModel, UUID4, validator
@@ -12,19 +11,18 @@ class BaseProperties(BaseModel):
         return v or uuid.uuid4()
 
 
-class Review(BaseProperties):
-    text: str
-    stars: int
-    date: datetime.datetime
+class Report(BaseProperties):
+    status: Status
+    is_moderated: bool = False
 
 
-class ReviewCreate(Review):
+class ResportCreate(Report):
     uuid: UUID4 = None
     resource_id: UUID4
     user_id: UUID4
 
 
-class ReviewOut(Review):
+class ReportOut(Report):
     uuid: UUID4
     
     class Config:

@@ -1,14 +1,11 @@
 from tortoise import fields
 
 from app.core.base.base_models import BaseModel
-from app.applications.checks.schemas import RequestType, SocialNetworks
-
-from app.applications.resources.schemas import Status
+from app.applications.checks.schemas import RequestType, Location
 
 
 class Check(BaseModel):
 
-    name = fields.CharField(max_length=255, unique=True)
     resource_node: fields.ForeignKeyRelation['ResourceNode'] = fields.ForeignKeyField(
         'models.ResourceNode', related_name='checks', to_field='uuid', on_delete=fields.CASCADE
     )
@@ -28,35 +25,7 @@ class CheckResult(BaseModel):
     response = fields.CharField(max_length=255)
     result = fields.BooleanField(default=False)
     timestamp  = fields.DatetimeField()
-    location = fields.CharField(max_length=255)
+    location = fields.CharEnumField(Location)
     
     class Meta:
         table = 'check_results'
-
-
-class Report(BaseModel):
-
-    status = fields.CharEnumField(Status)
-    is_moderated = fields.BooleanField(default=False)
-    resource: fields.ForeignKeyRelation['Resource'] = fields.ForeignKeyField(
-        'models.Resource', related_name='reports', to_field='uuid', on_delete=fields.CASCADE
-    )
-    user: fields.ForeignKeyRelation['User'] = fields.ForeignKeyField(
-        'models.User', related_name='reports', to_field='uuid', on_delete=fields.CASCADE
-    )
-
-    class Meta:
-        table = 'reports'
-
-
-class SocialNetworkReport(BaseModel):
-    
-    resource: fields.ForeignKeyRelation['Resource'] = fields.ForeignKeyField(
-        'models.Resource', related_name='social_network_resports', to_field='uuid', on_delete=fields.CASCADE
-    )
-    status = fields.CharEnumField(Status)
-    is_moderated = fields.BooleanField(default=False)
-    social_network = fields.CharEnumField(SocialNetworks)
-    
-    class Meta:
-        table = 'social_network_reports'

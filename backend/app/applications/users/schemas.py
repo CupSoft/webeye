@@ -20,7 +20,6 @@ class BaseUser(BaseProperties):
 class BaseUserCreate(BaseProperties):
     uuid: Optional[UUID4] = None
     email: EmailStr
-    username: Optional[str]
     password: str
 
 
