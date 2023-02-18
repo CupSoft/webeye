@@ -37,11 +37,12 @@ async def read_resources(
         for reviews in resource.reviews:
             sum_star += reviews.star
 
+        resource_dict = await resource.to_dict()
         try:
             rating = float(f'{sum_star / len(resource.reviews):.2f}')
-            res.append(ResourceOutWithRating(**resource.to_dict(), rating=rating))
+            res.append(ResourceOutWithRating(**resource_dict, rating=rating))
         except ZeroDivisionError:
-            res.append(ResourceOutWithRating(**resource.to_dict()))
+            res.append(ResourceOutWithRating(**resource_dict))
 
     return res
 
@@ -153,8 +154,9 @@ async def read_resource_nodes(
             status_code=404,
             detail="The resource with this uuid does not exist",
         )
-
-    return resource.nodes
+    
+    
+    return list(resource.nodes)
 
 
 @router.get("/{uuid}/reports", response_model=List[ReportOut], status_code=200)
@@ -172,7 +174,7 @@ async def read_resource_reports(
             detail="The resource with this uuid does not exist",
         )
 
-    return resource.reports
+    return list(resource.reports)
 
 
 @router.get("/{uuid}/social_reports", response_model=List[SocialReportOut], status_code=200)
@@ -190,11 +192,11 @@ async def read_resource_social_reports(
             detail="The resource with this uuid does not exist",
         )
 
-    return resource.social_network_resports
+    return list(resource.social_network_resports)
 
 
 @router.get("/{uuid}/reviews", response_model=List[ReviewOut], status_code=200)
-async def read_resource_social_reports(
+async def read_resource_reviews(
         uuid: UUID4,
 ):
     """
@@ -208,7 +210,7 @@ async def read_resource_social_reports(
             detail="The resource with this uuid does not exist",
         )
 
-    return resource.reviews
+    return list(resource.reviews)
 
 
 @router.get("/nodes/", response_model=List[ResourceNodeOut], status_code=200)
