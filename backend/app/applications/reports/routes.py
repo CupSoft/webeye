@@ -56,7 +56,7 @@ async def create_check(
     if resource_node is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource node with this id does not exist",
+            detail="The resource node with this uuid does not exist",
         )
 
     report = await Report.create(
@@ -78,7 +78,7 @@ async def delete_check(
     if check is None:
         raise HTTPException(
             status_code=404,
-            detail="The check with this id does not exist",
+            detail="The check with this uuid does not exist",
         )
 
     await check.delete()
@@ -107,7 +107,7 @@ async def create_check_result(
     if check is None:
         raise HTTPException(
             status_code=404,
-            detail="The check with this id does not exist",
+            detail="The check with this uuid does not exist",
         )
 
     check_result = await CheckResult.create(
@@ -129,7 +129,7 @@ async def delete_check(
     if check_result is None:
         raise HTTPException(
             status_code=404,
-            detail="The check result with this id does not exist",
+            detail="The check result with this uuid does not exist",
         )
 
     await check_result.delete()
