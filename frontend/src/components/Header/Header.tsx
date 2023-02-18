@@ -1,6 +1,6 @@
 import styles from './Header.module.scss';
 import cn from 'classnames'
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { AUTH_ROUTE, MAIN_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
 import Button from '../UI/Button/Button';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -10,12 +10,13 @@ const Header = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const isAuth = useAppSelector(isAuthSelector)
+  const location = useLocation()
 
   function signInClickHandler() {
     if (isAuth) {
       dispatch({type: 'auth', payload: false})
     } else {
-      navigate(AUTH_ROUTE)
+      navigate(AUTH_ROUTE + `?next_page=${location.pathname}`)
     }
   }
 

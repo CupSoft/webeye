@@ -13,6 +13,16 @@ hr {
   @apply border-gray-light py-2;
 }
 
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
 body, html, #root {
   @apply bg-gray-dark;
   min-width: 300px;
@@ -23,7 +33,7 @@ body, html, #root {
 }
 
 .page_title {
-  @apply text-6xl font-bold p-3 -mt-3;
+  @apply text-6xl font-bold p-3 pl-0 -mt-3;
 
   background: linear-gradient(0deg, rgba(230, 230, 230, .8) 20%, white 80%);
   -webkit-background-clip: text;
@@ -34,10 +44,10 @@ body, html, #root {
   @apply bg-none;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-500 bg-opacity-50 rounded-3xl hover:bg-gray-600;
+  @apply bg-gray-600 bg-opacity-50 rounded-3xl hover:bg-gray-700;
 }
 ::-webkit-scrollbar {
-  @apply w-0;
+  @apply w-0.5;
 }
 
 @media (max-width: 425px) {

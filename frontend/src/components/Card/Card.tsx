@@ -11,13 +11,16 @@ const icons: IconsType = {
   sources: sourcesIcon,
 }
 
-const Card = ({icon='', size='sm', title='Карточка', description='', children='', ...props}: CardPropsType) => {
+const Card = ({icon='', size='sm', title='Карточка', description='', bodyFlexStart=false,children='', ...props}: CardPropsType) => {
   return (
     <div className={cn(styles.container, styles[size])} {...props}>
       {icon && <img className={styles.icon} src={icons[icon]} alt='Сообщество'/>}
       {title && <span className={styles.title}>{title}</span>}
       {description && <span className={styles.description}>{description}</span>}
-      {children && <span className={styles.body}>{children}</span>}
+      {children && 
+      <span 
+        className={cn(styles.body, bodyFlexStart && styles.start)}
+      >{children}</span>}
     </div>
   );
 };

@@ -1,14 +1,18 @@
-import React from 'react';
-import styles from './SocialNetworkCard.module.scss'
-import { IconsType, SocialNetworkCardPropsType } from './SocialNetworkCardTypes';
-import vkIcon from './../../assets/socialIcons/vkIcon.svg';
-import cn from 'classnames'
-import { Link } from 'react-router-dom';
+import cn from 'classnames';
+import styles from './SocialNetworkCard.module.scss';
+import { SocialNetworkCardPropsType } from './SocialNetworkCardTypes';
 
 const SocialNetworkCard = ({link, social, text, state}: SocialNetworkCardPropsType) => {
   return (
     <a href={link} target="_blank" rel="noreferrer" className={styles.container}>
-      <span className={cn(styles.social, styles[social])} />
+      <span className={styles.title}>
+        <span className={cn(styles.state, styles[state.toLowerCase()])}></span>
+        <span 
+          className={
+            cn(styles.social, styles[social])
+          }
+        />
+      </span>
       <hr/>
       <span className={styles.text}>{text}</span>
     </a>

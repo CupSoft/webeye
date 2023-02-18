@@ -8,7 +8,9 @@
   }
 
   .icon {
-    @apply pb-5 p-2.5;
+    @apply pb-4 p-2.5;
+    height: 4.5rem;
+    width: 4.5rem;
   }
 
   .title {
@@ -16,7 +18,13 @@
   }
 
   .body {
-    @apply flex flex-col w-full;
+    @apply flex flex-col w-full items-stretch;
+    overflow-y: auto;
+    max-height: 20rem;
+  }
+
+  .body.start {
+    @apply items-start;
   }
 
   .description {
