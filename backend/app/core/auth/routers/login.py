@@ -21,7 +21,7 @@ async def login_access_token(credentials: CredentialsSchema):
     
     return {
         "access_token": create_access_token(
-            data={"user_uuid": user.uuid}, expires_delta=access_token_expires
+            data={"user_uuid": str(user.uuid)}, expires_delta=access_token_expires
         ),
         "token_type": "bearer",
     }
