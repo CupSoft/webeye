@@ -1,6 +1,5 @@
 import uuid
-from datetime import datetime
-from typing import Optional, TypeVar
+from typing import Optional
 
 from pydantic import BaseModel, EmailStr, UUID4, validator
 
@@ -22,6 +21,14 @@ class BaseUserCreate(BaseProperties):
     email: EmailStr
     password: str
 
+    class Config:
+        schema_extra = {
+            "example": {
+                "email": "my_email@gmail.com",
+                "password": "qwerty"
+            }
+        }
+
 
 class BaseUserUpdate(BaseProperties):
     password: Optional[str]
@@ -31,14 +38,14 @@ class BaseUserUpdate(BaseProperties):
 class BaseUserDB(BaseUser):
     uuid: UUID4
     password_hash: str
-    
+
     class Config:
         orm_mode = True
 
 
 class BaseUserOut(BaseUser):
     uuid: UUID4
-    
+
     class Config:
         orm_mode = True
 
@@ -50,3 +57,11 @@ class TgToken(BaseProperties):
 class TgTokenWithId(BaseProperties):
     token: str
     id: int
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "token": "SbjpvnBzMIpPEexbjwFPNEQkxEigXxaF",
+                "id": "372203395"
+            }
+        }

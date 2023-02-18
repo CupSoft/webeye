@@ -78,7 +78,7 @@ async def read_resource(
     if resource is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource with this id does not exist",
+            detail="The resource with this uuid does not exist",
         )
     
     return resource
@@ -131,7 +131,7 @@ async def delete_resource(
     if resource is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource with this id does not exist",
+            detail="The resource with this uuid does not exist",
         )
     
     await resource.delete()
@@ -151,7 +151,7 @@ async def read_resource_nodes(
     if resource is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource with this id does not exist",
+            detail="The resource with this uuid does not exist",
         )
     
     res = []
@@ -173,7 +173,7 @@ async def read_resource_reports(
     if resource is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource with this id does not exist",
+            detail="The resource with this uuid does not exist",
         )
     
     res = []
@@ -195,7 +195,7 @@ async def read_resource_social_reports(
     if resource is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource with this id does not exist",
+            detail="The resource with this uuid does not exist",
         )
     
     res = []
@@ -217,7 +217,7 @@ async def read_resource_social_reports(
     if resource is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource with this id does not exist",
+            detail="The resource with this uuid does not exist",
         )
     
     res = []
@@ -260,7 +260,7 @@ async def create_node(
     if resource is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource with this id does not exist",
+            detail="The resource with this uuid does not exist",
         )
     
     resource_node = await ResourceNode.create(
@@ -282,7 +282,7 @@ async def delete_node(
     if resource_node is None:
         raise HTTPException(
             status_code=404,
-            detail="The resource node with this id does not exist",
+            detail="The resource node with this uuid does not exist",
         )
     
     await resource_node.delete()
