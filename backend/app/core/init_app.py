@@ -74,4 +74,4 @@ def register_routers(app: FastAPI):
     app.include_router(login_router, prefix='/api/auth/login', tags=["login"])
     app.include_router(users_router, prefix='/api/auth/users', tags=["users"])
     app.include_router(checks_routes, prefix='/api/checks', tags=["checks"], dependencies=[Depends(get_current_admin)])
-    app.include_router(resources_routes, prefix='/api/resources', tags=["resources"], dependencies=[Depends(get_current_admin)])
+    app.include_router(resources_routes, prefix='/api/resources', tags=["resources"]) # , dependencies=[Depends(get_current_admin)])

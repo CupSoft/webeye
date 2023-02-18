@@ -13,15 +13,9 @@ class Status(str, Enum):
 
 
 class BaseProperties(BaseModel):
-    @validator("hashed_id", pre=True, always=True, check_fields=False)
+    @validator("uuid", pre=True, always=True, check_fields=False)
     def default_hashed_id(cls, v):
         return v or uuid.uuid4()
-
-    def create_update_dict(self):
-        return self.dict(
-            exclude_unset=True,
-            exclude={"id"},
-        )
 
 
 class BaseResource(BaseProperties):
@@ -30,24 +24,39 @@ class BaseResource(BaseProperties):
 
 
 class ResourceCreate(BaseResource):
-    hashed_id: Optional[UUID4] = None
+    uuid: Optional[UUID4] = None
 
 
 class ResourceUpdate(BaseResource):
-    pass
+    name: str = None
+    status: Status = None
 
 
 class ResourceDB(BaseResource):
-    id: int
-    hashed_id: UUID4
-    updated_at: datetime
-
+    uuid: UUID4
+    
     class Config:
         orm_mode = True
 
 
 class ResourceOut(BaseResource):
-    id: int
+    uuid: UUID4
+    
+    class Config:
+        orm_mode = True
 
+
+class BaseResourceNode(BaseProperties):
+    url: str
+
+
+class ResourceNodeCreate(BaseResourceNode):    
+    uuid: UUID4 = None
+    resource_uuid: UUID4
+
+
+class ResourceNodeOut(BaseResourceNode):
+    uuid: UUID4
+    
     class Config:
         orm_mode = True
