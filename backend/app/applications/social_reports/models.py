@@ -14,6 +14,7 @@ class SocialNetworkReport(BaseModel):
     status = fields.CharEnumField(Status)
     is_moderated = fields.BooleanField(default=False)
     social_network = fields.CharEnumField(SocialNetworks)
+    link = fields.CharField(max_length=255)
     
     class Meta:
         table = 'social_network_reports'

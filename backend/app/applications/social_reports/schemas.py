@@ -21,6 +21,7 @@ class SocialReport(BaseProperties):
     status: Status
     is_moderated: bool = False
     social_network: SocialNetworks
+    link: str
 
 
 class SocialReportCreate(SocialReport):
