@@ -17,6 +17,10 @@
     @apply text-xl font-bold p-2.5 pb-0;
   }
 
+  .title * {
+    @apply text-xl font-bold;
+  }
+
   .body {
     @apply flex flex-col w-full items-stretch;
     overflow-y: auto;

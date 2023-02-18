@@ -1,4 +1,4 @@
-import SourceCard from '../../components/SourceCard/SourceCard';
+import SourceCard from '../../components/SourceBadge/SourceBadge';
 import styles from './SourcesPage.module.scss';
 
 const sources = [

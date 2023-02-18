@@ -6,6 +6,7 @@ import SubscriptionCard from '../../components/SubscriptionCard/SubscriptionCard
 import Button from '../../components/UI/Button/Button';
 import styles from './SourcePage.module.scss';
 import cn from 'classnames'
+import UsersReviewsCard from '../../components/UsersReviewsCard/UsersReviewsCard';
 
 const data = [
   {name: 'Page A',uv: 4000,pv: 2400,amt: 2400,},
@@ -74,6 +75,7 @@ const SourcePage = () => {
       </ResponsiveContainer>
       <div className={styles.cards}>
         <ReviewCard sourceId={source.id}/>
+        <UsersReviewsCard sourceId={source.id}/>
         <SocialNetworksCard sourceId={source.id}/>
         <SubscriptionCard sourceId={source.id}/>
       </div>

@@ -5,11 +5,18 @@ import { SubscriptionCardPropsType } from './SubscriptionCardTypes';
 import cn from 'classnames'
 import { useAppSelector } from '../../app/hooks';
 import { isAuthSelector } from '../../app/selectors/isAuthSelector';
+import { AUTH_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
+import { useNavigate } from 'react-router-dom';
 
 const SubscriptionCard = ({sourceId, ...props}: SubscriptionCardPropsType) => {
   const [emailChecked, setEmailChecked] = useState(false)
   const [botChecked, setBotChecked] = useState(false)
   const isAuth = useAppSelector(isAuthSelector)
+  const navigate = useNavigate()
+
+  function authClickHandler() {
+    navigate(AUTH_ROUTE + `?next_page=${SOURCES_ROUTE + '/' + sourceId}`)
+  }
 
   function onCheckChange(event: React.ChangeEvent<HTMLInputElement>) {
     if (!isAuth) {
@@ -24,7 +31,12 @@ const SubscriptionCard = ({sourceId, ...props}: SubscriptionCardPropsType) => {
 
   return (
     <Card 
-      title={`${!isAuth ? 'Авторизуйтесь и п' : 'П'}одпишитесь на уведомления о недоступности ресурса`}
+      title={
+      <span>
+        {!isAuth && <u onClick={authClickHandler}>Авторизуйтесь</u>}
+        {isAuth ? 'П' : ' и п'}одпишитесь на уведомления о недоступности ресурса
+      </span>
+      }
       description='Подписывайтесь на сообщения о недоступности ресурсов по почте и посредством телеграм бота'
       bodyFlexStart={true}
       {...props}
