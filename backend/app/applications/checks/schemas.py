@@ -8,13 +8,8 @@ from pydantic import BaseModel, UUID4, validator
 class RequestType(str, Enum):
     get = 'GET'
     post = 'POST'
-    patch = 'PATCH'
-    delete = 'DELETE'
-    
-    
-class SocialNetworks(str, Enum):
-    vk = 'VK'
-    ok = 'OK'
+    head = 'HEAD'
+    put = 'PUT'
 
 
 class BaseProperties(BaseModel):
@@ -29,21 +24,15 @@ class Check(BaseProperties):
 
 
 class CheckCreate(BaseProperties):
+    uuid: Optional[UUID4] = None
     expectation: str
     request_type: RequestType
-    uuid: Optional[UUID4] = None
+    resource_node_uuid: UUID4
 
 
 class CheckUpdate(BaseProperties):
-    expectation: str
-    request_type: RequestType
-
-
-class CheckDB(Check):
-    uuid: UUID4
-
-    class Config:
-        orm_mode = True
+    expectation: str = None
+    request_type: RequestType = None
 
 
 class CheckOut(Check):
