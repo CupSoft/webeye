@@ -2,7 +2,7 @@ import aiohttp
 
 from app.my_errors import ApiError, TOKEN_ERROR
 from app.schemas.resources_pdc import Resource
-from app.services.restapi.URLS import URL_GET_JWT, URL_GET_MY_RESOURCES_UUIDS, URL_GET_RESOURCE
+from app.services.restapi.URLS import URL_GET_JWT, URL_GET_MY_RESOURCES_UUIDS, URL_GET_RESOURCE, URL_DELETE_USER
 from app.services.restapi.scripts import get_headers
 
 
@@ -39,5 +39,8 @@ async def api_get_resources(uuids: list) -> list[Resource]:
                 resources.append(Resource(**data))
         return resources
 
+
 async def api_delete_user(tg_id: int):
-    return True
+    async with aiohttp.ClientSession() as session:
+        async with session.delete(URL_DELETE_USER, headers=await get_headers(tg_id)) as resp:
+            return True
