@@ -2,7 +2,7 @@ import cn from 'classnames';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
-import { isAuthSelector } from '../../app/selectors/isAuthSelector';
+import { userSelector } from '../../app/selectors/userSelector';
 import { AUTH_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
 import Card from '../Card/Card';
 import styles from './SubscriptionCard.module.scss';
@@ -11,7 +11,7 @@ import { SubscriptionCardPropsType } from './SubscriptionCardTypes';
 const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => {
   const [emailChecked, setEmailChecked] = useState(false)
   const [botChecked, setBotChecked] = useState(false)
-  const isAuth = useAppSelector(isAuthSelector)
+  const isAuth = useAppSelector(userSelector)
   const navigate = useNavigate()
 
   function authClickHandler() {

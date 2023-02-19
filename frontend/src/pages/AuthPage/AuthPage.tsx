@@ -1,22 +1,26 @@
+import { SerializedError } from '@reduxjs/toolkit';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import { useLoginUserMutation, useRegisterUserMutation } from '../../services/apiService/apiService';
-import { UserLoginRequestTypes, UserRegistrRequestTypes } from '../../services/apiService/apiServiceTypes';
+import { UserLoginResponseTypes, UserRegistrRequestTypes } from '../../services/apiService/apiServiceTypes';
 import { emailPattern, MAIN_ROUTE } from '../../utils/constants';
 import styles from './AuthPage.module.scss';
+import { handleLoginUser } from '../../utils/handleLoginUser';
+import { useState } from 'react';
 
 const AuthPage = () => {
   const [registerUser] = useRegisterUserMutation()
-  const [loginUser, {isLoading}] = useLoginUserMutation()
-
+  const [loginUser] = useLoginUserMutation()
   const {
     register,
     handleSubmit,
     formState: {errors, isDirty, isValid}
   } = useForm({mode: 'onBlur'})
+  const [authError, setAuthError] = useState('')
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const params = new URLSearchParams(window.location.search)
@@ -28,20 +32,27 @@ const AuthPage = () => {
     formData.set('password', data.password)
 
     if (type === 'registr') {
-      registerUser(data as UserRegistrRequestTypes).then(data => {
-        console.log(data)
-      })
-      loginUser(formData).then((data) => {
-        console.log(data)
+      registerUser(data as UserRegistrRequestTypes).then(value => {
+        if ('error' in value) {
+          setAuthError('Пользователь с таким email уже существует')
+          return
+        }
+
+        const {uuid, email, is_admin} = value.data
+        dispatch({
+          type: 'changeUser', 
+          payload: {
+            uuid,
+            email,
+            isAdmin: is_admin
+          }
+        })
+
+        loginUser(formData).then(handleLoginUser(dispatch, navigate, params, setAuthError))
       })
     } else {
-      loginUser(formData).then(data => {
-        console.log(data)
-      })
+      loginUser(formData).then(handleLoginUser(dispatch, navigate, params, setAuthError))
     }
-
-    dispatch({type: 'auth', payload: true})
-    navigate(params.get('next_page') ?? MAIN_ROUTE)
   }
 
   return (
@@ -49,9 +60,9 @@ const AuthPage = () => {
       <form 
         className={styles.form}
       >
+        <span className="auth_error">{authError}</span>
         <div className={styles.inputs}>
           <Input
-            // maxLength={10}
             options={{
               minLength: 1,
               required: true,
@@ -62,11 +73,11 @@ const AuthPage = () => {
             name="email"
           />
           <Input
-            // maxLength={10}
             options={{
               minLength: 1,
               required: true
             }}
+            type='password'
             register={register}
             placeholder="Password..."
             name="password"

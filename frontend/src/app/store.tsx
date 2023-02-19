@@ -1,13 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { api } from '../services/apiService/apiService'
-import { authTokenReducer } from './reducers/authTokenReducer'
-import { isAuthReducer } from './reducers/isAuthReducer'
+import { userReducer } from './reducers/userReducer'
 
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
-    isAuth: isAuthReducer,
-    authToken: authTokenReducer
+    user: userReducer
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(api.middleware)
 })
