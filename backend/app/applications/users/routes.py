@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from pydantic import UUID4
 
+from app.applications.resources.models import Resource
 from app.applications.subscriptions.models import Subscription
 from app.applications.subscriptions.schemas import SubscriptionOutWithResourceUUID
 from app.core.auth.utils.contrib import get_current_admin, get_current_user
@@ -89,12 +90,22 @@ async def delete_user_me_tg_id(current_user: User = Depends(get_current_user)):
 
 @router.get("/me/subscriptions", response_model=List[SubscriptionOutWithResourceUUID], status_code=200)
 async def read_user_subscriptions(
+    resource_uuid: UUID4 = None,
     current_user: User = Depends(get_current_user),
 ):
     """
     Get current user subscriptions.
     """
-    subscriptions = await Subscription.filter(user=current_user).prefetch_related("resource")
+    if resource_uuid is not None:
+        resource = await Resource.get(uuid=resource_uuid)
+        if not resource:
+            raise HTTPException(
+                status_code=404,
+                detail="The resource with this uuid does not exist",
+            )
+        subscriptions = await Subscription.filter(user=current_user, resource=resource).prefetch_related("resource")
+    else:
+        subscriptions = await Subscription.filter(user=current_user).prefetch_related("resource")
 
     res = []
     for subscription in subscriptions:
