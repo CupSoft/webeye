@@ -5,9 +5,9 @@ import json
 
 
 async def redis_publish_message(email: EmailNotification):
-    data = json.dumps(email.dict())
-    print(f"Publishing a message {data} to the channel 'mail'")
-    r = redis.from_url(config.settings.REDIS_URL)
+    data = email.dict()
+    data["resource_uuid"] = str(email.resource_uuid)
+    data = json.dumps(data)
 
-    res = r.publish("mail", data)
-    print(res)
+    r = await redis.from_url(config.settings.REDIS_URL)
+    res = await r.publish("mail", data)
