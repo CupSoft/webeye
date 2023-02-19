@@ -1,6 +1,3 @@
-import { SerializedError } from "@reduxjs/toolkit";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
-
 export type UserRegistrResponseTypes = {
   email: string;
   uuid: string;
@@ -9,11 +6,6 @@ export type UserRegistrResponseTypes = {
 
 export type UserRegistrRequestTypes = {
   email: string;
-  password: string;
-}
-
-export type UserLoginRequestTypes = {
-  username: string;
   password: string;
 }
 
@@ -31,5 +23,12 @@ export type SourceDataTypes = {
 export type SourceGetTypes = {
   name: string;
   status: 'OK' | 'partial' | 'critical';
+  uuid: string;
+}
+
+export type UserStoreTypes = {
+  isAuth: boolean;
+  isAdmin: boolean;
+  email: string;
   uuid: string;
 }

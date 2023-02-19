@@ -1,17 +1,16 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { RootState } from '../../app/store'
-import { SourceDataTypes, SourceGetTypes, UserLoginRequestTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
+import { SourceDataTypes, SourceGetTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
 
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_API_LINK,
     prepareHeaders(headers, {getState}) {
-      const token = (getState() as RootState).authToken
-      const token_type = localStorage.getItem('token_type')
+      const token = localStorage.getItem('token')
 
-      if (token && token_type) {
-        headers.set('Authorization', `${token_type} ${token}`)
+      if (token) {
+        headers.set('Authorization', token)
       }
 
       return headers
@@ -35,10 +34,13 @@ export const api = createApi({
         headers: {'Content-Type': undefined}
       })
     }),
-    getSource: builder.mutation<SourceGetTypes, string>({
+    checkUser: builder.mutation<UserRegistrResponseTypes, void>({
+      query: () => ({url: '/auth/users/me'})
+    }),
+    getSource: builder.query<SourceGetTypes, string>({
       query: (uuid) => ({ url: `resources/${uuid}` })
     }),
-    getAllSources: builder.mutation<SourceDataTypes[], void>({
+    getAllSources: builder.query<SourceDataTypes[], void>({
       query: () => ({ url: `resources`})
     })
   })
@@ -46,5 +48,6 @@ export const api = createApi({
 
 export const { useRegisterUserMutation } = api
 export const { useLoginUserMutation } = api
-export const { useGetAllSourcesMutation } = api
-export const { useGetSourceMutation } = api
+export const { useGetAllSourcesQuery } = api
+export const { useGetSourceQuery } = api
+export const { useCheckUserMutation } = api

@@ -46,10 +46,17 @@ class ResourceOut(BaseResource):
 
     class Config:
         orm_mode = True
+        
+        schema_extra = {
+            "example": {
+                "name": "HSE",
+                "status": "OK",
+                "uuid": "f7b4c2c0-5b5a-4b4a-9c1c-8e1b0c1b0c1b",
+            }
+        }
 
 
-class ResourceOutWithRating(BaseResource):
-    uuid: UUID4
+class ResourceOutWithRating(ResourceOut):
     rating: float = None
 
     class Config:
