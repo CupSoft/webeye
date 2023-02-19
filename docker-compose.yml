@@ -1,88 +1,161 @@
 version: '3.8'
 
+networks:
+  webeye:
+    external: true
+
 services:
-  postgres:
-    image: postgres:latest
+  postgres-api:
+    image: postgres:14
     restart: always
-    ports:
-      - "5432:5432"
     volumes:
-      - ./docker-postgresql-multiple-databases:/docker-entrypoint-initdb.d
-      - pgdata:/var/lib/postgresql/data
+      - pgdata-api:/var/lib/postgresql/data
     environment:
-      POSTGRES_MULTIPLE_DATABASES: api_db,bot_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: pass
+      POSTGRES_USER: ${POSTGRES_API_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_API_PASSWORD}
+      POSTGRES_DB: 'api_db'
+    networks:
+      - webeye
+
+  postgres-bot:
+    image: postgres:14
+    restart: always
+    volumes:
+      - pgdata-bot:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_BOT_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_BOT_PASSWORD}
+      POSTGRES_DB: 'bot_db'
+    networks:
+      - webeye
 
   redis:
     image: redis
     restart: always
+    networks:
+      - webeye
 
   api:
     build:
       context: backend
       dockerfile: Dockerfile
     restart: always
-    env_file:
-      - backend/.env
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      DEBUG: ${DEBUG}
+      DB_NAME: 'api_db'
+      DB_USER: ${POSTGRES_API_USER}
+      DB_PASS: ${POSTGRES_API_PASSWORD}
+      DB_HOST: postgres-api
+      DB_PORT: 5432
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - postgres-api
+      - redis
     ports:
       - "8000:8000"
-    depends_on:
-      - postgres
-      - redis
     links:
-      - postgres
+      - postgres-api
       - redis
+    networks:
+      - webeye
 
   checker:
     build:
       context: checker
       dockerfile: Dockerfile
     restart: always
-    env_file:
-      - checker/.env
+    environment:
+      API_HOST: "http://api"
+      API_PORT: 8000
+      API_LOGIN: ${ROOT_ADMIN_EMAIL}
+      API_PASSWORD: ${ROOT_ADMIN_PASSWORD}
     depends_on:
       - api
     links:
       - api
+    networks:
+      - webeye
 
   postman:
     build:
       context: postman
       dockerfile: Dockerfile
     restart: always
-    env_file:
-      - postman/.env
+    environment:
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT:-465}
+      SMTP_USERNAME: ${SMTP_USERNAME}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     links:
       - redis
+    networks:
+      - webeye
 
   frontend:
     build:
       context: frontend
       dockerfile: Dockerfile
     restart: always
+    environment:
+      API_HOST: ${API_HOST}
+      API_PORT: ${API_PORT}
     ports:
-      - "8490:3000"
-    env_file:
-      - frontend/.env
+      - "3000:3000"
     depends_on:
       - api
     links:
       - api
+    networks:
+      - webeye
 
   bot:
     build:
       context: bot
       dockerfile: Dockerfile
     restart: always
-    env_file:
-      - bot/.env
+    environment:
+      TOKEN: ${BOT_TOKEN}
+      ADMIN_ID: ${BOT_ADMIN_ID}
+      DB_PROTOCOL: postgres
+      DB_USERNAME: ${POSTGRES_BOT_USER}
+      DB_PASSWORD: ${POSTGRES_BOT_PASSWORD}
+      DB_HOST: postgres-bot
+      DB_NAME: bot_db
+      DB_PORT: 5432
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      API_HOST: ${API_HOST}
+      API_PORT: ${API_PORT}
     depends_on:
       - api
     links:
       - api
       - redis
-      - postgres
+      - postgres-bot
+    networks:
+      - webeye
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres-api
+      - postgres-bot
+    links:
+      - postgres-api
+      - postgres-bot
+    networks:
+      - webeye
 
 volumes:
-  pgdata:
+  pgdata-api:
+  pgdata-bot:
