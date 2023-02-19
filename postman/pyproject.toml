@@ -11,6 +11,7 @@ aiosmtplib = "^2.0.1"
 redis = "^4.5.1"
 coloredlogs = "^15.0.1"
 python-decouple = "^3.7"
+pydantic = "^1.10.5"
 
 
 [build-system]

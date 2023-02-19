@@ -7,7 +7,11 @@ from decouple import config
 import coloredlogs as coloredlogs
 import redis.asyncio as redis
 
+from config import settings as s
+from schemas import EmailNotification
 from sender import sender
+
+from pydantic import parse_obj_as
 
 coloredlogs.install(level=logging.INFO)
 
@@ -16,15 +20,15 @@ async def reader(channel: redis.client.PubSub):
     while True:
         message = await channel.get_message(ignore_subscribe_messages=True)
         if message is not None:
-            data = json.loads(message["data"])
-            asyncio.create_task(sender(data["to"], data["event"], data["details"]))
+            email = parse_obj_as(EmailNotification, json.loads(message["data"]))
+            asyncio.create_task(sender(email))
+
         await sleep(0.1)
 
 
 async def main():
     logging.info("Redis init")
-    url = f"redis://:{config('REDIS_PASSWORD', default='')}@{config('REDIS_HOST', default='localhost')}:" \
-          f"{config('REDIS_PORT', cast=int, default=6379)}/1"
+    url = s.REDIS_URL
     r = redis.from_url(url)
     async with r.pubsub() as pubsub:
         await pubsub.subscribe("mail")

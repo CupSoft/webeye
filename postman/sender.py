@@ -1,25 +1,27 @@
 import logging
-from asyncio import sleep
 from email.message import EmailMessage
-from os import getenv
-
+from config import settings as s
 import aiosmtplib
 
+from schemas import EmailNotification
 
-async def sender(to, event, details):
-    logging.info(f"Sending an email to {to}")
+
+async def sender(email: EmailNotification):
     message = EmailMessage()
-    message["From"] = getenv("SMTP_USERNAME")
-    message["To"] = to
-    message["Subject"] = event
-    message.set_content(details)
+    message["From"] = s.SMTP_USERNAME
+    message["To"] = email.recipient
+    message["Subject"] = email.subject
+    message.set_content(email.body)
     try:
-        await aiosmtplib.send(message,
-                              hostname=getenv("SMTP_HOST"),
-                              port=getenv("SMTP_PORT"),
-                              username=getenv("SMTP_USERNAME"),
-                              password=getenv("SMTP_PASSWORD"),
-                              use_tls=True)
-        logging.info(f"The email was successfully sent to {to}")
+        await aiosmtplib.send(
+            message,
+            hostname=s.SMTP_HOST,
+            port=s.SMTP_PORT,
+            username=s.SMTP_USERNAME,
+            password=s.SMTP_PASSWORD,
+            use_tls=True,
+        )
+        logging.info(f"The email was successfully sent to {email.recipient}")
+
     except Exception as e:
         logging.error(e)
