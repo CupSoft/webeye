@@ -42,11 +42,11 @@ export const api = createApi({
     getAllSources: builder.query<SourceGetTypes[], void>({
       query: () => ({ url: `resources`})
     }),
-    getAllSocialReports: builder.query<SocialReporGetTypes[], void>({
-      query: () => ({ url: 'social_reports'})
+    getAllSocialReports: builder.query<SocialReporGetTypes[], string>({
+      query: (uuid) => ({ url: `/resources/${uuid}/social_reports`})
     }),
-    getAllReviews: builder.query<ReviewGetTypes[], void>({
-      query: () => ({ url: 'reviews'})
+    getAllReviews: builder.query<ReviewGetTypes[], string>({
+      query: (uuid) => ({ url: `/resources/${uuid}/reviews` })
     })
   })
 })

@@ -14,7 +14,7 @@ const reviews: ReviewGetTypes[] = [
 ]
 
 const UsersReviewsCard = ({sourceUuid, ...props}: UsersReviewsCardPropsType) => {
-  const {data: reviews, isLoading} = useGetAllReviewsQuery()
+  const {data: reviews, isLoading} = useGetAllReviewsQuery(sourceUuid)
 
   if (isLoading) {
     return null

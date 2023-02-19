@@ -14,7 +14,7 @@ const cards: SocialReporGetTypes[] = [
 ]
 
 const SocialNetworksCard = ({sourceUuid, ...props}: SocialNetworksCardPropsType) => {
-  const {data: cards, isLoading} = useGetAllSocialReportsQuery()
+  const {data: cards, isLoading} = useGetAllSocialReportsQuery(sourceUuid)
 
   if (isLoading) {
     return null
