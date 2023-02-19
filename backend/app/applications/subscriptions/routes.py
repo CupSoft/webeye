@@ -110,7 +110,7 @@ async def update_subscription(
     return subscription
 
 
-@router.delete("/{subscription_uuid}", response_model=SubscriptionOut, status_code=200)
+@router.delete("/{subscription_uuid}", status_code=200)
 async def delete_subscription(subscription_uuid: UUID4, current_user: User = Depends(get_current_user)):
     """
     Delete a subscription
@@ -132,4 +132,4 @@ async def delete_subscription(subscription_uuid: UUID4, current_user: User = Dep
 
     await subscription.delete()
 
-    return subscription
+    return "Successfully deleted"
