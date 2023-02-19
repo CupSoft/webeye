@@ -26,3 +26,12 @@ class SubscriptionOut(Subscription):
 
 class SubscriptionIn(Subscription):
     resource_uuid: UUID4
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "to_email": False,
+                "to_telegram": False,
+                "resource_uuid": "f7b4c2c0-5b5a-4b4a-9c1c-8e1b0c1b0c1b",
+            }
+        }
