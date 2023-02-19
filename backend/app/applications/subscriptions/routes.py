@@ -60,13 +60,13 @@ async def create_subscription(subscription_in: SubscriptionIn, current_user: Use
     return subscription
 
 
-@router.get("/{subscription_uuid}", response_model=SubscriptionOut, status_code=200)
-async def read_subscription(subscription_uuid: UUID4, current_user: User = Depends(get_current_user)):
+@router.get("/{uuid}", response_model=SubscriptionOut, status_code=200)
+async def read_subscription(uuid: UUID4, current_user: User = Depends(get_current_user)):
     """
     Get a subscription
     """
 
-    subscription = await Subscription.filter(uuid=subscription_uuid).first()
+    subscription = await Subscription.filter(uuid=uuid).first()
 
     if subscription is None:
         raise HTTPException(
@@ -83,9 +83,9 @@ async def read_subscription(subscription_uuid: UUID4, current_user: User = Depen
     return subscription
 
 
-@router.patch("/{subscription_uuid}", response_model=SubscriptionOut, status_code=200)
+@router.patch("/{uuid}", response_model=SubscriptionOut, status_code=200)
 async def update_subscription(
-    subscription_uuid: UUID4,
+    uuid: UUID4,
     to_telegram: bool = False,
     to_email: bool = False,
     current_user: User = Depends(get_current_user),
@@ -94,7 +94,7 @@ async def update_subscription(
     Update a subscription
     """
 
-    subscription = await Subscription.filter(uuid=subscription_uuid).first()
+    subscription = await Subscription.filter(uuid=uuid).first()
 
     if subscription is None:
         raise HTTPException(
@@ -118,13 +118,13 @@ async def update_subscription(
     return subscription
 
 
-@router.delete("/{subscription_uuid}", status_code=200)
-async def delete_subscription(subscription_uuid: UUID4, current_user: User = Depends(get_current_user)):
+@router.delete("/{uuid}", status_code=200)
+async def delete_subscription(uuid: UUID4, current_user: User = Depends(get_current_user)):
     """
     Delete a subscription
     """
 
-    subscription = await Subscription.filter(uuid=subscription_uuid).first()
+    subscription = await Subscription.filter(uuid=uuid).first()
 
     if subscription is None:
         raise HTTPException(
