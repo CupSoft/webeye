@@ -14,6 +14,7 @@ class Report(BaseModel):
     user: fields.ForeignKeyRelation["User"] = fields.ForeignKeyField(
         "models.User", related_name="reports", to_field="uuid", on_delete=fields.CASCADE
     )
+    created_at = fields.DatetimeField(auto_now_add=True)
 
     class Meta:
         table = "reports"
