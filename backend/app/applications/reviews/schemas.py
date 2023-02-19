@@ -13,12 +13,12 @@ class BaseProperties(BaseModel):
 
 class Review(BaseProperties):
     text: str
+    resource_uuid: UUID4
     stars: int
 
 
 class ReviewCreate(Review):
     uuid: Optional[UUID4] = None
-    resource_uuid: UUID4
     user_uuid: Optional[UUID4] = None
 
     class Config:
@@ -33,14 +33,17 @@ class ReviewCreate(Review):
 
 class ReviewOut(Review):
     uuid: UUID4
+    datetime: datetime.datetime
 
     class Config:
         orm_mode = True
-        
+
         schema_extra = {
-            "example":  {
+            "example": {
                 "text": "This is a review",
                 "stars": 4,
-                "uuid": "f7b4c2c0-5b5a-4b4a-9c1c-8e1b0c1b0c1b"
+                "uuid": "f7b4c2c0-5b5a-4b4a-9c1c-8e1b0c1b0c1b",
+                "resource_uuid": "f7b4c2c0-5b5a-4b4a-9c1c-8e1b0c1b0c1b",
+                "datetime": "2020-01-01T00:00:00",
             }
         }

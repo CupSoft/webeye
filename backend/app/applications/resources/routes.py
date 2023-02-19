@@ -219,7 +219,12 @@ async def read_resource_reviews(
             detail="The resource with this uuid does not exist",
         )
 
-    return list(resource.reviews)
+    res = []
+    for review in resource.reviews:
+        review_dict = await review.to_dict()
+        res.append(ReviewOut(**review_dict, resource_uuid=resource.uuid))
+
+    return res
 
 
 @router.get("/nodes/", response_model=List[ResourceNodeOut], status_code=200)
