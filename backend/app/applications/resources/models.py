@@ -3,11 +3,6 @@ from typing import Optional
 from tortoise import fields
 from tortoise.exceptions import DoesNotExist
 
-from app.applications.checks.models import Check
-from app.applications.reports.models import Report
-from app.applications.reviews.models import Review
-from app.applications.social_reports.models import SocialNetworkReport
-from app.applications.subscriptions.models import Subscription
 from app.core.base.base_models import BaseModel
 from app.applications.resources.schemas import Status
 

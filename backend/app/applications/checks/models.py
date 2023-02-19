@@ -1,6 +1,5 @@
 from tortoise import fields
 
-from app.applications.resources.models import ResourceNode
 from app.core.base.base_models import BaseModel
 from app.applications.checks.schemas import RequestType, Location
 
