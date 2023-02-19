@@ -22,7 +22,7 @@ class CheckResult(BaseModel):
     )
     response = fields.CharField(max_length=255)
     result = fields.BooleanField(default=False)
-    timestamp = fields.DatetimeField()
+    datetime = fields.DatetimeField(auto_now_add=True)
     location = fields.CharEnumField(Location)
 
     class Meta:

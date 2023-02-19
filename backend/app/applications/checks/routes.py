@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from typing import List
 
@@ -6,6 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from app.applications.checks.schemas import CheckOut, CheckCreate, CheckResultCreate, CheckResultOut, CheckOutWithUrl
 from app.applications.checks.models import Check, CheckResult
+from app.applications.checks.utils import redis_publish_message
 
 from app.applications.resources.models import ResourceNode
 
@@ -100,14 +102,23 @@ async def create_check_result(check_result_in: CheckResultCreate):
             detail="The check result with this uuid already exist",
         )
 
-    check = await Check.filter(uuid=check_result_in.check_uuid).first()
-
+    check = await Check.filter(uuid=check_result_in.check_uuid).prefetch_related('resource').first()
     if check is None:
         raise HTTPException(
             status_code=404,
             detail="The check with this uuid does not exist",
         )
 
+    last_state = await check.resource.state
+    
+    if last_state != check_result_in.state:
+        msg_dict = {
+            'resource_uuid': check.resource.uuid,
+            'state': check_result_in.state,
+            'datetime': check_result_in.date
+        }
+        await redis_publish_message(json.dumps(msg_dict))
+    
     check_result = await CheckResult.create(**exclude_keys(check_result_in.dict(), {"check_uuid"}), parent_check=check)
 
     return check_result
