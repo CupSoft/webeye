@@ -89,8 +89,10 @@ uvicorn
 uvloop
 vine
 wcwidth
-websockets
+websockets==10.4
 XlsxWriter
 yarl
 zipp
 python-decouple
+fastapi-admin
+aioredis==1.3

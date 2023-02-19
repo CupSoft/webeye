@@ -47,7 +47,7 @@ class Settings:
 
     LOGIN_URL = SERVER_HOST + "/api/auth/login/access-token"
 
-    REDIS_URL = config("REDIS_HOST")
+    REDIS_HOST = config("REDIS_HOST")
 
     APPLICATIONS_MODULE = "app.applications"
 
