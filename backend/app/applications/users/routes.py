@@ -87,7 +87,7 @@ def read_user_me(
 @router.get("/{uuid}", response_model=BaseUserOut, status_code=200)
 async def read_user_by_id(
         uuid: UUID4,
-        current_user: User = Depends(get_current_user),
+        current_user: User = Depends(get_current_admin),
 ):
     """
     Get a specific user by uuid.
