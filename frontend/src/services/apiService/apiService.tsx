@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { RootState } from '../../app/store'
-import { SourceDataTypes, SourceGetTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
+import { SocialReportsGetTypes, SourceGetTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
 
 export const api = createApi({
   reducerPath: 'api',
@@ -40,8 +40,11 @@ export const api = createApi({
     getSource: builder.query<SourceGetTypes, string>({
       query: (uuid) => ({ url: `resources/${uuid}` })
     }),
-    getAllSources: builder.query<SourceDataTypes[], void>({
+    getAllSources: builder.query<SourceGetTypes[], void>({
       query: () => ({ url: `resources`})
+    }),
+    getAllSocialReports: builder.query<SocialReportsGetTypes[], void>({
+      query: () => ({ url: 'social_reports'})
     })
   })
 })
@@ -51,3 +54,4 @@ export const { useLoginUserMutation } = api
 export const { useGetAllSourcesQuery } = api
 export const { useGetSourceQuery } = api
 export const { useCheckUserMutation } = api
+export const { useGetAllSocialReportsQuery } = api

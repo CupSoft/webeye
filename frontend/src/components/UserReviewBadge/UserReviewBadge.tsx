@@ -6,8 +6,8 @@ const UserReviewBadge = ({text, date, stars}: UserReviewBadgePropsType) => {
   return (
     <div className={styles.container}>
       <span className={styles.title}>
-        <span className={styles.date}>{date}</span>
         <span className={styles.stars}>{stars}</span>
+        <span className={styles.date}>{date}</span>
       </span>
       <hr/>
       <span className={styles.text}>{text}</span>

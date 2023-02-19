@@ -14,16 +14,11 @@ export type UserLoginResponseTypes = {
   token_type: string,
 }
 
-export type SourceDataTypes = {
-  name: string;
-  status: 'OK' | 'partial' | 'critical';
-  uuid: string;
-}
-
 export type SourceGetTypes = {
   name: string;
   status: 'OK' | 'partial' | 'critical';
   uuid: string;
+  rating: number;
 }
 
 export type UserStoreTypes = {
@@ -31,4 +26,13 @@ export type UserStoreTypes = {
   isAdmin: boolean;
   email: string;
   uuid: string;
+}
+
+export type SocialReportsGetTypes = {
+  status: 'OK' | 'partial' | 'critical';
+  social_network: 'VK' | 'OK',
+  link: string;
+  uuid: string;
+  created_at: string;
+  snippet: string
 }

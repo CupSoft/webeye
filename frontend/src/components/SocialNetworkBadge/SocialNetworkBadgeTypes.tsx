@@ -1,8 +1,8 @@
 export type SocialNetworkBadgePropsType = {
   link: string;
-  social: 'vk' | 'ok' | string;
-  text: string;
-  state: 'ok' | 'partial' | 'critical' | string;
+  social_network: 'VK' | 'OK' | string;
+  snippet: string;
+  status: 'OK' | 'partial' | 'critical';
 }
 
 export type IconsType = {

@@ -4,4 +4,8 @@
   .table {
     @apply w-full max-w-6xl bg-gray-card border border-light-gray-card rounded-lg pt-1.5 pb-1.5 mt-5;
   }
+
+  .no_resources {
+    @apply text-lg pt-3;
+  }
 }

@@ -6,26 +6,25 @@ import StateChart from '../../components/StateChart/StateChart';
 import SubscriptionCard from '../../components/SubscriptionCard/SubscriptionCard';
 import Button from '../../components/UI/Button/Button';
 import UsersReviewsCard from '../../components/UsersReviewsCard/UsersReviewsCard';
+import { useGetSourceQuery } from '../../services/apiService/apiService';
+import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import styles from './SourcePage.module.scss';
 
-const sources = [
-  {uuid: '1', name: 'Вышка', state: 'ok', rating: 4.92},
-  {uuid: '2', name: 'МГТУ Баумана', state: 'critical', rating: 4.78},
-  {uuid: '3', name: 'МФТИ', state: 'partial', rating: 4.95},
-  {uuid: '4', name: 'Вышка', state: 'ok', rating: 4.92},
-  {uuid: '5', name: 'МГТУ Баумана', state: 'critical', rating: 4.78},
-  {uuid: '6', name: 'МФТИ', state: 'partial', rating: 4.95},
-  {uuid: '7', name: 'Вышка', state: 'ok', rating: 4.92},
-  {uuid: '8', name: 'МГТУ Баумана', state: 'critical', rating: 4.78},
-  {uuid: '9', name: 'МФТИ', state: 'partial', rating: 4.95},
-  {uuid: '10', name: 'МФТИ', state: 'partial', rating: 4.95},
-]
+let source = {uuid: '1', name: 'Вышка', status: 'OK', rating: 4.92}
 
 const SourcePage = () => {
   const params = useParams()
-  const uuid = params.uuid ? +params.uuid - 1 : -1
-  const source = sources[uuid]
+  const uuid = params.uuid ?? ''
+  
+  let {data, isLoading} = useGetSourceQuery(uuid)
+  
+  if (!source) {
+    return <NotFoundPage/>
+  }
 
+  if (isLoading) {
+    return null;
+  }
   function summaryClickHandler() {
     console.log('getSummary')
   }
@@ -35,10 +34,10 @@ const SourcePage = () => {
       <div className={styles.title}>
         <h1 
           className={
-            cn("page_title", styles.state, styles[source.state.toLowerCase()])
+            cn("page_title", styles.status, styles[source.status.toLowerCase()])
           }
         >
-          {uuid !== -1 ? source.name : 'Ресурс'}
+          {uuid ? source.name : 'Ресурс'}
         </h1>
         <span className={styles.rating}>{source.rating}</span>
         <Button btnType='turquoise' onClick={summaryClickHandler}>

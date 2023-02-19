@@ -4,7 +4,7 @@ import styles from './SourceBadge.module.scss'
 import cn from 'classnames'
 import { SourceCardPropsType } from './SourceBadgeTypes';
 
-const SourceCard = ({uuid, state='ok', name='ВУЗ', rating=4.78, i=0}: SourceCardPropsType) => {
+const SourceCard = ({uuid, status='OK', name='ВУЗ', rating=4.78, i=0}: SourceCardPropsType) => {
   return (
     <div className={styles.container}>
       <span className={styles.position}>{i + 1}.</span>
@@ -13,8 +13,8 @@ const SourceCard = ({uuid, state='ok', name='ВУЗ', rating=4.78, i=0}: SourceC
       </span>
       <span className={cn(styles.vr, styles.first_vr)}/>
       <span 
-        className={cn(styles.state, styles[state.toLowerCase()])}
-      >{state}</span>
+        className={cn(styles.state, styles[status.toLowerCase()])}
+      >{status}</span>
       <span className={styles.vr}></span>
       <span className={styles.rating}>{rating}</span>
     </div>

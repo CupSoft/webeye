@@ -1,5 +1,5 @@
 export type SourceCardPropsType = {
-  state: 'ok' | 'partial' | 'critical' | string;
+  status: 'OK' | 'partial' | 'critical' | string;
   rating: number;
   name: string;
   uuid: string;
