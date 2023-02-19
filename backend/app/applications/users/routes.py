@@ -1,11 +1,14 @@
 from datetime import timedelta
+
+from pydantic import UUID4
+
+from app.applications.subscriptions.models import Subscription
+from app.applications.subscriptions.schemas import SubscriptionOut
 from app.core.auth.utils.contrib import get_current_admin, get_current_user
 from app.core.auth.utils.password import get_password_hash
 
 from app.applications.users.models import User, ShortTgToken
-from app.applications.users.schemas import (
-    BaseUserOut, BaseUserCreate, BaseUserUpdate, TgToken, TgTokenWithId
-)
+from app.applications.users.schemas import BaseUserOut, BaseUserCreate, BaseUserUpdate, TgToken, TgTokenWithId
 
 from app.core.auth.schemas import JWTToken
 from app.core.auth.utils.jwt import create_access_token
@@ -18,7 +21,6 @@ from fastapi import APIRouter, Depends, HTTPException
 import logging
 import string
 import random
-
 
 logger = logging.getLogger(__name__)
 
@@ -54,19 +56,14 @@ async def create_user(
         )
 
     hashed_password = get_password_hash(user_in.password)
-    db_user = BaseUserCreate(
-        **user_in.dict(), hashed_password=hashed_password
-    )
+    db_user = BaseUserCreate(**user_in.dict(), hashed_password=hashed_password)
     created_user = await User.create(db_user)
 
     return created_user
 
 
 @router.patch("/me", response_model=BaseUserOut, status_code=200)
-async def update_user_me(
-    user_in: BaseUserUpdate,
-    current_user: User = Depends(get_current_user)
-):
+async def update_user_me(user_in: BaseUserUpdate, current_user: User = Depends(get_current_user)):
     """
     Update own user.
     """
@@ -79,9 +76,21 @@ async def update_user_me(
     return current_user
 
 
+@router.get("/me/subscriptions", response_model=List[SubscriptionOut], status_code=200)
+async def read_user_subscriptions(
+        current_user: User = Depends(get_current_user),
+):
+    """
+    Get current user subscriptions.
+    """
+    subscriptions = await Subscription.filter(user=current_user)
+
+    return subscriptions
+
+
 @router.get("/me", response_model=BaseUserOut, status_code=200)
 def read_user_me(
-    current_user: User = Depends(get_current_user),
+        current_user: User = Depends(get_current_user),
 ):
     """
     Get current user.
@@ -91,27 +100,28 @@ def read_user_me(
 
 @router.get("/{uuid}", response_model=BaseUserOut, status_code=200)
 async def read_user_by_id(
-    user_id: int,
-    current_user: User = Depends(get_current_user),
+        uuid: UUID4,
+        current_user: User = Depends(get_current_admin),
 ):
     """
-    Get a specific user by id.
+    Get a specific user by uuid.
     """
-    user = await User.get(id=user_id)
-    if user == current_user:
-        return user
-    if not current_user.is_admin:
+    user = await User.get(uuid=uuid)
+
+    if not user:
         raise HTTPException(
-            status_code=400, detail="The user doesn't have enough privileges"
+            status_code=404,
+            detail="The user with this uuid does not exist",
         )
+
     return user
 
 
 @router.patch("/{uuid}", response_model=BaseUserOut, status_code=200)
 async def update_user(
-    uuid: int,
-    user_in: BaseUserUpdate,
-    current_user: User = Depends(get_current_admin),
+        uuid: UUID4,
+        user_in: BaseUserUpdate,
+        current_user: User = Depends(get_current_admin),
 ):
     """
     Update a user.
@@ -136,22 +146,20 @@ async def generate_token(
     Generates a short token for a user
     """
 
-    token = ''.join([random.choice(string.ascii_letters) for _ in range(32)])
+    token = "".join([random.choice(string.ascii_letters) for _ in range(32)])
     tg_token = await ShortTgToken(value=token, user=current_user)
     await tg_token.save()
-    
+
     return TgToken(token=token)
 
 
 @router.post("/telegram/get_jwt", response_model=JWTToken, status_code=200)
-async def generate_jwt_by_short_token(
-    tg_token_in: TgTokenWithId
-):
+async def generate_jwt_by_short_token(tg_token_in: TgTokenWithId):
     """
     Generates a jwt token from short token
     """
 
-    tg_token = await ShortTgToken.filter(value=tg_token_in.token).prefetch_related('user').first()
+    tg_token = await ShortTgToken.filter(value=tg_token_in.token).prefetch_related("user").first()
 
     if tg_token is None:
         raise HTTPException(
@@ -160,15 +168,13 @@ async def generate_jwt_by_short_token(
         )
 
     user = tg_token.user
-    
+
     access_token_expires = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
-    
+
     user.tg_id = tg_token_in.id
     await user.save()
-    
+
     return {
-        "access_token": create_access_token(
-            data={"user_uuid": str(user.uuid)}, expires_delta=access_token_expires
-        ),
+        "access_token": create_access_token(data={"user_uuid": str(user.uuid)}, expires_delta=access_token_expires),
         "token_type": "bearer",
     }

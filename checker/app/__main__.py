@@ -5,13 +5,12 @@ from asyncio import sleep
 
 import aiohttp
 import coloredlogs
-from aiohttp import ClientSession
 
 from app.URLS import URL_TASKS
+from app.headers import base_headers
 from app.models_pdc import Task
 from app.request_shecker import request_dispatcher
 
-base_headers = {"X-Requested-With": "XMLHttpRequest", "Content-Type": "application/json"}
 
 
 async def get_root_jwt():
@@ -23,30 +22,26 @@ async def get_root_jwt():
             return data["jwt"]
 
 
-async def get_tasks(session: ClientSession) -> list[Task]:
+async def get_tasks() -> list[Task]:
     tasks = []
-    t = ["https://www.twilio.com/", "https://dovuz.sfu-kras.ru/", "https://aiosmtplib.readthedocs.io/"]
-    for i in range(3):
-        tasks.append(Task(db_id=i, method="get", url=t[i], expectation_code=200))
+    async with aiohttp.ClientSession(headers=base_headers) as session:
+        async with session.get(URL_TASKS) as resp:
+            data = await resp.json()
+            for task in data:
+                tasks.append(Task(**task))
     return tasks
-
-    async with session.get(URL_TASKS) as resp:
-        data = await resp.json()
 
 
 async def watcher():
     while True:
         logging.info("Watcher iteration")
-        async with aiohttp.ClientSession(headers=base_headers) as session:
-            # TODO: Разобраться с сессиями (токены)
-            tasks = await get_tasks(session)
-            answers = await request_dispatcher(session, tasks)
-            print(answers)
+        tasks = await get_tasks()
+        answers = await request_dispatcher(tasks)
+        print(answers)
         await sleep(3 * 60)
 
 
 async def main():
-    global base_headers
     coloredlogs.install(level=logging.INFO)
     logging.info("Startup")
     # root_jwt = get_root_jwt()
@@ -61,4 +56,3 @@ if __name__ == "__main__":
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
         logging.error("Checker stopped!")
-

@@ -18,12 +18,11 @@ class Report(BaseProperties):
 
 class ReportCreate(Report):
     uuid: UUID4 = None
-    resource_id: UUID4
-    user_id: UUID4
+    resource_uuid: UUID4
 
 
 class ReportOut(Report):
     uuid: UUID4
-    
+
     class Config:
         orm_mode = True

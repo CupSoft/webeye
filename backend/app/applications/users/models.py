@@ -3,6 +3,7 @@ from typing import Optional
 from tortoise import fields
 from tortoise.exceptions import DoesNotExist
 
+from app.applications.subscriptions.models import Subscription
 from app.applications.users.schemas import BaseUserCreate
 
 from app.core.auth.utils import password
@@ -11,13 +12,12 @@ from app.core.base.base_models import BaseModel
 
 
 class User(BaseModel):
-
     email = fields.CharField(max_length=255, unique=True)
     password_hash = fields.CharField(max_length=128, null=True)
     is_admin = fields.BooleanField(default=False)
     tg_id = fields.BigIntField(null=True)
     reviews: fields.ReverseRelation["Review"]
-    
+    subscriptions: fields.ReverseRelation["Subscription"]
 
     @classmethod
     async def get_by_email(cls, email: str) -> Optional["User"]:
@@ -37,16 +37,15 @@ class User(BaseModel):
         return model
 
     class Meta:
-        table = 'users'
+        table = "users"
 
 
 class ShortTgToken(BaseModel):
-    
     value = fields.CharField(max_length=32, unique=True)
     date = fields.DatetimeField(auto_now_add=True)
-    user: fields.ForeignKeyRelation['User'] = fields.ForeignKeyField(
-        'models.User', related_name='tg_auth', to_field='uuid', on_delete=fields.CASCADE
+    user: fields.ForeignKeyRelation["User"] = fields.ForeignKeyField(
+        "models.User", related_name="tg_auth", to_field="uuid", on_delete=fields.CASCADE
     )
-    
+
     class Meta:
         table = "short_tg_token"

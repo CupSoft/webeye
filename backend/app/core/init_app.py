@@ -13,6 +13,9 @@ from app.core.auth.routers.login import router as login_router
 from app.applications.users.routes import router as users_router
 from app.applications.checks.routes import router as checks_routes
 from app.applications.resources.routes import router as resources_routes
+from app.applications.reports.routes import router as reports_routes
+from app.applications.subscriptions.routes import router as subscriptions_routes
+from app.applications.social_reports.routes import router as social_reports_routes
 
 
 def configure_logging(log_settings: dict = None):
@@ -31,21 +34,21 @@ def init_middlewares(app: FastAPI):
 
 
 def get_app_list():
-    app_list = [f'{settings.APPLICATIONS_MODULE}.{app}.models' for app in settings.APPLICATIONS]
+    app_list = [f"{settings.APPLICATIONS_MODULE}.{app}.models" for app in settings.APPLICATIONS]
     return app_list
 
 
 def get_tortoise_config() -> dict:
     app_list = get_app_list()
-    app_list.append('aerich.models')
+    app_list.append("aerich.models")
     config = {
-        'connections': settings.DB_CONNECTIONS,
-        'apps': {
-            'models': {
-                'models': app_list,
-                'default_connection': 'default',
+        "connections": settings.DB_CONNECTIONS,
+        "apps": {
+            "models": {
+                "models": app_list,
+                "default_connection": "default",
             }
-        }
+        },
     }
     return config
 
@@ -56,11 +59,11 @@ TORTOISE_ORM = get_tortoise_config()
 def register_db(app: FastAPI, db_url: str = None):
     db_url = db_url or settings.DB_URL
     app_list = get_app_list()
-    app_list.append('aerich.models')
+    app_list.append("aerich.models")
     register_tortoise(
         app,
         db_url=db_url,
-        modules={'models': app_list},
+        modules={"models": app_list},
         generate_schemas=True,
         add_exception_handlers=True,
     )
@@ -71,7 +74,10 @@ def register_exceptions(app: FastAPI):
 
 
 def register_routers(app: FastAPI):
-    app.include_router(login_router, prefix='/api/auth/login', tags=["login"])
-    app.include_router(users_router, prefix='/api/auth/users', tags=["users"])
-    app.include_router(checks_routes, prefix='/api/checks', tags=["checks"]) # , dependencies=[Depends(get_current_admin)])
-    app.include_router(resources_routes, prefix='/api/resources', tags=["resources"]) # , dependencies=[Depends(get_current_admin)])
+    app.include_router(login_router, prefix="/api/auth/login", tags=["login"])
+    app.include_router(users_router, prefix="/api/auth/users", tags=["users"])
+    app.include_router(checks_routes, prefix="/api/checks", tags=["checks"], dependencies=[Depends(get_current_admin)])
+    app.include_router(resources_routes, prefix="/api/resources", tags=["resources"])
+    app.include_router(reports_routes, prefix="/api/reports", tags=["reports"])
+    app.include_router(subscriptions_routes, prefix="/api/subscriptions", tags=["subscriptions"])
+    app.include_router(social_reports_routes, prefix="/api/social_reports", tags=["social_reports"])

@@ -12,14 +12,8 @@ class APIException(Exception):
     респонса с кодом status_code, кодом error_code,
     и сообщениями message и detail(опционально).
     """
-    def __init__(self,
-                 error_code: int = 000,
-                 status_code: int = 500,
-                 detail="",
-                 message="",
-                 *args,
-                 **kwargs
-                 ):
+
+    def __init__(self, error_code: int = 000, status_code: int = 500, detail="", message="", *args, **kwargs):
         Exception.__init__(self, *args, **kwargs)
 
         self.error_code = error_code
@@ -31,16 +25,13 @@ class APIException(Exception):
         return f"APIException(status_code={self.status_code}, detail={self.message})"
 
 
-async def on_api_exception(
-    request: Request,
-    exception: APIException
-) -> JSONResponse:
+async def on_api_exception(request: Request, exception: APIException) -> JSONResponse:
     content = {"error": {"error_code": exception.error_code}}
 
     if exception.message:
-        content['error']['message'] = exception.message
+        content["error"]["message"] = exception.message
 
     if exception.detail:
-        content['error']['detail'] = exception.detail
+        content["error"]["detail"] = exception.detail
 
     return JSONResponse(content=content, status_code=exception.status_code)

@@ -22,12 +22,7 @@ class BaseUserCreate(BaseProperties):
     password: str
 
     class Config:
-        schema_extra = {
-            "example": {
-                "email": "my_email@gmail.com",
-                "password": "qwerty"
-            }
-        }
+        schema_extra = {"example": {"email": "my_email@gmail.com", "password": "qwerty"}}
 
 
 class BaseUserUpdate(BaseProperties):
@@ -59,9 +54,4 @@ class TgTokenWithId(BaseProperties):
     id: int
 
     class Config:
-        schema_extra = {
-            "example": {
-                "token": "SbjpvnBzMIpPEexbjwFPNEQkxEigXxaF",
-                "id": "372203395"
-            }
-        }
+        schema_extra = {"example": {"token": "SbjpvnBzMIpPEexbjwFPNEQkxEigXxaF", "id": "372203395"}}
