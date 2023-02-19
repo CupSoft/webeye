@@ -1,4 +1,7 @@
 from datetime import timedelta
+
+from pydantic import UUID4
+
 from app.core.auth.utils.contrib import get_current_admin, get_current_user
 from app.core.auth.utils.password import get_password_hash
 
@@ -83,25 +86,28 @@ def read_user_me(
 
 @router.get("/{uuid}", response_model=BaseUserOut, status_code=200)
 async def read_user_by_id(
-    user_id: int,
-    current_user: User = Depends(get_current_user),
+        uuid: UUID4,
+        current_user: User = Depends(get_current_user),
 ):
     """
-    Get a specific user by id.
+    Get a specific user by uuid.
     """
-    user = await User.get(id=user_id)
-    if user == current_user:
-        return user
-    if not current_user.is_admin:
-        raise HTTPException(status_code=400, detail="The user doesn't have enough privileges")
+    user = await User.get(uuid=uuid)
+
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="The user with this uuid does not exist",
+        )
+
     return user
 
 
 @router.patch("/{uuid}", response_model=BaseUserOut, status_code=200)
 async def update_user(
-    uuid: int,
-    user_in: BaseUserUpdate,
-    current_user: User = Depends(get_current_admin),
+        uuid: UUID4,
+        user_in: BaseUserUpdate,
+        current_user: User = Depends(get_current_admin),
 ):
     """
     Update a user.

@@ -50,7 +50,10 @@ async def read_resources(skip: int = 0, limit: int = 100):
 
 
 @router.post("/", response_model=ResourceOut, status_code=201)
-async def create_resource(resource_in: ResourceCreate):
+async def create_resource(
+    resource_in: ResourceCreate,
+    current_user: User = Depends(get_current_admin),
+):
     """
     Create a resource
     """
@@ -86,7 +89,11 @@ async def read_resource(
 
 
 @router.patch("/{uuid}", response_model=ResourceOut, status_code=201)
-async def update_resource(uuid: UUID4, resource_in: ResourceUpdate):
+async def update_resource(
+    uuid: UUID4,
+    resource_in: ResourceUpdate,
+    current_user: User = Depends(get_current_admin),
+):
     """
     Update a resource
     """
@@ -119,7 +126,8 @@ async def update_resource(uuid: UUID4, resource_in: ResourceUpdate):
 
 @router.delete("/{uuid}", status_code=200)
 async def delete_resource(
-    uuid: UUID4,
+        uuid: UUID4,
+        current_user: User = Depends(get_current_admin),
 ):
     """
     Delete resource by uuid.
@@ -139,7 +147,8 @@ async def delete_resource(
 
 @router.get("/{uuid}/nodes", response_model=List[ResourceNodeOut], status_code=200)
 async def read_resource_nodes(
-    uuid: UUID4,
+        uuid: UUID4,
+        current_user: User = Depends(get_current_admin),
 ):
     """
     Get resource nodes by uuid.
@@ -211,8 +220,9 @@ async def read_resource_reviews(
 
 @router.get("/nodes/", response_model=List[ResourceNodeOut], status_code=200)
 async def read_resources_nodes(
-    skip: int = 0,
-    limit: int = 100,
+        skip: int = 0,
+        limit: int = 100,
+        current_user: User = Depends(get_current_admin),
 ):
     """
     Get resource nodes list.
@@ -223,7 +233,10 @@ async def read_resources_nodes(
 
 
 @router.post("/nodes/", response_model=ResourceNodeOut, status_code=201)
-async def create_node(resource_node_in: ResourceNodeCreate):
+async def create_node(
+    resource_node_in: ResourceNodeCreate,
+    current_user: User = Depends(get_current_admin),
+):
     """
     Create a resource node
     """
@@ -250,7 +263,8 @@ async def create_node(resource_node_in: ResourceNodeCreate):
 
 @router.delete("/nodes/{uuid}", status_code=200)
 async def delete_node(
-    uuid: UUID4,
+        uuid: UUID4,
+        current_user: User = Depends(get_current_admin),
 ):
     """
     Delete a resource node
