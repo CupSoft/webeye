@@ -189,7 +189,7 @@ async def read_resource_social_reports(
     """
     Get resource social reports by uuid.
     """
-    resource = await Resource.filter(uuid=uuid).prefetch_related("social_network_resports").first()
+    resource = await Resource.filter(uuid=uuid).prefetch_related("social_network_reports").first()
 
     if resource is None:
         raise HTTPException(
