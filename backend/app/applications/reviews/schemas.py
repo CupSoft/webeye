@@ -1,5 +1,6 @@
 import datetime
 import uuid
+from typing import Optional
 
 from pydantic import BaseModel, UUID4, validator
 
@@ -13,13 +14,21 @@ class BaseProperties(BaseModel):
 class Review(BaseProperties):
     text: str
     stars: int
-    date: datetime.datetime
 
 
 class ReviewCreate(Review):
-    uuid: UUID4 = None
-    resource_id: UUID4
-    user_id: UUID4
+    uuid: Optional[UUID4] = None
+    resource_uuid: UUID4
+    user_uuid: Optional[UUID4] = None
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "text": "This is a review",
+                "stars": 5,
+                "resource_id": "f7b4c2c0-5b5a-4b4a-9c1c-8e1b0c1b0c1b",
+            }
+        }
 
 
 class ReviewOut(Review):

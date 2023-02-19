@@ -12,7 +12,7 @@ class Review(BaseModel):
     )
     text = fields.CharField(max_length=150)
     stars = fields.IntField()
-    date = fields.DatetimeField()
+    datetime = fields.DatetimeField(auto_now_add=True)
 
     class Meta:
         table = "reviews"
