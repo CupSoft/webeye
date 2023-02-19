@@ -15,6 +15,7 @@ from app.applications.checks.routes import router as checks_routes
 from app.applications.resources.routes import router as resources_routes
 from app.applications.reports.routes import router as reports_routes
 from app.applications.subscriptions.routes import router as subscriptions_routes
+from app.applications.social_reports.routes import router as social_reports_routes
 
 
 def configure_logging(log_settings: dict = None):
@@ -79,3 +80,4 @@ def register_routers(app: FastAPI):
     app.include_router(resources_routes, prefix="/api/resources", tags=["resources"])
     app.include_router(reports_routes, prefix="/api/reports", tags=["reports"])
     app.include_router(subscriptions_routes, prefix="/api/subscriptions", tags=["subscriptions"])
+    app.include_router(social_reports_routes, prefix="/api/social_reports", tags=["social_reports"])
