@@ -69,7 +69,7 @@ class CheckOutWithUrl(Check):
 class CheckResult(BaseProperties):
     response: str
     location: Location
-    timestamp: datetime.datetime
+    datetime: datetime.datetime
     result: bool = False
 
 

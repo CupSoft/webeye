@@ -35,6 +35,10 @@ class Resource(BaseModel):
             return rating
         except ZeroDivisionError:
             return None
+        
+    @property
+    async def status(self) -> Status | None:
+        return 'OK'
 
 
     class Meta:
