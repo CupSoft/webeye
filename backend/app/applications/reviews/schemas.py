@@ -26,7 +26,7 @@ class ReviewCreate(Review):
             "example": {
                 "text": "This is a review",
                 "stars": 5,
-                "resource_id": "f7b4c2c0-5b5a-4b4a-9c1c-8e1b0c1b0c1b",
+                "resource_uuid": "f7b4c2c0-5b5a-4b4a-9c1c-8e1b0c1b0c1b",
             }
         }
 

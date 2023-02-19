@@ -1,14 +1,22 @@
 import requests
 
 url = "http://localhost:8000/api"
+
+creds = {"email": "user@example.com", "password": "string"}
+
+response = requests.post(f"{url}/auth/users", json=creds)
+
+creds = {"email": "admin@example.com", "password": "string"}
+
+response = requests.post(f"{url}/auth/users", json=creds)
+
 creds = {"username": "user@example.com", "password": "string"}
+
 response = requests.post(f"{url}/auth/login/access-token", data=creds)
 
-print(response.text)
 res_dict = response.json()
 
 token = res_dict["access_token"]
-print(token)
 
 creds = {"username": "admin@example.com", "password": "string"}
 response = requests.post(f"{url}/auth/login/access-token", data=creds)
@@ -17,7 +25,7 @@ res_dict = response.json()
 
 admin_token = res_dict["access_token"]
 
-headers = {"Authorization": f"Bearer {token}"}
+headers = {"Authorization": f"Bearer {admin_token}"}
 
 response = requests.get(f"{url}/auth/users/", headers=headers)
 

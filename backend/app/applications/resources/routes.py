@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
-@router.get("/", response_model=List[ResourceOut], status_code=200)
+@router.get("/", response_model=List[ResourceOutWithRating], status_code=200)
 async def read_resources(skip: int = 0, limit: int = 100):
     """
     Get resource list.
@@ -36,8 +36,8 @@ async def read_resources(skip: int = 0, limit: int = 100):
     res = []
     for resource in resources:
         sum_star = 0
-        for reviews in resource.reviews:
-            sum_star += reviews.star
+        for review in resource.reviews:
+            sum_star += review.stars
 
         resource_dict = await resource.to_dict()
         try:
