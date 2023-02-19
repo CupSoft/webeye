@@ -45,6 +45,14 @@ async def create_subscription(subscription_in: SubscriptionIn, current_user: Use
             detail="The resource with this uuid does not exist",
         )
 
+    subscription = await Subscription.filter(user=current_user, resource=resource).first()
+
+    if subscription is not None:
+        raise HTTPException(
+            status_code=400,
+            detail="The subscription already exist",
+        )
+
     subscription = await Subscription.create(
         **exclude_keys(subscription_in.dict(), {"resource_uuid", "user_uuid"}), user=current_user, resource=resource
     )

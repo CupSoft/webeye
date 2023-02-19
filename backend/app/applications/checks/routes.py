@@ -7,10 +7,11 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from app.applications.checks.schemas import CheckOut, CheckCreate, CheckResultCreate, CheckResultOut, CheckOutWithUrl
 from app.applications.checks.models import Check, CheckResult
-from app.applications.checks.utils import redis_publish_message
+from app.applications.checks.utils import redis_publish_email, redis_publish_telegram
 
 from app.applications.resources.models import ResourceNode
-from app.applications.subscriptions.schemas import EmailNotification
+from app.applications.subscriptions.models import Subscription
+from app.applications.subscriptions.schemas import EmailNotification, TelegramNotification
 
 from app.core.base.utils import exclude_keys
 
@@ -121,19 +122,29 @@ async def create_check_result(check_result_in: CheckResultCreate):
 
     if last_status != check_result_in.status:
         for subscription in check.resource_node.resource.subscriptions:
-            print(f"Sending email to {subscription.user.email}")
-            email = EmailNotification(
-                recipient=subscription.user.email,
-                subject=f"Resource {check.resource_node.resource.name} status changed",
-                body=(
-                    f"Resource {check.resource_node.resource.name} status changed from {last_status} to"
-                    f" {check_result_in.status}"
-                ),
-                resource_status=check_result_in.status,
-                resource_uuid=check.resource_node.resource.uuid,
-            )
+            subscription: Subscription
+            if subscription.to_email:
+                email = EmailNotification(
+                    recipient=subscription.user.email,
+                    subject=f"Resource {check.resource_node.resource.name} status changed",
+                    body=(
+                        f"Resource {check.resource_node.resource.name} status changed from {last_status} to"
+                        f" {check_result_in.status}"
+                    ),
+                    resource_status=check_result_in.status,
+                    resource_uuid=check.resource_node.resource.uuid,
+                )
+                await redis_publish_email(email)
 
-            await redis_publish_message(email)
+            if subscription.to_telegram:
+                telegram_notification = TelegramNotification(
+                    chat_id=str(subscription.user.tg_id),
+                    resource_name=check.resource_node.resource.name,
+                    resource_old_status=last_status,
+                    resource_new_status=check_result_in.status,
+                    resource_uuid=check.resource_node.resource.uuid,
+                )
+                await redis_publish_telegram(telegram_notification)
 
     check_result_dict = await check_result.to_dict()
 
