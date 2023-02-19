@@ -10,7 +10,7 @@ SubscriptionsMainWin = Window(
     Const("Ваши подписки:"),
     Group(
         ScrollingGroup(
-            Select(Format("{item.status} {item.name}"), "resource_btn", lambda res: res.id, "resources",
+            Select(Format("{item.name}"), "resource_btn", lambda res: res.uuid, "resources",
                    on_click=start_resource_info),
             width=3, height=5,
             id="resources_group"),

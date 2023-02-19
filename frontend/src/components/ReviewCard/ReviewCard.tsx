@@ -15,11 +15,12 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
   const navigate = useNavigate()
   const {isAuth} = useAppSelector(userSelector)
   const [reviewValue, setReviewValue] = useState('')
+  const [isSayUnavailable, setIsSayUnavailable] = useState(false)
   const [starsValue, setStarsValue] = useState('')
-  const [unavailableValue, setUnavailableValue] = useState('')
+  // const [unavailableValue, setUnavailableValue] = useState('')
   
   useEffect(() => {
-    setUnavailableValue(localStorage.getItem('unavailable_value') || '')
+    // setUnavailableValue(localStorage.getItem('unavailable_value') || '')
     setReviewValue(localStorage.getItem('review_value') || '')
     setStarsValue(localStorage.getItem('stars_value') || '')
   }, [isAuth])
@@ -31,11 +32,10 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
     }
 
     if (btnType === 'unavailable') {
-      console.log(unavailableValue)
       localStorage.setItem('unavailable_value', '')
-      setUnavailableValue('')
+      // setUnavailableValue('')
+
     } else {
-      console.log(reviewValue, starsValue)
       localStorage.setItem('stars_value', '')
       localStorage.setItem('review_value', '')
       setStarsValue('')
@@ -55,7 +55,7 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
 
   function onUnavailableChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     localStorage.setItem('unavailable_value', event.target.value)
-    setUnavailableValue(event.target.value)
+    // setUnavailableValue(event.target.value)
   }
 
   return (
@@ -65,7 +65,7 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
       {...props}
     >
       <>
-        <div className={styles.textarea_wrapper}>
+        {/* <div className={styles.textarea_wrapper}>
           <TextArea
             name='unavailable'
             value={unavailableValue}
@@ -73,11 +73,11 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
             maxLength={255}
             onChange={onUnavailableChange}
           />
-        </div>
+        </div> */}
         <Button 
           btnType='red'
           onClick={() => btnsClickHandler('unavailable')}
-          disabled={unavailableValue.length < 1}
+          disabled={isSayUnavailable}
         >
           {isAuth 
             ? 'Сообщить о недоступности' : 'Авторизоваться и сообщить о недоступности'

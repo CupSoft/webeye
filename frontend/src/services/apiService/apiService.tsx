@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ReviewGetTypes, SocialReporGetTypes, SourceGetTypes, SubscriptionGetRequestTypes, SubscriptionGetResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
+import { ReviewGetTypes, ReviewRequestTypes, SocialReporGetTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
 
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.REACT_APP_API_LINK,
+    baseUrl: `${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/api/`,
     prepareHeaders(headers, {getState}) {
       const token = localStorage.getItem('token')
 
@@ -49,15 +49,23 @@ export const api = createApi({
       query: (sourceUuid) => ({ url: `resources/${sourceUuid}/reviews` })
     }),
     postSubscriptions: builder.mutation<void, SubscriptionPostTypes>({
-      query: ({userUuid, ...subs}) => ({
+      query: (subs) => ({
         method: 'POST',
         url: `subscriptions`,
         body: JSON.stringify(subs),
         headers: {'Content-Type': 'application/json'}
       })
     }),
-    getSubscriptions: builder.mutation<SubscriptionGetResponseTypes, SubscriptionGetRequestTypes>({
-      query: ({userUuid, sourceUuid}) => ({ url: `subscriptions?user_id=${userUuid}&resource_id=${sourceUuid}`})
+    getSubscriptions: builder.mutation<SubscriptionGetResponseTypes, string>({
+      query: (sourceUuid) => ({ url: `subscriptions/${sourceUuid}`})
+    }),
+    postReview: builder.mutation<void, ReviewRequestTypes>({
+      query: (review) => ({
+        method: 'POST',
+        url: 'reviews',
+        body: JSON.stringify(review),
+        headers: {'Content-Type': 'application/json'}
+      })
     })
   })
 })

@@ -48,8 +48,7 @@ export type ReviewGetTypes = {
 export type SubscriptionPostTypes = {
   to_telegram: boolean;
   to_email: boolean;
-  resource_id: string;
-  userUuid: string;
+  resource_uuid: string;
 }
 
 export type SubscriptionGetResponseTypes = {
@@ -58,7 +57,8 @@ export type SubscriptionGetResponseTypes = {
   uuid?: string;
 }
 
-export type SubscriptionGetRequestTypes = {
-  userUuid: string;
-  sourceUuid: string;
+export type ReviewRequestTypes = {
+  text: string;
+  stars: number;
+  resource_uuid: string;
 }

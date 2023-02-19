@@ -1,16 +1,14 @@
 import asyncio
+import json
 import logging
 from asyncio import sleep
-import json
 
 import redis.asyncio as redis
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 from aiogram_dialog import DialogRegistry
-
-from ..schemas import TelegramNotification, Status
 from pydantic import parse_obj_as
 
-from app.db.db_user.user_func import User
+from app.schemas.broker_pdc import TelegramNotification, Status
 
 
 async def init_redis_sub(bot, registry, host, port, password):
