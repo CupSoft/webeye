@@ -53,12 +53,18 @@ async def create_review(review_in: ReviewCreate, current_user: User = Depends(ge
     Create a review
     """
 
-    report = await Review.filter(uuid=review_in.uuid).first()
-
-    if report is not None:
+    if review_in.stars < 1 or review_in.stars > 5:
         raise HTTPException(
             status_code=400,
-            detail="The report with this uuid already exist",
+            detail="The stars must be between 1 and 5",
+        )
+
+    review = await Review.filter(uuid=review_in.uuid).first()
+
+    if review is not None:
+        raise HTTPException(
+            status_code=400,
+            detail="The review with this uuid already exist",
         )
 
     if review_in.user_uuid:
