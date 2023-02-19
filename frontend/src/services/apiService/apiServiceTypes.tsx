@@ -56,3 +56,9 @@ export type SubscriptionGetResponseTypes = {
   to_email: boolean;
   uuid?: string;
 }
+
+export type ReviewRequestTypes = {
+  text: string;
+  stars: number;
+  resource_uuid: string;
+}

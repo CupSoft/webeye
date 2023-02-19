@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ReviewGetTypes, SocialReporGetTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
+import { ReviewGetTypes, ReviewRequestTypes, SocialReporGetTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
 
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.REACT_APP_API_LINK,
+    baseUrl: `${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/api/`,
     prepareHeaders(headers, {getState}) {
       const token = localStorage.getItem('token')
 
@@ -58,6 +58,14 @@ export const api = createApi({
     }),
     getSubscriptions: builder.mutation<SubscriptionGetResponseTypes, string>({
       query: (sourceUuid) => ({ url: `subscriptions/${sourceUuid}`})
+    }),
+    postReview: builder.mutation<void, ReviewRequestTypes>({
+      query: (review) => ({
+        method: 'POST',
+        url: 'reviews',
+        body: JSON.stringify(review),
+        headers: {'Content-Type': 'application/json'}
+      })
     })
   })
 })
