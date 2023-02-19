@@ -21,7 +21,7 @@ SubscriptionsMainWin = Window(
 )
 
 SubscriptionsInfoWin = Window(
-    Format("{res_name}\nСтатус: {status}"),
+    Format("{res_name}\nСтатус: {status}\nРейтинг: {rating}"),
     Group(
         Url(Const("Открыть на сайте"), Format("{res_url}")),
         Back(Const("Назад")),
