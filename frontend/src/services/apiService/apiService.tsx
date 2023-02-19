@@ -1,5 +1,15 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ReviewGetTypes, ReviewRequestTypes, SocialReporGetTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
+import { ReportRequestTypes, ReviewGetTypes, ReviewRequestTypes, SocialReporGetTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
+
+class CreatePostRequest {
+  public method: string;
+  constructor (public url: string, public body: string | FormData, public headers?: {[key: string]: string | undefined}) {
+    this.method = 'POST'
+    this.url = url;
+    this.body = body;
+    this.headers = {'Content-Type': 'application/json', ...headers}
+  }
+}
 
 export const api = createApi({
   reducerPath: 'api',
@@ -18,20 +28,10 @@ export const api = createApi({
   tagTypes: ['User', 'Source'],
   endpoints: (builder) => ({
     registerUser: builder.mutation<UserRegistrResponseTypes, UserRegistrRequestTypes>({
-      query: (user) => ({
-        method: 'POST',
-        url: 'auth/users',
-        body: JSON.stringify(user),
-        headers: {'Content-Type': 'application/json'}
-      })
+      query: (user) => new CreatePostRequest('auth/users', JSON.stringify(user))
     }),
     loginUser: builder.mutation<UserLoginResponseTypes, FormData>({
-      query: (user) => ({
-        method: 'POST',
-        url: 'auth/login/access-token',
-        body: user,
-        headers: {'Content-Type': undefined}
-      })
+      query: (user) => new CreatePostRequest('auth/login/access-token', user, {'Content-Type': undefined})
     }),
     checkUser: builder.mutation<UserRegistrResponseTypes, void>({
       query: () => ({url: 'auth/users/me'})
@@ -49,23 +49,16 @@ export const api = createApi({
       query: (sourceUuid) => ({ url: `resources/${sourceUuid}/reviews` })
     }),
     postSubscriptions: builder.mutation<void, SubscriptionPostTypes>({
-      query: (subs) => ({
-        method: 'POST',
-        url: `subscriptions`,
-        body: JSON.stringify(subs),
-        headers: {'Content-Type': 'application/json'}
-      })
+      query: (subs) => new CreatePostRequest('subscriptions', JSON.stringify(subs))
     }),
     getSubscriptions: builder.mutation<SubscriptionGetResponseTypes, string>({
       query: (sourceUuid) => ({ url: `subscriptions/${sourceUuid}`})
     }),
     postReview: builder.mutation<void, ReviewRequestTypes>({
-      query: (review) => ({
-        method: 'POST',
-        url: 'reviews',
-        body: JSON.stringify(review),
-        headers: {'Content-Type': 'application/json'}
-      })
+      query: (review) => new CreatePostRequest('reviews', JSON.stringify(review))
+    }),
+    postReport: builder.mutation<void, ReportRequestTypes>({
+      query: (report) => new CreatePostRequest('reports', JSON.stringify(report))
     })
   })
 })
@@ -79,3 +72,5 @@ export const { useGetAllSocialReportsQuery } = api
 export const { useGetAllReviewsQuery } = api
 export const { usePostSubscriptionsMutation } = api
 export const { useGetSubscriptionsMutation } = api
+export const { usePostReportMutation } = api
+export const { usePostReviewMutation } = api

@@ -62,3 +62,10 @@ export type ReviewRequestTypes = {
   stars: number;
   resource_uuid: string;
 }
+
+export type ReportRequestTypes = {
+  status: 'critical' | 'OK',
+  is_moderated: false;
+  uuid?: string;
+  resource_uuid: string;
+}
