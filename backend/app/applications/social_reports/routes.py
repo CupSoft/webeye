@@ -43,6 +43,15 @@ async def create_social_report(
     """
     Create new social report.
     """
-    db_social_report = SocialReportCreate(**social_report_in.dict())
-    created_social_report = await SocialNetworkReport.create(db_social_report)
+    resource = await Resource.filter(uuid=social_report_in.resource_id).first()
+    if not resource:
+        raise HTTPException(
+            status_code=400,
+            detail="The resource with this uuid does not exist",
+        )
+
+    created_social_report = await SocialNetworkReport.create(
+        **social_report_in.dict(exclude={"uuid", "resource_id"}), resource=resource
+    )
+
     return created_social_report

@@ -7,7 +7,13 @@ try:
 except ImportError:
     raise SettingNotFound("Can not import settings. Create settings file from template.config.py")
 
-app = FastAPI(title=settings.APP_TITLE, description=settings.APP_DESCRIPTION, version=settings.VERSION)
+app = FastAPI(
+    title=settings.APP_TITLE,
+    description=settings.APP_DESCRIPTION,
+    version=settings.VERSION,
+    debug=settings.DEBUG,
+    swagger_ui_parameters={"persistAuthorization": True},
+)
 
 configure_logging()
 init_middlewares(app)

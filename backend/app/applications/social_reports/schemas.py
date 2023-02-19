@@ -1,3 +1,5 @@
+import datetime
+
 from enum import Enum
 import uuid
 
@@ -19,18 +21,41 @@ class BaseProperties(BaseModel):
 
 class SocialReport(BaseProperties):
     status: Status
-    is_moderated: bool = False
     social_network: SocialNetworks
     link: str
+    resource_id: UUID4
 
 
 class SocialReportCreate(SocialReport):
     uuid: UUID4 = None
-    resource_id: UUID4
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "status": "OK",
+                "social_network": "VK",
+                "link": "https://vk.com/club123456789",
+                "resource_uuid": "f7b4c2c0-5b5a-4b4a-9c1c-8e1b0c1b0c1b",
+            }
+        }
 
 
 class SocialReportOut(SocialReport):
     uuid: UUID4
+    is_moderated: bool = False
+    created_at: datetime.datetime
 
     class Config:
         orm_mode = True
+        
+        schema_extra = {
+            "example": {
+                "status": "OK",
+                "social_network": "VK",
+                "link": "https://vk.com/club123456789",
+                "resource_uuid": "f7b4c2c0-5b5a-4b4a-9c1c-8e1b0c1b0c1b",
+                "uuid": "f7b4c2c0-5b5a-4b4a-9c1c-8e1b0c1b0c1b",
+                "is_moderated": False,
+                "created_at": "2023-02-19T09:50:41.783Z"
+            }
+        }

@@ -9,7 +9,6 @@ from app.applications.resources.schemas import Status
 
 class Resource(BaseModel):
     name = fields.CharField(max_length=255, unique=True)
-    status = fields.CharEnumField(Status)
     nodes: fields.ReverseRelation["ResourceNode"]
     reviews: fields.ReverseRelation["Review"]
     subscriptions: fields.ReverseRelation["Subscription"]
