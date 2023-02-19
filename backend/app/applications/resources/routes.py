@@ -37,7 +37,7 @@ async def read_resources(skip: int = 0, limit: int = 100):
     for resource in resources:
         resource_dict = await resource.to_dict()
         rating = await resource.rating
-        res.append(ResourceOutWithRating(**resource_dict, rating=rating))
+        res.append(ResourceOutWithRating(**resource_dict, rating=rating, status=resource.status))
 
     return res
 
@@ -60,7 +60,8 @@ async def create_resource(
 
     resource = await Resource.create(**resource_in.dict())
 
-    return resource
+    resource_dict = await resource.to_dict()
+    return ResourceOut(**resource_dict, status=resource.status)
 
 
 @router.get("/{uuid}", response_model=ResourceOutWithRating, status_code=200)
@@ -82,7 +83,7 @@ async def read_resource(
 
     rating = await resource.rating
 
-    return ResourceOutWithRating(**resource_dict, rating=rating)
+    return ResourceOutWithRating(**resource_dict, rating=rating, status=resource.status)
 
 
 @router.patch("/{uuid}", response_model=ResourceOut, status_code=201)
@@ -115,13 +116,14 @@ async def update_resource(
 
     await resource.save()
 
-    return resource
+    resource_dict = await resource.to_dict()
+    return ResourceOut(**resource_dict, status=resource.status)
 
 
 @router.delete("/{uuid}", status_code=200)
 async def delete_resource(
-        uuid: UUID4,
-        current_user: User = Depends(get_current_admin),
+    uuid: UUID4,
+    current_user: User = Depends(get_current_admin),
 ):
     """
     Delete resource by uuid.
@@ -141,8 +143,8 @@ async def delete_resource(
 
 @router.get("/{uuid}/nodes", response_model=List[ResourceNodeOut], status_code=200)
 async def read_resource_nodes(
-        uuid: UUID4,
-        current_user: User = Depends(get_current_admin),
+    uuid: UUID4,
+    current_user: User = Depends(get_current_admin),
 ):
     """
     Get resource nodes by uuid.
@@ -178,8 +180,8 @@ async def read_resource_reports(
 
 @router.get("/{uuid}/social_reports", response_model=List[SocialReportOut], status_code=200)
 async def read_resource_social_reports(
-        uuid: UUID4,
-        is_moderated: bool = False,
+    uuid: UUID4,
+    is_moderated: bool = False,
 ):
     """
     Get resource social reports by uuid.
@@ -226,9 +228,9 @@ async def read_resource_reviews(
 
 @router.get("/nodes/", response_model=List[ResourceNodeOut], status_code=200)
 async def read_resources_nodes(
-        skip: int = 0,
-        limit: int = 100,
-        current_user: User = Depends(get_current_admin),
+    skip: int = 0,
+    limit: int = 100,
+    current_user: User = Depends(get_current_admin),
 ):
     """
     Get resource nodes list.
@@ -269,8 +271,8 @@ async def create_node(
 
 @router.delete("/nodes/{uuid}", status_code=200)
 async def delete_node(
-        uuid: UUID4,
-        current_user: User = Depends(get_current_admin),
+    uuid: UUID4,
+    current_user: User = Depends(get_current_admin),
 ):
     """
     Delete a resource node
