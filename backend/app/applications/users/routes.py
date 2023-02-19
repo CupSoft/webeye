@@ -3,7 +3,7 @@ from datetime import timedelta
 from pydantic import UUID4
 
 from app.applications.subscriptions.models import Subscription
-from app.applications.subscriptions.schemas import SubscriptionOut
+from app.applications.subscriptions.schemas import SubscriptionOutWithResourceUUID
 from app.core.auth.utils.contrib import get_current_admin, get_current_user
 from app.core.auth.utils.password import get_password_hash
 
@@ -76,16 +76,22 @@ async def update_user_me(user_in: BaseUserUpdate, current_user: User = Depends(g
     return current_user
 
 
-@router.get("/me/subscriptions", response_model=List[SubscriptionOut], status_code=200)
+@router.get("/me/subscriptions", response_model=List[SubscriptionOutWithResourceUUID], status_code=200)
 async def read_user_subscriptions(
         current_user: User = Depends(get_current_user),
 ):
     """
     Get current user subscriptions.
     """
-    subscriptions = await Subscription.filter(user=current_user)
+    subscriptions = await Subscription.filter(user=current_user).prefetch_related('resource')
+    
+    res = []
+    for subscription in subscriptions:
+        sub_dict = await subscription.to_dict()
+        sub_dict['resource_uuid'] = subscription.resource.uuid
+        res.append(sub_dict)
 
-    return subscriptions
+    return res
 
 
 @router.get("/me", response_model=BaseUserOut, status_code=200)
