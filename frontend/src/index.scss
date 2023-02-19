@@ -13,6 +13,10 @@ hr {
   @apply border-gray-light py-2;
 }
 
+.auth_error {
+  @apply text-red h-5 pl-3;
+}
+
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */

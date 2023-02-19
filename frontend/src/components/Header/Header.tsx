@@ -4,17 +4,18 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { AUTH_ROUTE, MAIN_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
 import Button from '../UI/Button/Button';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { isAuthSelector } from '../../app/selectors/isAuthSelector';
+import { userSelector } from '../../app/selectors/userSelector';
 
 const Header = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const isAuth = useAppSelector(isAuthSelector)
+  const {isAuth} = useAppSelector(userSelector)
   const location = useLocation()
 
   function signInClickHandler() {
     if (isAuth) {
-      dispatch({type: 'auth', payload: false})
+      dispatch({type: 'changeUser', payload: {isAuth: false, email: '', isAdmin: false, uuid: ''}})
+      localStorage.removeItem('token')
     } else {
       navigate(AUTH_ROUTE + `?next_page=${location.pathname}`)
     }

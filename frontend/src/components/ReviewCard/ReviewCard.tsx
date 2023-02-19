@@ -2,7 +2,7 @@ import cn from 'classnames';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
-import { isAuthSelector } from '../../app/selectors/isAuthSelector';
+import { userSelector } from '../../app/selectors/userSelector';
 import { AUTH_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
 import Card from '../Card/Card';
 import Button from '../UI/Button/Button';
@@ -10,9 +10,10 @@ import TextArea from '../UI/TextArea/TextArea';
 import styles from './ReviewCard.module.scss';
 import { ReviewCardPropsType } from './ReviewCardTypes';
 
+
 const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
   const navigate = useNavigate()
-  const isAuth = useAppSelector(isAuthSelector)
+  const {isAuth} = useAppSelector(userSelector)
   const [reviewValue, setReviewValue] = useState('')
   const [starsValue, setStarsValue] = useState('')
   const [unavailableValue, setUnavailableValue] = useState('')

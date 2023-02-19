@@ -1,5 +1,5 @@
 import SourceCard from '../../components/SourceBadge/SourceBadge';
-import { useGetAllSourcesMutation } from '../../services/apiService/apiService';
+import { useGetAllSourcesQuery } from '../../services/apiService/apiService';
 import styles from './SourcesPage.module.scss';
 
 const sources = [
@@ -16,7 +16,11 @@ const sources = [
 ]
 
 const SourcesPage = () => {
-  const [getAllSources, {isLoading, data}] = useGetAllSourcesMutation()
+  const {data, isLoading} = useGetAllSourcesQuery()
+
+  if (isLoading) {
+    return null
+  }
 
   // getAllSources().then(data => console.log(data))
   
