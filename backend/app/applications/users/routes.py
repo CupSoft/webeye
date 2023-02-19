@@ -72,23 +72,34 @@ async def update_user_me(user_in: BaseUserUpdate, current_user: User = Depends(g
         current_user.hashed_password = hashed_password
     if user_in.email is not None:
         current_user.email = user_in.email
+
+    await current_user.save()
+    return current_user
+
+
+@router.delete("/me/tg_id", response_model=BaseUserOut, status_code=200)
+async def delete_user_me_tg_id(current_user: User = Depends(get_current_user)):
+    """
+    Delete own user tg_id.
+    """
+    current_user.tg_id = None
     await current_user.save()
     return current_user
 
 
 @router.get("/me/subscriptions", response_model=List[SubscriptionOutWithResourceUUID], status_code=200)
 async def read_user_subscriptions(
-        current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Get current user subscriptions.
     """
-    subscriptions = await Subscription.filter(user=current_user).prefetch_related('resource')
-    
+    subscriptions = await Subscription.filter(user=current_user).prefetch_related("resource")
+
     res = []
     for subscription in subscriptions:
         sub_dict = await subscription.to_dict()
-        sub_dict['resource_uuid'] = subscription.resource.uuid
+        sub_dict["resource_uuid"] = subscription.resource.uuid
         res.append(sub_dict)
 
     return res
@@ -96,7 +107,7 @@ async def read_user_subscriptions(
 
 @router.get("/me", response_model=BaseUserOut, status_code=200)
 def read_user_me(
-        current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Get current user.
@@ -106,8 +117,8 @@ def read_user_me(
 
 @router.get("/{uuid}", response_model=BaseUserOut, status_code=200)
 async def read_user_by_id(
-        uuid: UUID4,
-        current_user: User = Depends(get_current_admin),
+    uuid: UUID4,
+    current_user: User = Depends(get_current_admin),
 ):
     """
     Get a specific user by uuid.
@@ -125,9 +136,9 @@ async def read_user_by_id(
 
 @router.patch("/{uuid}", response_model=BaseUserOut, status_code=200)
 async def update_user(
-        uuid: UUID4,
-        user_in: BaseUserUpdate,
-        current_user: User = Depends(get_current_admin),
+    uuid: UUID4,
+    user_in: BaseUserUpdate,
+    current_user: User = Depends(get_current_admin),
 ):
     """
     Update a user.
@@ -179,6 +190,8 @@ async def generate_jwt_by_short_token(tg_token_in: TgTokenWithId):
 
     user.tg_id = tg_token_in.id
     await user.save()
+
+    await tg_token.delete()
 
     return {
         "access_token": create_access_token(data={"user_uuid": str(user.uuid)}, expires_delta=access_token_expires),

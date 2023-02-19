@@ -7,6 +7,7 @@ from aiogram.filters import CommandStart, Command, Text
 from aiogram.types import Message
 from aiogram_dialog import Dialog, DialogManager, StartMode
 from aiogram_dialog.api.exceptions import UnknownIntent
+from aiohttp import ClientConnectorError
 
 from app.db.db_user.user_func import User
 from app.dialogs.states import RegistrationSG, MenuSG
@@ -16,6 +17,7 @@ from app.dialogs.windows.menu.menu import MenuMainWin
 from app.dialogs.windows.registration.registration import RegMainWin, RegLoginWin
 from app.dialogs.windows.removal_user.removal import RemovalMainWin
 from app.dialogs.windows.subscriptions.subscriptions import SubscriptionsMainWin, SubscriptionsInfoWin
+from app.my_errors import ApiError
 
 dlg_router = Router()
 
@@ -24,14 +26,18 @@ dlg_router = Router()
 async def handle_start_query(message: Message, dialog_manager: DialogManager):
     await del_keyboard(message)
     user_id = message.from_user.id
-    if len(message.text.split()) > 1:
+    if len(message.text.split()) > 1 and not await User.is_registered(user_id):
         try:
             await login_user(user_id, message.from_user.first_name, message.text.split()[1])
         except Exception as e:
             logging.error(e)
             warnings = await message.answer("❗️ Неверный токен")
             asyncio.create_task(del_message_by(warnings, 20))
+    await starting_dispatcher(message, dialog_manager)
 
+
+async def starting_dispatcher(message: Message, dialog_manager: DialogManager):
+    user_id = message.from_user.id
     if not await User.is_registered(user_id):
         await dialog_manager.start(RegistrationSG.main, mode=StartMode.RESET_STACK)
     else:
@@ -54,6 +60,13 @@ async def error_handler(event, dialog_manager: DialogManager):
     if isinstance(event.exception, UnknownIntent):
         # Handling an error related to an outdated callback
         await handle_start_query(event.update.callback_query, dialog_manager)
+    elif isinstance(event.exception, ApiError):
+        await starting_dispatcher(event.update.callback_query, dialog_manager)
+        await event.update.callback_query.answer(
+            "Ошибка сервера\n"
+            "Вероятное решение проблемы - удаление аккаунта в боте и повторная авторизация", show_alert=True)
+    elif isinstance(event.exception, ClientConnectorError):
+        await event.update.callback_query.answer("Сервер недоступен", show_alert=True)
     else:
         return UNHANDLED
 

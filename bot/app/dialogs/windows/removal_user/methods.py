@@ -9,7 +9,7 @@ from app.services.restapi.restapi import api_delete_user
 
 async def delete_user(message: Message, dialog: DialogProtocol, manager: DialogManager):
     tg_id = get_tg_id_from_manager(manager)
-    if await api_delete_user(tg_id) is True:
-        user = await User.get_by_tg(tg_id)
-        await user.delete()
-        await manager.start(RegistrationSG.main, show_mode=ShowMode.EDIT, mode=StartMode.RESET_STACK)
+    await api_delete_user(tg_id)
+    user = await User.get_by_tg(tg_id)
+    await user.delete()
+    await manager.start(RegistrationSG.main, show_mode=ShowMode.EDIT, mode=StartMode.RESET_STACK)

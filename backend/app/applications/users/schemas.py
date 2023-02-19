@@ -40,9 +40,19 @@ class BaseUserDB(BaseUser):
 
 class BaseUserOut(BaseUser):
     uuid: UUID4
+    tg_id: Optional[str]
 
     class Config:
         orm_mode = True
+
+        schema_extra = {
+            "example": {
+                "uuid": "b3b4c5d6-e7f8-g9h0-i1j2-k3l4m5n6o7p8",
+                "email": "example@gmail.com",
+                "is_admin": False,
+                "tg_id": "372203395",
+            }
+        }
 
 
 class TgToken(BaseProperties):

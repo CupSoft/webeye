@@ -41,6 +41,7 @@ class ResourceDB(BaseResource):
 
 class ResourceOut(BaseResource):
     uuid: UUID4
+    status: Status
 
     class Config:
         orm_mode = True
