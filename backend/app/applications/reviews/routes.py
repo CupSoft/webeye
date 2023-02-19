@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter, HTTPException, Depends
+from kombu.pools import reset
 
 from app.applications.reviews.schemas import ReviewCreate, ReviewOut
 from app.applications.reviews.models import Review
@@ -26,9 +27,14 @@ async def read_reviews(skip: int = 0, limit: int = 100, current_user: User = Dep
     """
     Get list of reviews.
     """
-    reviews = await Review.all().limit(limit).offset(skip)
+    reviews = await Review.all().limit(limit).offset(skip).prefetch_related("resource")
 
-    return reviews
+    res = []
+    for review in reviews:
+        review_out_dict = await review.to_dict()
+        res.append(ReviewOut(**review_out_dict, resource_uuid=review.resource.uuid))
+
+    return res
 
 
 @router.get("/{uuid}", response_model=ReviewOut, status_code=200)
@@ -36,7 +42,7 @@ async def read_review(uuid: UUID4, current_user: User = Depends(get_current_admi
     """
     Get a review by uuid.
     """
-    review = await Review.filter(uuid=uuid).first()
+    review = await Review.filter(uuid=uuid).first().prefetch_related("resource")
 
     if review is None:
         raise HTTPException(
@@ -44,7 +50,8 @@ async def read_review(uuid: UUID4, current_user: User = Depends(get_current_admi
             detail="The review with this uuid does not exist",
         )
 
-    return review
+    review_out_dict = await review.to_dict()
+    return ReviewOut(**review_out_dict, resource_uuid=review.resource.uuid)
 
 
 @router.post("/", response_model=ReviewOut, status_code=201)
@@ -98,7 +105,8 @@ async def create_review(review_in: ReviewCreate, current_user: User = Depends(ge
         resource=resource,
     )
 
-    return created_review
+    review_out_dict = await created_review.to_dict()
+    return ReviewOut(**review_out_dict, resource_uuid=resource.uuid)
 
 
 @router.delete("/{uuid}", status_code=200)
