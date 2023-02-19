@@ -28,11 +28,19 @@ export type UserStoreTypes = {
   uuid: string;
 }
 
-export type SocialReportsGetTypes = {
+export type SocialReporGetTypes = {
   status: 'OK' | 'partial' | 'critical';
   social_network: 'VK' | 'OK',
   link: string;
   uuid: string;
   created_at: string;
   snippet: string
+  resource_uuid?: string;
+}
+
+export type ReviewGetTypes = {
+  datatime: string;
+  text: string;
+  stars: number;
+  uuid: string;
 }

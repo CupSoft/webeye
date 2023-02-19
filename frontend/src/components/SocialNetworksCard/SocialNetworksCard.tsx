@@ -1,11 +1,11 @@
 import { useGetAllSocialReportsQuery } from '../../services/apiService/apiService';
-import { SocialReportsGetTypes } from '../../services/apiService/apiServiceTypes';
+import { SocialReporGetTypes } from '../../services/apiService/apiServiceTypes';
 import Card from '../Card/Card';
 import SocialNetworkBadge from '../SocialNetworkBadge/SocialNetworkBadge';
 import { SocialNetworksCardPropsType } from './SocialNetworksCardTypes';
 import styles from './SocialNetworksCard.module.scss'
 
-const cards: SocialReportsGetTypes[] = [
+const cards: SocialReporGetTypes[] = [
   {uuid: '1', link: 'https://vk.com', social_network: 'OK', status: 'critical', snippet: 'Вообще не работает', created_at: '2023-02-19T09:50:41.783Z'},
   {uuid: '2', link: 'https://ok.ru', social_network: 'OK', status: 'partial', snippet: 'Работает частично', created_at: '2023-02-19T09:50:41.783Z'},
   {uuid: '3', link: 'https://ok.ru', social_network: 'OK', status: 'OK', snippet: 'Работает стабильно', created_at: '2023-02-19T09:50:41.783Z'},
