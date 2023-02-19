@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ReviewGetTypes, SocialReporGetTypes, SourceGetTypes, SubscriptionGetRequestTypes, SubscriptionGetResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
+import { ReviewGetTypes, SocialReporGetTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
 
 export const api = createApi({
   reducerPath: 'api',
@@ -49,15 +49,15 @@ export const api = createApi({
       query: (sourceUuid) => ({ url: `resources/${sourceUuid}/reviews` })
     }),
     postSubscriptions: builder.mutation<void, SubscriptionPostTypes>({
-      query: ({userUuid, ...subs}) => ({
+      query: (subs) => ({
         method: 'POST',
         url: `subscriptions`,
         body: JSON.stringify(subs),
         headers: {'Content-Type': 'application/json'}
       })
     }),
-    getSubscriptions: builder.mutation<SubscriptionGetResponseTypes, SubscriptionGetRequestTypes>({
-      query: ({userUuid, sourceUuid}) => ({ url: `subscriptions?user_id=${userUuid}&resource_id=${sourceUuid}`})
+    getSubscriptions: builder.mutation<SubscriptionGetResponseTypes, string>({
+      query: (sourceUuid) => ({ url: `subscriptions/${sourceUuid}`})
     })
   })
 })

@@ -21,7 +21,7 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
     if (!isAuth) {
       return
     }
-    getSubscriptions({userUuid, sourceUuid}).then(value => {
+    getSubscriptions(sourceUuid).then(value => {
       if ('error' in value) {
         return
       }
@@ -50,9 +50,8 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
     } else {
       setEmailChecked(!emailChecked)
     }
-    postSubscriptions({
-      userUuid, 
-      resource_id: sourceUuid, 
+    postSubscriptions({ 
+      resource_uuid: sourceUuid, 
       to_email: isBotClick ? emailChecked : !emailChecked,
       to_telegram: isBotClick ? !botChecked : botChecked,
     })
