@@ -35,16 +35,9 @@ async def read_resources(skip: int = 0, limit: int = 100):
     resources = await Resource.all().prefetch_related("reviews").limit(limit).offset(skip)
     res = []
     for resource in resources:
-        sum_star = 0
-        for review in resource.reviews:
-            sum_star += review.stars
-
         resource_dict = await resource.to_dict()
-        try:
-            rating = float(f"{sum_star / len(resource.reviews):.2f}")
-            res.append(ResourceOutWithRating(**resource_dict, rating=rating))
-        except ZeroDivisionError:
-            res.append(ResourceOutWithRating(**resource_dict))
+        rating = await resource.rating
+        res.append(ResourceOutWithRating(**resource_dict, rating=rating))
 
     return res
 
@@ -70,22 +63,26 @@ async def create_resource(
     return resource
 
 
-@router.get("/{uuid}", response_model=ResourceOut, status_code=200)
+@router.get("/{uuid}", response_model=ResourceOutWithRating, status_code=200)
 async def read_resource(
     uuid: UUID4,
 ):
     """
     Get resource by uuid.
     """
-    resource = await Resource.filter(uuid=uuid).first()
+    resource = await Resource.filter(uuid=uuid).first().prefetch_related("reviews")
 
     if resource is None:
         raise HTTPException(
             status_code=404,
             detail="The resource with this uuid does not exist",
         )
-
-    return resource
+        
+    resource_dict = await resource.to_dict()
+    
+    rating = await resource.rating
+    
+    return ResourceOutWithRating(**resource_dict, rating=rating)
 
 
 @router.patch("/{uuid}", response_model=ResourceOut, status_code=201)

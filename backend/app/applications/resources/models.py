@@ -23,6 +23,19 @@ class Resource(BaseModel):
             return resource
         except DoesNotExist:
             return None
+        
+    @property
+    async def rating(self) -> float | None:
+        sum_star = 0
+        for review in self.reviews:
+            sum_star += review.stars
+
+        try:
+            rating = float(f"{sum_star / len(self.reviews):.2f}")
+            return rating
+        except ZeroDivisionError:
+            return None
+
 
     class Meta:
         table = "resources"
