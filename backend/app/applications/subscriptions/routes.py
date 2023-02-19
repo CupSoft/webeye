@@ -108,9 +108,9 @@ async def update_subscription(
             detail="You do not have access to this subscription",
         )
 
-    if to_telegram:
+    if to_telegram is not None:
         subscription.to_telegram = to_telegram
-    if to_email:
+    if to_email is not None:
         subscription.to_email = to_email
 
     await subscription.save()
