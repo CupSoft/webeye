@@ -191,6 +191,8 @@ async def generate_jwt_by_short_token(tg_token_in: TgTokenWithId):
     user.tg_id = tg_token_in.id
     await user.save()
 
+    await tg_token.delete()
+
     return {
         "access_token": create_access_token(data={"user_uuid": str(user.uuid)}, expires_delta=access_token_expires),
         "token_type": "bearer",
