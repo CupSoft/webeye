@@ -47,9 +47,9 @@ class Settings:
 
     LOGIN_URL = SERVER_HOST + "/api/auth/login/access-token"
 
-    REDIS_PASSWORD = config('REDIS_PASSWORD')
+    REDIS_PASSWORD = config('REDIS_PASSWORD', default='')
     REDIS_HOST = config('REDIS_HOST')
-    REDIS_PORT = config('REDIS_PORT')
+    REDIS_PORT = config('REDIS_PORT', cast=int, default=6379)
     
     REDIS_URL = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/1"
 

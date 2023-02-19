@@ -10,6 +10,7 @@ from app.applications.checks.models import Check, CheckResult
 from app.applications.checks.utils import redis_publish_message
 
 from app.applications.resources.models import ResourceNode
+from app.applications.subscriptions.schemas import EmailNotification
 
 from app.core.base.utils import exclude_keys
 
@@ -18,6 +19,7 @@ from pydantic import UUID4
 import logging
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 router = APIRouter()
 
@@ -102,26 +104,40 @@ async def create_check_result(check_result_in: CheckResultCreate):
             detail="The check result with this uuid already exist",
         )
 
-    check = await Check.filter(uuid=check_result_in.check_uuid).prefetch_related('resource').first()
+    check = (
+        await Check.filter(uuid=check_result_in.check_uuid)
+        .prefetch_related("resource_node__resource__subscriptions__user")
+        .first()
+    )
     if check is None:
         raise HTTPException(
             status_code=404,
             detail="The check with this uuid does not exist",
         )
 
-    last_state = await check.resource.state
-    
-    if last_state != check_result_in.state:
-        msg_dict = {
-            'resource_uuid': check.resource.uuid,
-            'state': check_result_in.state,
-            'datetime': check_result_in.date
-        }
-        await redis_publish_message(json.dumps(msg_dict))
-    
     check_result = await CheckResult.create(**exclude_keys(check_result_in.dict(), {"check_uuid"}), parent_check=check)
 
-    return check_result
+    last_status = await check.resource_node.resource.status
+
+    if last_status != check_result_in.status:
+        for subscription in check.resource_node.resource.subscriptions:
+            print(f"Sending email to {subscription.user.email}")
+            email = EmailNotification(
+                recipient=subscription.user.email,
+                subject=f"Resource {check.resource_node.resource.name} status changed",
+                body=(
+                    f"Resource {check.resource_node.resource.name} status changed from {last_status} to"
+                    f" {check_result_in.status}"
+                ),
+                resource_status=check_result_in.status,
+                resource_uuid=check.resource_node.resource.uuid,
+            )
+
+            await redis_publish_message(email)
+
+    check_result_dict = await check_result.to_dict()
+
+    return CheckResultOut(**check_result_dict, check_uuid=check.uuid)
 
 
 @router.delete("/result/{uuid}", status_code=200)

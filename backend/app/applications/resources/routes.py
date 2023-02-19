@@ -113,9 +113,6 @@ async def update_resource(
 
         resource.name = resource_in.name
 
-    if resource_in.status is not None:
-        resource.status = resource_in.status
-
     await resource.save()
 
     return resource
