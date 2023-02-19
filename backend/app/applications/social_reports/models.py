@@ -14,6 +14,7 @@ class SocialNetworkReport(BaseModel):
     is_moderated = fields.BooleanField(default=False)
     social_network = fields.CharEnumField(SocialNetworks)
     link = fields.CharField(max_length=255)
+    snippet = fields.CharField(max_length=512)
     created_at = fields.DatetimeField(auto_now_add=True)
 
     class Meta:

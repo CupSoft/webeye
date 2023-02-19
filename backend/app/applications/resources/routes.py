@@ -77,11 +77,11 @@ async def read_resource(
             status_code=404,
             detail="The resource with this uuid does not exist",
         )
-        
+
     resource_dict = await resource.to_dict()
-    
+
     rating = await resource.rating
-    
+
     return ResourceOutWithRating(**resource_dict, rating=rating)
 
 
@@ -181,7 +181,8 @@ async def read_resource_reports(
 
 @router.get("/{uuid}/social_reports", response_model=List[SocialReportOut], status_code=200)
 async def read_resource_social_reports(
-    uuid: UUID4,
+        uuid: UUID4,
+        is_moderated: bool = False,
 ):
     """
     Get resource social reports by uuid.
@@ -194,7 +195,13 @@ async def read_resource_social_reports(
             detail="The resource with this uuid does not exist",
         )
 
-    return list(resource.social_network_reports)
+    res = []
+    social_reports = await resource.social_network_reports.filter(is_moderated=is_moderated).all()
+    for social_report in social_reports:
+        report_dict = await social_report.to_dict()
+        res.append(SocialReportOut(**report_dict, resource_uuid=resource.uuid))
+
+    return res
 
 
 @router.get("/{uuid}/reviews", response_model=List[ReviewOut], status_code=200)
