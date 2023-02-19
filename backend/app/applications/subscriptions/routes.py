@@ -109,9 +109,9 @@ async def update_subscription(
         )
 
     if to_telegram:
-        subscription.to_telegram = not subscription.to_telegram
+        subscription.to_telegram = to_telegram
     if to_email:
-        subscription.to_email = not subscription.to_email
+        subscription.to_email = to_email
 
     await subscription.save()
 
