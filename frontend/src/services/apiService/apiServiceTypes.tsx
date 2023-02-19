@@ -44,3 +44,16 @@ export type ReviewGetTypes = {
   stars: number;
   uuid: string;
 }
+
+export type SubscriptionPostTypes = {
+  to_telegram: boolean;
+  to_email: boolean;
+  resource_id: string;
+  userUuid: string;
+}
+
+export type SubscriptionGetTypes = {
+  to_telegram: boolean;
+  to_email: boolean;
+  uuid?: string;
+}

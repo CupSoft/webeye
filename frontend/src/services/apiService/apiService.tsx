@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ReviewGetTypes, SocialReporGetTypes, SourceGetTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
+import { ReviewGetTypes, SocialReporGetTypes, SourceGetTypes, SubscriptionGetTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
 
 export const api = createApi({
   reducerPath: 'api',
@@ -34,19 +34,29 @@ export const api = createApi({
       })
     }),
     checkUser: builder.mutation<UserRegistrResponseTypes, void>({
-      query: () => ({url: '/auth/users/me'})
+      query: () => ({url: 'auth/users/me'})
     }),
     getSource: builder.query<SourceGetTypes, string>({
-      query: (uuid) => ({ url: `resources/${uuid}` })
+      query: (sourceUuid) => ({ url: `resources/${sourceUuid}` })
     }),
     getAllSources: builder.query<SourceGetTypes[], void>({
       query: () => ({ url: `resources`})
     }),
     getAllSocialReports: builder.query<SocialReporGetTypes[], string>({
-      query: (uuid) => ({ url: `/resources/${uuid}/social_reports`})
+      query: (sourceUuid) => ({ url: `resources/${sourceUuid}/social_reports`})
     }),
     getAllReviews: builder.query<ReviewGetTypes[], string>({
-      query: (uuid) => ({ url: `/resources/${uuid}/reviews` })
+      query: (sourceUuid) => ({ url: `resources/${sourceUuid}/reviews` })
+    }),
+    postSubscriptions: builder.mutation<void, SubscriptionPostTypes>({
+      query: ({userUuid, ...subs}) => ({
+        method: 'POST',
+        url: `users/${userUuid}/subscriptions`,
+        body: JSON.stringify(subs)
+      })
+    }),
+    getSubscriptions: builder.mutation<SubscriptionGetTypes, string>({
+      query: (userUuid) => ({ url: `users/${userUuid}/subscriptions`})
     })
   })
 })
@@ -58,3 +68,5 @@ export const { useGetSourceQuery } = api
 export const { useCheckUserMutation } = api
 export const { useGetAllSocialReportsQuery } = api
 export const { useGetAllReviewsQuery } = api
+export const { usePostSubscriptionsMutation } = api
+export const { useGetSubscriptionsMutation } = api
