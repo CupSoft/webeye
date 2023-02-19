@@ -1,4 +1,4 @@
-from pydantic import BaseModel, UUID4, validator
+from pydantic import BaseModel, UUID4
 from enum import Enum
 
 

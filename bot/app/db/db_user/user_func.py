@@ -18,6 +18,14 @@ class User(user_models.User):
         await User(telegram_id=telegram_id, name=name, jwt_token=jwt_token).save()
 
     @classmethod
+    async def get_jwt(cls, telegram_id: int) -> Union[str, bool]:
+        try:
+            user = await cls.get(telegram_id=telegram_id)
+            return user.jwt_token
+        except DoesNotExist:
+            return False
+
+    @classmethod
     async def get_by_tg(cls, telegram_id: int) -> Union[user_models.User, bool]:
         try:
             return await cls.get(telegram_id=telegram_id)
