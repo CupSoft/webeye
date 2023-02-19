@@ -28,10 +28,7 @@ router = APIRouter()
 
 
 @router.get("/", response_model=List[ResourceOut], status_code=200)
-async def read_resources(
-    skip: int = 0,
-    limit: int = 100,
-):
+async def read_resources(skip: int = 0, limit: int = 100):
     """
     Get resource list.
     """
