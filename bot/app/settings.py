@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     DB_USERNAME: str = "root"  # if sqlite is used, then it is not necessary
     DB_PASSWORD: str = "root"
     DB_HOST: str = "localhost"
+    DB_NAME: str = "postgres"
     DB_PORT: int = 3306
 
     DB_SQLITE_DIR: str = "app/db/bot.db"

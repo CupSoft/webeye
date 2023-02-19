@@ -16,7 +16,7 @@ def generate_config():
         connections = f"{settings().DB_PROTOCOL}://{settings().DB_SQLITE_DIR}"
     else:
         connections = f"{settings().DB_PROTOCOL}://{settings().DB_USERNAME}:{settings().DB_PASSWORD}" \
-                      f"@{settings().DB_HOST}:{settings().DB_PORT}"
+                      f"@{settings().DB_HOST}:{settings().DB_PORT}/{settings().DB_NAME}"
     return {
         "connections": {"default": connections},
         "apps": {
