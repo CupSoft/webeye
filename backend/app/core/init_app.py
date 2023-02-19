@@ -1,5 +1,7 @@
 import logging
 
+from asyncio import sleep
+
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from tortoise.contrib.fastapi import register_tortoise
@@ -8,6 +10,9 @@ from app.core.exceptions import APIException, on_api_exception
 from app.settings.config import settings
 from app.settings.log import DEFAULT_LOGGING
 from app.core.auth.utils.contrib import get_current_admin, get_current_user
+from app.applications.users.models import User
+from app.applications.users.schemas import BaseUserCreate
+from app.core.auth.utils.password import get_password_hash
 
 from app.core.auth.routers.login import router as login_router
 from app.applications.users.routes import router as users_router
@@ -55,6 +60,16 @@ def get_tortoise_config() -> dict:
 
 
 TORTOISE_ORM = get_tortoise_config()
+
+
+async def create_default_admin_user():    
+    user = await User.get_by_email(email=settings.ROOT_ADMIN_EMAIL)
+    if user:
+        return
+
+    hashed_password = get_password_hash(settings.ROOT_ADMIN_PASSWORD)
+    db_user = BaseUserCreate(email=settings.ROOT_ADMIN_EMAIL, hashed_password=hashed_password)
+    await User.create(**db_user.dict(), is_admin=True)
 
 
 def register_db(app: FastAPI, db_url: str = None):

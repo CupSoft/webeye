@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from app.core.exceptions import SettingNotFound
-from app.core.init_app import configure_logging, init_middlewares, register_db, register_exceptions, register_routers
+from app.core.init_app import configure_logging, init_middlewares, register_db, register_exceptions, register_routers, create_default_admin_user
 
 try:
     from app.settings.config import settings
@@ -15,8 +15,13 @@ app = FastAPI(
     swagger_ui_parameters={"persistAuthorization": True},
 )
 
+
+@app.on_event("startup")
+async def db_init():
+    register_db(app)
+    # await create_default_admin_user()
+
 configure_logging()
 init_middlewares(app)
-register_db(app)
 register_exceptions(app)
 register_routers(app)

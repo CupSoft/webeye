@@ -26,7 +26,7 @@ async def get_current_user(token: str = Security(reusable_oauth2)) -> Optional[U
     except PyJWTError:
         raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail="Could not validate credentials")
 
-    user = await User.get(uuid=token_data.user_uuid)
+    user = await User.filter(uuid=token_data.user_uuid).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
