@@ -197,7 +197,7 @@ async def read_resource_social_reports(
             detail="The resource with this uuid does not exist",
         )
 
-    return list(resource.social_network_resports)
+    return list(resource.social_network_reports)
 
 
 @router.get("/{uuid}/reviews", response_model=List[ReviewOut], status_code=200)
