@@ -3,6 +3,7 @@ from typing import Optional
 from tortoise import fields
 from tortoise.exceptions import DoesNotExist
 
+from app.applications.subscriptions.models import Subscription
 from app.applications.users.schemas import BaseUserCreate
 
 from app.core.auth.utils import password
@@ -16,6 +17,7 @@ class User(BaseModel):
     is_admin = fields.BooleanField(default=False)
     tg_id = fields.BigIntField(null=True)
     reviews: fields.ReverseRelation["Review"]
+    subscriptions: fields.ReverseRelation["Subscription"]
 
     @classmethod
     async def get_by_email(cls, email: str) -> Optional["User"]:
