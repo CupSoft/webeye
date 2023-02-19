@@ -37,8 +37,8 @@ class Resource(BaseModel):
             return None
 
     @property
-    async def status(self) -> Status | None:
-        return "OK"
+    async def status(self) -> Status:
+        return Status.ok
 
     class Meta:
         table = "resources"
@@ -53,5 +53,3 @@ class ResourceNode(BaseModel):
 
     class Meta:
         table = "resource_nodes"
-
-
