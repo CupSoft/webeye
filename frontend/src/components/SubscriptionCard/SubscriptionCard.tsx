@@ -1,8 +1,9 @@
 import cn from 'classnames';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
 import { userSelector } from '../../app/selectors/userSelector';
+import { useGetSubscriptionsMutation, usePostSubscriptionsMutation } from '../../services/apiService/apiService';
 import { AUTH_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
 import Card from '../Card/Card';
 import styles from './SubscriptionCard.module.scss';
@@ -11,8 +12,28 @@ import { SubscriptionCardPropsType } from './SubscriptionCardTypes';
 const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => {
   const [emailChecked, setEmailChecked] = useState(false)
   const [botChecked, setBotChecked] = useState(false)
-  const isAuth = useAppSelector(userSelector)
+  const {isAuth, uuid: userUuid} = useAppSelector(userSelector)
   const navigate = useNavigate()
+  const [postSubscriptions] = usePostSubscriptionsMutation()
+  const [getSubscriptions] = useGetSubscriptionsMutation()
+
+  useEffect(() => {
+    if (!isAuth) {
+      return
+    }
+    getSubscriptions(userUuid).then(value => {
+      if ('error' in value) {
+        return
+      }
+
+      const {data} = value
+
+      if (data) {
+        setEmailChecked(data.to_email)
+        setBotChecked(data.to_telegram)
+      }
+    })
+  }, [])
 
   function authClickHandler() {
     navigate(AUTH_ROUTE + `?next_page=${SOURCES_ROUTE + '/' + sourceUuid}`)
@@ -22,11 +43,19 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
     if (!isAuth) {
       return
     }
-    if (event.target.name === 'bot_sub') {
+    const isBotClick = event.target.name === 'bot_sub'
+
+    if (isBotClick) {
       setBotChecked(!botChecked)
     } else {
       setEmailChecked(!emailChecked)
     }
+    postSubscriptions({
+      userUuid, 
+      resource_id: sourceUuid, 
+      to_email: isBotClick ? emailChecked : !emailChecked,
+      to_telegram: isBotClick ? !botChecked : botChecked,
+    })
   }
 
   return (

@@ -1,16 +1,14 @@
-import { SerializedError } from '@reduxjs/toolkit';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
+import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import { useLoginUserMutation, useRegisterUserMutation } from '../../services/apiService/apiService';
-import { UserLoginResponseTypes, UserRegistrRequestTypes } from '../../services/apiService/apiServiceTypes';
-import { emailPattern, MAIN_ROUTE } from '../../utils/constants';
-import styles from './AuthPage.module.scss';
+import { UserRegistrRequestTypes } from '../../services/apiService/apiServiceTypes';
+import { emailPattern } from '../../utils/constants';
 import { handleLoginUser } from '../../utils/handleLoginUser';
-import { useState } from 'react';
+import styles from './AuthPage.module.scss';
 
 const AuthPage = () => {
   const [registerUser] = useRegisterUserMutation()
