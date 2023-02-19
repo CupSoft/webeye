@@ -52,8 +52,13 @@ export type SubscriptionPostTypes = {
   userUuid: string;
 }
 
-export type SubscriptionGetTypes = {
+export type SubscriptionGetResponseTypes = {
   to_telegram: boolean;
   to_email: boolean;
   uuid?: string;
+}
+
+export type SubscriptionGetRequestTypes = {
+  userUuid: string;
+  sourceUuid: string;
 }

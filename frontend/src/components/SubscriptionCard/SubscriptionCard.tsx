@@ -21,7 +21,7 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
     if (!isAuth) {
       return
     }
-    getSubscriptions(userUuid).then(value => {
+    getSubscriptions({userUuid, sourceUuid}).then(value => {
       if ('error' in value) {
         return
       }
