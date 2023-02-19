@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
 import { userSelector } from '../../app/selectors/userSelector';
+import { usePostReportMutation, usePostReviewMutation } from '../../services/apiService/apiService';
 import { AUTH_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
 import Card from '../Card/Card';
 import Button from '../UI/Button/Button';
 import TextArea from '../UI/TextArea/TextArea';
 import styles from './ReviewCard.module.scss';
 import { ReviewCardPropsType } from './ReviewCardTypes';
+import { ToastContainer, toast } from 'react-toastify'
 
 
 const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
@@ -17,6 +19,8 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
   const [reviewValue, setReviewValue] = useState('')
   const [isSayUnavailable, setIsSayUnavailable] = useState(false)
   const [starsValue, setStarsValue] = useState('')
+  const [postReport] = usePostReportMutation()
+  const [postReview] = usePostReviewMutation()
   // const [unavailableValue, setUnavailableValue] = useState('')
   
   useEffect(() => {
@@ -32,14 +36,36 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
     }
 
     if (btnType === 'unavailable') {
-      localStorage.setItem('unavailable_value', '')
-      // setUnavailableValue('')
+      postReport({status: 'critical', is_moderated: false, resource_uuid: sourceUuid}).then(value => {
+        if ('error' in value) {
+          toast("Ошибка при отправлении сообщения! Отправьте его повторно")
+          return
+        }
 
+        setIsSayUnavailable(true)
+        toast("Сообщение успешно отправлено!")
+
+        localStorage.setItem('unavailable_value', '')
+        // setUnavailableValue('')
+      })
     } else {
-      localStorage.setItem('stars_value', '')
-      localStorage.setItem('review_value', '')
-      setStarsValue('')
-      setReviewValue('')
+      postReview({
+        text: reviewValue,
+        stars: +starsValue,
+        resource_uuid: sourceUuid
+      }).then(value => {
+        if ('error' in value) {
+          toast('Ошибка при отправлении отзыва! Отправьте его повторно')
+          return
+        }
+
+        localStorage.setItem('stars_value', '')
+        localStorage.setItem('review_value', '')
+        setStarsValue('')
+        setReviewValue('')
+
+        toast('Отзыв успешно отправлен!')
+      })
     }
   }
 

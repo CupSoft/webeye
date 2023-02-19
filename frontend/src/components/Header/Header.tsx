@@ -17,7 +17,9 @@ const Header = () => {
       dispatch({type: 'changeUser', payload: {isAuth: false, email: '', isAdmin: false, uuid: ''}})
       localStorage.removeItem('token')
     } else {
-      navigate(AUTH_ROUTE + `?next_page=${location.pathname}`)
+      if (location.pathname !== '/auth') {
+        navigate(AUTH_ROUTE + `?next_page=${location.pathname}`)
+      }
     }
   }
 

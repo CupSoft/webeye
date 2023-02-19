@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { ToastContainer } from 'react-toastify';
 import styles from './App.module.scss';
 import { useAppDispatch } from './app/hooks';
 import AppRouter from './components/AppRouter/AppRouter';
@@ -36,6 +37,18 @@ function App() {
     <div className={styles.app}>
       <Header/>
       <AppRouter/>
+      <ToastContainer
+          position="top-right"
+          autoClose={2500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
     </div>
   );
 }
