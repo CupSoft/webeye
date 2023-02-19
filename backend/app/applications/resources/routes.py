@@ -6,6 +6,7 @@ from app.applications.resources.schemas import (
     ResourceNodeOut,
     ResourceNodeCreate,
     ResourceOutWithRating,
+    ResourceNodeOutWithResourceUUID,
 )
 from app.applications.reports.schemas import ReportOut
 from app.applications.social_reports.schemas import SocialReportOut
@@ -229,7 +230,7 @@ async def read_resource_reviews(
     return res
 
 
-@router.get("/nodes/", response_model=List[ResourceNodeOut], status_code=200)
+@router.get("/nodes/", response_model=List[ResourceNodeOutWithResourceUUID], status_code=200)
 async def read_resources_nodes(
     skip: int = 0,
     limit: int = 100,
@@ -238,9 +239,14 @@ async def read_resources_nodes(
     """
     Get resource nodes list.
     """
-    resources_nodes = await ResourceNode.all().limit(limit).offset(skip)
+    resources_nodes = await ResourceNode.all().limit(limit).offset(skip).prefetch_related('resource')
+    
+    res = []
+    for resource_node in resources_nodes:
+        resource_node_dict = await resource_node.to_dict()
+        res.append(ResourceNodeOutWithResourceUUID(**resource_node_dict, resource_uuid=resource_node.resource.uuid))
 
-    return resources_nodes
+    return res
 
 
 @router.post("/nodes/", response_model=ResourceNodeOut, status_code=201)

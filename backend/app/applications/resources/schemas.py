@@ -93,3 +93,26 @@ class ResourceNodeOut(BaseResourceNode):
 
     class Config:
         orm_mode = True
+
+        schema_extra = {
+            "example": {
+                "url": "https://www.hse.ru",
+                "uuid": "55440d60-bc79-449e-9708-d967b5da5dcd",
+            }
+        }
+
+
+class ResourceNodeOutWithResourceUUID(BaseResourceNode):
+    uuid: UUID4
+    resource_uuid: UUID4
+
+    class Config:
+        orm_mode = True
+        
+        schema_extra = {
+            "example": {
+                "url": "https://www.hse.ru",
+                "uuid": "55440d60-bc79-449e-9708-d967b5da5dcd",
+                "resource_uuid": "55f8663b-05be-421f-a409-6f8b31434a84",
+            }
+        }
