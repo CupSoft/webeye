@@ -4,20 +4,29 @@ services:
   postgres:
     image: postgres:latest
     restart: always
-    env_file:
-      - postgres.env
+    ports:
+      - "5432:5432"
     volumes:
+      - ./docker-postgresql-multiple-databases:/docker-entrypoint-initdb.d
       - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_MULTIPLE_DATABASES: api_db,bot_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass
 
   redis:
     image: redis
     restart: always
 
   api:
-    image: pre-prof_cupteam_webeye/api
+    build:
+      context: backend
+      dockerfile: Dockerfile
     restart: always
     env_file:
-      - backend.env
+      - backend/.env
+    ports:
+      - "8000:8000"
     depends_on:
       - postgres
       - redis
@@ -26,38 +35,48 @@ services:
       - redis
 
   checker:
-    image: pre-prof_cupteam_webeye/checker
+    build:
+      context: checker
+      dockerfile: Dockerfile
     restart: always
     env_file:
-      - checker.env
+      - checker/.env
     depends_on:
       - api
     links:
       - api
 
   postman:
-    image: pre-prof_cupteam_webeye/postman
+    build:
+      context: postman
+      dockerfile: Dockerfile
     restart: always
     env_file:
-      - postman.env
+      - postman/.env
     links:
       - redis
 
   frontend:
-    image: pre-prof_cupteam_webeye/frontend
+    build:
+      context: frontend
+      dockerfile: Dockerfile
     restart: always
     ports:
       - "8490:3000"
+    env_file:
+      - frontend/.env
     depends_on:
       - api
     links:
       - api
 
   bot:
-    image: pre-prof_cupteam_webeye/bot
+    build:
+      context: bot
+      dockerfile: Dockerfile
     restart: always
     env_file:
-      - bot.env
+      - bot/.env
     depends_on:
       - api
     links:
