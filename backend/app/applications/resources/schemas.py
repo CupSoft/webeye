@@ -19,7 +19,6 @@ class BaseProperties(BaseModel):
 
 class BaseResource(BaseProperties):
     name: str
-    status: Status = "OK"
 
 
 class ResourceCreate(BaseResource):
@@ -31,7 +30,6 @@ class ResourceCreate(BaseResource):
 
 class ResourceUpdate(BaseResource):
     name: str = None
-    status: Status = None
 
 
 class ResourceDB(BaseResource):
@@ -46,7 +44,7 @@ class ResourceOut(BaseResource):
 
     class Config:
         orm_mode = True
-        
+
         schema_extra = {
             "example": {
                 "name": "HSE",
@@ -61,7 +59,7 @@ class ResourceOutWithRating(ResourceOut):
 
     class Config:
         orm_mode = True
-        
+
         schema_extra = {
             "example": {
                 "name": "HSE",

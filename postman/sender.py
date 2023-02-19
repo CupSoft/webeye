@@ -7,6 +7,7 @@ import aiosmtplib
 
 
 async def sender(to, event, details):
+    logging.info(f"Sending an email to {to}")
     message = EmailMessage()
     message["From"] = getenv("SMTP_USERNAME")
     message["To"] = to

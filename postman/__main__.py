@@ -2,15 +2,13 @@ import asyncio
 import json
 import logging
 from asyncio import sleep
-from os import getenv
+from decouple import config
 
 import coloredlogs as coloredlogs
 import redis.asyncio as redis
-from dotenv import load_dotenv
 
 from sender import sender
 
-load_dotenv()
 coloredlogs.install(level=logging.INFO)
 
 
@@ -25,7 +23,8 @@ async def reader(channel: redis.client.PubSub):
 
 async def main():
     logging.info("Redis init")
-    url = f"redis://:{getenv('REDIS_PASSWORD', '')}@{getenv('REDIS_HOST', 'localhost')}:{getenv('REDIS_PORT', 6379)}/1"
+    url = f"redis://:{config('REDIS_PASSWORD', default='')}@{config('REDIS_HOST', default='localhost')}:" \
+          f"{config('REDIS_PORT', cast=int, default=6379)}/1"
     r = redis.from_url(url)
     async with r.pubsub() as pubsub:
         await pubsub.subscribe("mail")

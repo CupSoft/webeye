@@ -20,10 +20,9 @@ class Subscription(BaseProperties):
 
 
 class SubscriptionOut(Subscription):
-    
     class Config:
         orm_mode = True
-        
+
         schema_extra = {
             "example": {
                 "to_email": False,
@@ -35,7 +34,7 @@ class SubscriptionOut(Subscription):
 
 class SubscriptionOutWithResourceUUID(Subscription):
     resource_uuid: UUID4
-    
+
     class Config:
         orm_mode = True
 
@@ -60,3 +59,11 @@ class SubscriptionIn(Subscription):
                 "resource_uuid": "f7b4c2c0-5b5a-4b4a-9c1c-8e1b0c1b0c1b",
             }
         }
+
+
+class EmailNotification(BaseModel):
+    recipient: str
+    subject: str
+    body: str
+    resource_status: Status
+    resource_uuid: UUID4

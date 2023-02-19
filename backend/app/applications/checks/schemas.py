@@ -2,6 +2,7 @@ import datetime
 from enum import Enum
 import uuid
 from typing import Optional
+from app.applications.resources.schemas import Status
 
 from pydantic import BaseModel, UUID4, validator
 
@@ -69,13 +70,24 @@ class CheckOutWithUrl(Check):
 class CheckResult(BaseProperties):
     response: str
     location: Location
-    datetime: datetime.datetime
-    result: bool = False
+    datetime: Optional[datetime.datetime]
+    check_uuid: UUID4
 
 
 class CheckResultCreate(CheckResult):
     uuid: Optional[UUID4] = None
-    check_uuid: UUID4
+    status: Status
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "response": "200",
+                "location": "RUSSIA",
+                "datetime": "2021-09-01T00:00:00",
+                "status": "OK",
+                "check_uuid": "fb7c10eb-0a5d-4bab-b769-713d93088c54",
+            }
+        }
 
 
 class CheckResultOut(CheckResult):

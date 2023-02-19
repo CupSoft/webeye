@@ -23,7 +23,7 @@ class Resource(BaseModel):
             return resource
         except DoesNotExist:
             return None
-        
+
     @property
     async def rating(self) -> float | None:
         sum_star = 0
@@ -35,11 +35,10 @@ class Resource(BaseModel):
             return rating
         except ZeroDivisionError:
             return None
-        
+
     @property
     async def status(self) -> Status | None:
-        return 'OK'
-
+        return "OK"
 
     class Meta:
         table = "resources"
@@ -54,3 +53,5 @@ class ResourceNode(BaseModel):
 
     class Meta:
         table = "resource_nodes"
+
+
