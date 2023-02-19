@@ -36,6 +36,9 @@ class Settings:
     DB_HOST = config("DB_HOST")
     DB_PORT = config("DB_PORT")
 
+    ROOT_ADMIN_EMAIL = config("ROOT_ADMIN_EMAIL")
+    ROOT_ADMIN_PASSWORD = config("ROOT_ADMIN_PASSWORD")
+
     DB_URL = f"postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     DB_CONNECTIONS = {
         "default": DB_URL,
@@ -47,10 +50,10 @@ class Settings:
 
     LOGIN_URL = SERVER_HOST + "/api/auth/login/access-token"
 
-    REDIS_PASSWORD = config('REDIS_PASSWORD', default='')
-    REDIS_HOST = config('REDIS_HOST')
-    REDIS_PORT = config('REDIS_PORT', cast=int, default=6379)
-    
+    REDIS_PASSWORD = config("REDIS_PASSWORD", default="")
+    REDIS_HOST = config("REDIS_HOST")
+    REDIS_PORT = config("REDIS_PORT", cast=int, default=6379)
+
     REDIS_URL = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/1"
 
     APPLICATIONS_MODULE = "app.applications"
