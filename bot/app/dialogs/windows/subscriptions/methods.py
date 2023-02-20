@@ -36,7 +36,7 @@ async def getter_info_subscriptions(dialog_manager: DialogManager, **kwargs):
     elif resource.status == Status.critical:
         status = "Сервис не работает 🔴"
 
-    return {"res_name": resource.name, "res_url": tmp_url, "status": status,
+    return {"res_name": resource.name, "res_url": sub_url, "status": status,
             "rating": "Недостаточно отзывов" if resource.rating is None else resource.rating}
 
 
