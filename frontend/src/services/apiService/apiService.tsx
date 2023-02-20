@@ -15,7 +15,6 @@ export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/api/`,
-    // mode: 'no-cors',
     prepareHeaders(headers, {getState}) {
       const token = localStorage.getItem('token')
 
@@ -41,10 +40,14 @@ export const api = createApi({
       query: (sourceUuid) => ({ url: `resources/${sourceUuid}` })
     }),
     getAllSources: builder.query<SourceGetTypes[], SourceGetRequestTypes>({
-      query: (params) => ({ 
-        url: `resources`,
-        params
-      })
+      query: (params) => {
+        console.log(`${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/api/`)
+
+        return ({ 
+          url: `resources`,
+          params
+        })
+      }
     }),
     getAllSocialReports: builder.query<SocialReporGetTypes[], string>({
       query: (sourceUuid) => ({ url: `resources/${sourceUuid}/social_reports`})

@@ -28,9 +28,9 @@ const StateChart = ({sourceUuid}: StateChartPropsType) => {
           <YAxis stroke='#c5c5c5'/>
           <Tooltip wrapperClassName={styles.chart_tooltip}/>
           <Legend />
-          <Bar type="linear" dataKey="ok" stackId='1' stroke="#00ff00" fill="#00ff00" />
-          <Bar type="monotone" dataKey="partial" stackId='1' stroke="#ffff00" fill="#ffff00" />
-          <Bar type="monotone" dataKey="critical" stackId='1' stroke="#ff0000" fill="#ff0000" />
+          <Bar type="linear" dataKey="ok" stackId='1' stroke="#0DC268" fill="#0DC268" />
+          <Bar type="monotone" dataKey="partial" stackId='1' stroke="#FF9E00" fill="#FF9E00" />
+          <Bar type="monotone" dataKey="critical" stackId='1' stroke="#ED0A34" fill="#ED0A34" />
         </BarChart>
       </ResponsiveContainer>
   );

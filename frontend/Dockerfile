@@ -1,14 +1,18 @@
-FROM node:latest
-
+FROM node:14-alpine AS builder
 WORKDIR /app
-
-ENV PATH /app/node_modules/.bin:$PATH
-
-COPY package.json .
-COPY package-lock.json .
-COPY tsconfig.json .
-RUN npm install --silent
-
+COPY package.json ./
 COPY . .
+RUN npm install
 
-CMD ["npm", "start"]
+
+ARG REACT_APP_API_HOST
+ARG REACT_APP_API_PORT
+
+ENV REACT_APP_API_HOST=$REACT_APP_API_HOST
+ENV REACT_APP_API_PORT=$REACT_APP_API_PORT
+
+RUN npm run build
+
+FROM nginx:1.19-alpine AS server
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder ./app/build /usr/share/nginx/html
