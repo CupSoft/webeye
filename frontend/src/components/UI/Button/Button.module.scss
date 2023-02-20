@@ -1,0 +1,56 @@
+.btn {
+  @apply py-3 rounded-3xl m-2.5 w-auto text-gray-50;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.nowrap {
+  @apply whitespace-nowrap;
+}
+
+.fill_purple {
+  @apply border-2 bg-purple border-purple hover:bg-opacity-0 transition-all disabled:hover:bg-purple;
+}
+
+.squared {
+  @apply rounded-2xl;
+}
+
+.purple {
+  @apply border-2 border-purple hover:bg-purple transition-all disabled:hover:bg-opacity-0;
+}
+
+.red {
+  @apply border-2 border-red transition-all hover:bg-red disabled:hover:bg-opacity-0;
+}
+
+.green {
+  @apply text-green hover:opacity-90 transition-all;
+}
+
+.blue {
+  @apply border-2 border-blue hover:bg-blue transition-all; 
+}
+
+.turquoise {
+  @apply border-2 border-green hover:bg-green;
+}
+
+.fill_turquoise {
+
+}
+
+.lg {
+  @apply px-4 flex flex-grow items-center justify-center max-w-xs;
+}
+
+.md {
+  @apply px-12;
+}
+
+.sm {
+  @apply px-4;
+}

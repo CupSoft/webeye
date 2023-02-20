@@ -1,0 +1,22 @@
+.textarea_wrapper {
+  @apply pr-3 pl-2.5;
+}
+
+.number_input {
+  @apply p-1.5 border-2 border-gray-input rounded-xl mb-2.5 mt-0.5 w-11 bg-gray-input placeholder:text-sm placeholder:text-white/[.12] focus:bg-focus-input transition-all outline-none;
+}
+
+.stars:after {
+  content: '.';
+  color: rgba(0, 0, 0, 0);
+  height: 1.5rem;
+  width: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 0 .5rem;
+  -webkit-mask: url('./../../assets/starFillIcon.svg') no-repeat 50% 50%;
+  mask: url('./../../assets/starFillIcon.svg') no-repeat 50% 50%;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background: linear-gradient(0deg, rgba(230, 230, 230, .8) 10%, white 90%);
+}

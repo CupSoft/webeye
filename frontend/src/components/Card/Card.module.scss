@@ -1,0 +1,42 @@
+.container {
+  @apply flex flex-col items-start w-full bg-gray-card border border-light-gray-card rounded-md p-2.5 m-2.5 hover:bg-gray-input;
+
+  &:hover {
+    transform: scale(1.02);
+    /* cursor: pointer; */
+    transition: all .1s ease-in-out;
+  }
+
+  .icon {
+    @apply pb-4 p-2.5;
+    height: 4.5rem;
+    width: 4.5rem;
+  }
+
+  .title {
+    @apply text-xl font-bold p-2.5 pb-0;
+  }
+
+  .title * {
+    @apply text-xl font-bold;
+  }
+
+  .body {
+    @apply flex flex-col w-full items-stretch;
+    overflow-y: auto;
+    max-height: 20rem;
+  }
+
+  .body.start {
+    @apply items-start;
+  }
+
+  .description {
+    @apply text-light-text p-2.5;
+  }
+
+}
+
+.container.sm {
+  @apply w-full max-w-sm h-auto;
+}

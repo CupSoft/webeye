@@ -1,0 +1,81 @@
+.container {
+  @apply flex flex-row items-center w-full pt-2 pb-2 pl-1 pr-1;
+
+  span {
+    @apply pl-3 pr-3;
+  }
+
+  .position {
+    @apply w-12 text-right p-0;
+
+    min-width: 3rem;
+  }
+
+  .name {
+    @apply w-4/12 text-left;
+
+    min-width: 6rem;
+
+    a {
+      @apply hover:opacity-80;
+    }
+  }
+
+  .state {
+    @apply w-4/12 text-left;
+    text-transform: capitalize;
+    white-space: nowrap;
+    min-width: 6rem;
+
+    &:before {
+      content: '';
+      display: inline-block;
+      border: .25rem solid;
+      margin: 0 .4rem .09rem -.1rem;
+      border-radius: 100%;
+    }
+  }
+
+  .state.ok:before {
+    border-color: #00ff00;
+  }
+
+  .state.critical:before {
+    border-color: #ff0000;
+  }
+
+  .state.partial:before {
+    border-color: #ffff00;
+  }
+
+  .rating {
+    @apply w-4/12 text-left;
+    white-space: nowrap;
+    min-width: 6rem;
+
+    &:after {
+      content: '.';
+      color: rgba(0, 0, 0, 0);
+      height: .9rem;
+      width: .9rem;
+      display: inline-flex;
+      align-items: center;
+      margin: .2rem 0 0 .3rem;
+      -webkit-mask: url('./../../assets/starFillIcon.svg') no-repeat 50% 50%;
+      mask: url('./../../assets/starFillIcon.svg') no-repeat 50% 50%;
+      -webkit-mask-size: cover;
+      mask-size: cover;
+      background-color: #ffffffe5;
+    }
+  }
+
+  .vr {
+    @apply pl-0 pr-0 ml-1 mr-1 w-0.5 border border-light-gray-card h-7;
+  }
+}
+
+@media (max-width: 375px) {
+  .state, .first_vr {
+    display: none;
+  }
+}

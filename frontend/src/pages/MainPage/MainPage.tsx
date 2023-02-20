@@ -1,23 +1,33 @@
-import React from 'react';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
-import styles from './MainPage.module.css'
+import Card from '../../components/Card/Card';
+import SourcesTable from '../../components/SourcesTable/SourcesTable';
+import styles from './MainPage.module.scss'
 
 const MainPage = () => {
-  const data = [
-    {name: 'Page A', uv: 400, pv: 2400, amt: 2400},
-    {name: 'Page B', uv: 300, pv: 500, amt: 2400},
-    {name: 'Page C', uv: 0, pv: 200, amt: 2400},
-    {name: 'Page D', uv: 200, pv: 2400, amt: 2400},
-    {name: 'Page E', uv: 200, pv: 100, amt: 2400},
-  ];
   return (
-    <div>
-      <LineChart width={600} height={300} data={data}>
-        <Line type="monotone" dataKey="uv" stroke="#8884d8" />
-        <CartesianGrid stroke="#ccc" />
-        <XAxis dataKey="name" />
-        <YAxis />
-      </LineChart>
+    <div className={styles.container}>
+      <h1 className='page_title'>Мониторинг система</h1>
+      <span className={styles.description}>Наша система отслеживает состояние и доступность информационных ресурсов российских ВУЗов</span>
+      <SourcesTable limit={10}/>
+      <div className={styles.cards}>
+        <Card
+          icon='community'
+          title='Сообщество'
+          description='Сообщайте о недоступности ресурсов и оставляйте отзывы, пополняя общую базу данных'
+          size='sm'
+        />
+        <Card
+          icon='handshake'
+          title='Экспорт'
+          description='Вы можете бесплатно получить любую статистику на этом сайте'
+          size='sm'
+        />
+        <Card
+          icon='sources'  
+          title='Источники'
+          description='Наша система производит мониторинг ресурсов из разных источников: посредством социальных сетей и серверов в разных городах, а также учитываются сообщения от пользователей'
+          size='sm'
+        />
+      </div>
     </div>
   );
 };

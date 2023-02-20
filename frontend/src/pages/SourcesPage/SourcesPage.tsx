@@ -1,10 +1,12 @@
-import React from 'react';
-import styles from './SourcesPage.module.css'
+import SourcesTable from '../../components/SourcesTable/SourcesTable';
+import styles from './SourcesPage.module.scss';
 
 const SourcesPage = () => {
+
   return (
-    <div>
-      Sources
+    <div className={styles.container}>
+      <h1 className='page_title'>Все ресурсы</h1>
+      <SourcesTable />
     </div>
   );
 };

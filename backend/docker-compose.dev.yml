@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  web:
+    image: web:latest-local
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    ports:
+      - "15433:5432"
+    env_file:
+      - .env
+    volumes:
+      - webeye_backend_dev_pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    env_file:
+      - .env
+    ports:
+      - "15432:80"
+    volumes:
+      - webeye_backend_dev_pgadmin:/var/lib/pgadmin
+    depends_on:
+      - postgres
+
+volumes:
+  webeye_backend_dev_pgdata:
+  webeye_backend_dev_pgadmin:

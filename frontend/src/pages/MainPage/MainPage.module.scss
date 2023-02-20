@@ -1,0 +1,11 @@
+.container {
+  @apply flex flex-col h-full justify-start items-center;
+
+  .description {
+    @apply text-light-text pt-3 pb-3;
+  }
+
+  .cards {
+    @apply flex flex-row flex-wrap justify-center -m-2.5 mb-0;
+  }
+}

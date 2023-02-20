@@ -1,0 +1,7 @@
+.container {
+  @apply flex items-center justify-center h-full w-full text-3xl text-center;
+
+  background: linear-gradient(0deg, rgba(230, 230, 230, .8) 20%, white 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

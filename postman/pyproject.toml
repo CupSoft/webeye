@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "postman"
+version = "0.1.0"
+description = ""
+authors = ["Artem <artem00561@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiosmtplib = "^2.0.1"
+redis = "^4.5.1"
+coloredlogs = "^15.0.1"
+python-decouple = "^3.7"
+pydantic = "^1.10.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
