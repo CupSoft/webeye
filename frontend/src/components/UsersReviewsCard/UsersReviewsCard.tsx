@@ -5,14 +5,6 @@ import UserReviewBadge from '../UserReviewBadge/UserReviewBadge';
 import { UsersReviewsCardPropsType } from './UsersReviewsCardTypes';
 import styles from './UsersReviewsCard.module.scss'
 
-const reviews: ReviewGetTypes[] = [
-  {uuid: '1', text: 'Очень хороший сайт', stars: 5, datatime: '21.01.2017'},
-  {uuid: '2', text: 'Хороший сайт', stars: 4, datatime: '27.02.2018'},
-  {uuid: '3', text: '', stars: 2, datatime: '27.02.2019'},
-  {uuid: '4', text: 'Мне нравится', stars: 5, datatime: '27.02.2019'},
-  {uuid: '5', text: 'Да', stars: 1, datatime: '27.02.2019'},
-]
-
 const UsersReviewsCard = ({sourceUuid, ...props}: UsersReviewsCardPropsType) => {
   const {data: reviews, isLoading} = useGetAllReviewsQuery(sourceUuid)
 

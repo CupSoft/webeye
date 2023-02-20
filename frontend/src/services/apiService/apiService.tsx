@@ -72,7 +72,7 @@ export const api = createApi({
     postReport: builder.mutation<void, ReportRequestTypes>({
       query: (report) => new CreateRequest('reports', JSON.stringify(report))
     }),
-    getAllChekResults: builder.query<GetCheckResultsResponseTypes, GetCheckResultsRequestTypes>({
+    getAllCheckResults: builder.query<GetCheckResultsResponseTypes[], GetCheckResultsRequestTypes>({
       query: ({source_uuid, ...params}) => ({
         params,
         url: `resourses/${source_uuid}/stats/checks`
@@ -93,3 +93,4 @@ export const { useGetSubscriptionsQuery } = api
 export const { usePatchSubscriptionsMutation } = api
 export const { usePostReportMutation } = api
 export const { usePostReviewMutation } = api
+export const { useGetAllCheckResultsQuery } = api

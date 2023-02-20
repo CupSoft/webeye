@@ -10,8 +10,6 @@ import { useGetSourceQuery } from '../../services/apiService/apiService';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import styles from './SourcePage.module.scss';
 
-let source = {uuid: '1', name: 'Вышка', status: 'OK', rating: 4.92}
-
 const SourcePage = () => {
   const params = useParams()
   const uuid = params.uuid ?? ''

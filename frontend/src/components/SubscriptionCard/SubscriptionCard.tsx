@@ -19,8 +19,6 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
   if (isLoading) {
     return null
   }
-  console.log(subs)
-
 
   function authClickHandler() {
     navigate(AUTH_ROUTE + `?next_page=${SOURCES_ROUTE + '/' + sourceUuid}`)
