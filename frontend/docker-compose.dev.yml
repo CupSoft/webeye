@@ -5,6 +5,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        REACT_APP_API_HOST: ${REACT_APP_API_HOST}
+        REACT_APP_API_PORT: ${REACT_APP_API_PORT}
+        REACT_APP_BOT_LINK: ${REACT_APP_BOT_LINK}
     restart: always
     ports:
       - "3000:3000"
