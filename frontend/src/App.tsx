@@ -17,6 +17,7 @@ function App() {
       }
 
       const {uuid, email, is_admin} = value.data
+    
       dispatch({
         type: 'changeUser', 
         payload: {
