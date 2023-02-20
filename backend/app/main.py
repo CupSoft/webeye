@@ -1,6 +1,15 @@
+import asyncio
+
 from fastapi import FastAPI
 from app.core.exceptions import SettingNotFound
-from app.core.init_app import configure_logging, init_middlewares, register_db, register_exceptions, register_routers, create_default_admin_user
+from app.core.init_app import (
+    configure_logging,
+    init_middlewares,
+    register_db,
+    register_exceptions,
+    register_routers,
+    create_default_admin_user,
+)
 
 try:
     from app.settings.config import settings
@@ -19,7 +28,9 @@ app = FastAPI(
 @app.on_event("startup")
 async def db_init():
     register_db(app)
-    # await create_default_admin_user()
+
+
+asyncio.create_task(create_default_admin_user())
 
 configure_logging()
 init_middlewares(app)
