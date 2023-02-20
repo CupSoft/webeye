@@ -18,7 +18,7 @@
     }
   }
 
-  .state {
+  .status {
     &:before {
       content: '';
       display: inline-block;
@@ -29,15 +29,15 @@
     }
   }
 
-  .state.ok:before {
+  .status.ok:before {
     border-color: #00ff00;
   }
 
-  .state.critical:before {
+  .status.critical:before {
     border-color: #ff0000;
   }
 
-  .state.partial:before {
+  .status.partial:before {
     border-color: #ffff00;
   }
 
@@ -96,7 +96,7 @@
     }
   }
 
-  .state:before {
+  .status:before {
     border-width: .5rem !important;
   }
 }
