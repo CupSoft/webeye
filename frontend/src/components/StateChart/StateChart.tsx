@@ -3,8 +3,8 @@ import { useGetAllCheckResultsQuery } from '../../services/apiService/apiService
 import styles from './StateChart.module.scss';
 import { StateChartPropsType } from './StateChartTypes';
 
-const StateChart = ({sourceUuid}: StateChartPropsType) => {
-  const {data, isLoading} = useGetAllCheckResultsQuery({max_count: 10, timedelta: 86000, source_uuid: sourceUuid});
+const StateChart = ({sourceUuid, max_count=7, timedelta=3600}: StateChartPropsType) => {
+  const {data, isLoading} = useGetAllCheckResultsQuery({max_count, timedelta, source_uuid: sourceUuid});
 
   if (isLoading) {
     return null

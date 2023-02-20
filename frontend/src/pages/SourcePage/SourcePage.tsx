@@ -1,5 +1,6 @@
 import cn from 'classnames';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import ReviewCard from '../../components/ReviewCard/ReviewCard';
 import SocialNetworksCard from '../../components/SocialNetworksCard/SocialNetworksCard';
 import StateChart from '../../components/StateChart/StateChart';
@@ -13,7 +14,8 @@ import styles from './SourcePage.module.scss';
 const SourcePage = () => {
   const params = useParams()
   const uuid = params.uuid ?? ''
-  const navigate = useNavigate()
+  const [timeDelta, setTimeDelta] = useState(172800)
+  const [maxCount, setMaxCount] = useState(7)
   
   let {data: source, isLoading} = useGetSourceQuery(uuid)
   
@@ -43,7 +45,35 @@ const SourcePage = () => {
           <span className={styles.download_btn}>Получить отчёт</span>
         </Button>
       </div>
-      <StateChart sourceUuid={source.uuid}/>
+      <StateChart 
+        sourceUuid={source.uuid}
+        max_count={maxCount}
+        timedelta={timeDelta}
+      />
+      <div className={styles.inputs}>
+        <div className={styles.col}>
+          <span>Временной промежуток</span>
+          <input 
+            type="range" 
+            name="timedelta" 
+            min={300}
+            defaultValue={timeDelta}
+            onChange={(event) => setTimeDelta(+event.target.value)}
+            max={172800}
+          />
+        </div>
+        <div className={styles.col}>
+          <span>Количетсво промежутков</span>
+          <input 
+            type="range" 
+            name="maxCount"
+            onChange={(event) => setMaxCount(+event.target.value)}
+            defaultValue={maxCount}
+            min={2}
+            max={7}
+          />
+        </div>
+      </div>
       <div className={styles.cards}>
         <ReviewCard sourceUuid={source.uuid}/>
         <UsersReviewsCard sourceUuid={source.uuid}/>

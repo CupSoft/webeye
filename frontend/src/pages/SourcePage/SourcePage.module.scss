@@ -6,6 +6,18 @@
     max-width: 105rem;
   }
 
+  .inputs {
+    @apply flex flex-row flex-wrap p-3 -mb-3 pt-5;
+
+    .col {
+      @apply flex flex-col pl-6 pr-6;
+    }
+
+    * {
+      @apply p-1;
+    }
+  }
+
   .state {
     &:before {
       content: '';
