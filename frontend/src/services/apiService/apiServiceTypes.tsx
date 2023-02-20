@@ -56,6 +56,10 @@ export type SubscriptionPostTypes = {
   resource_uuid: string;
 }
 
+export type SubscriptionPostResponseTypes = SubscriptionPostTypes & {
+  uuid: string;
+}
+
 export type SubscriptionPatchTypes = {
   to_telegram: boolean;
   to_email: boolean;

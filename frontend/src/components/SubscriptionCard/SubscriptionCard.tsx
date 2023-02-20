@@ -1,6 +1,6 @@
 import cn from 'classnames';
-import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAppSelector } from '../../app/hooks';
 import { userSelector } from '../../app/selectors/userSelector';
 import { useGetSubscriptionsQuery, usePatchSubscriptionsMutation, usePostSubscriptionsMutation } from '../../services/apiService/apiService';
@@ -14,7 +14,7 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
   const navigate = useNavigate()
   const [postSubscriptions] = usePostSubscriptionsMutation()
   const [patchSubscriptions] = usePatchSubscriptionsMutation()
-  const {data: subs, isLoading} = useGetSubscriptionsQuery(sourceUuid)
+  let {data: subs, isLoading} = useGetSubscriptionsQuery(sourceUuid)
 
   if (isLoading) {
     return null
@@ -35,12 +35,20 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
       to_email = event.target.checked
       to_telegram = (event.target.parentElement?.parentElement?.querySelector('#bot_sub') as HTMLInputElement)?.checked
     }
-
-    if (subs === undefined || subs.length === 0) {
+    console.log(subs)
+    if (subs?.length === 0 || subs === undefined) {
       postSubscriptions({
         resource_uuid: sourceUuid,
         to_email,
         to_telegram
+      }).then(value => {
+        if ('error' in value) {
+          toast('Не удалось подписаться - подпишитесь повторно!')
+          return
+        }
+        const {to_email, to_telegram, uuid} = value.data
+        subs = [{to_email, to_telegram, uuid}]
+        toast('Вы успешно подписались!')
       })
 
       return;
@@ -50,6 +58,12 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
       to_email,
       to_telegram,
       uuid: subs[0].uuid
+    }).then(value => {
+      if ('error' in value) {
+        toast('Не удалось подписаться - подпишитесь повторно!')
+        return
+      }
+      toast('Вы успешно подписались!')
     })
   }
 
@@ -80,7 +94,7 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
             name="bot_sub"
             onClick={onCheckChange}
             id="bot_sub"
-            defaultChecked={subs && !!subs[0].to_telegram}
+            defaultChecked={subs && !!subs[0]?.to_telegram}
           />
           <span className={cn(styles.checkbox_text, 'noselect')}>
             Получать уведомления посредством телеграм бота
@@ -99,7 +113,7 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
             name="email_sub"
             onChange={onCheckChange}
             id="email_sub"
-            defaultChecked={subs && !!subs[0].to_email}
+            defaultChecked={subs && !!subs[0]?.to_email}
           />
           <span className={cn(styles.checkbox_text, 'noselect')}>
             Получать уведомления по почте

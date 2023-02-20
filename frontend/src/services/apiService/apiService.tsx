@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { GetCheckResultsRequestTypes, GetCheckResultsResponseTypes, ReportRequestTypes, ReviewGetTypes, ReviewRequestTypes, SocialReporGetTypes, SourceGetRequestTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPatchTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
+import { GetCheckResultsRequestTypes, GetCheckResultsResponseTypes, ReportRequestTypes, ReviewGetTypes, ReviewRequestTypes, SocialReporGetTypes, SourceGetRequestTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPatchTypes, SubscriptionPostResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
 
 class CreateRequest {
   public method: string;
@@ -52,7 +52,7 @@ export const api = createApi({
     getAllReviews: builder.query<ReviewGetTypes[], string>({
       query: (sourceUuid) => ({ url: `resources/${sourceUuid}/reviews` })
     }),
-    postSubscriptions: builder.mutation<void, SubscriptionPostTypes>({
+    postSubscriptions: builder.mutation<SubscriptionPostResponseTypes, SubscriptionPostTypes>({
       query: (subs) => new CreateRequest('subscriptions', JSON.stringify(subs))
     }),
     patchSubscriptions: builder.mutation<void, SubscriptionPatchTypes>({
@@ -64,7 +64,10 @@ export const api = createApi({
       })
     }),
     getSubscriptions: builder.query<SubscriptionGetResponseTypes[], string>({
-      query: (sourceUuid) => ({ url: `auth/users/me/subscriptions?resource_uuid=${sourceUuid}`})
+      query: (resource_id) => ({ 
+        url: `auth/users/me/subscriptions`,
+        params: {resource_id}
+      })
     }),
     postReview: builder.mutation<void, ReviewRequestTypes>({
       query: (review) => new CreateRequest('reviews', JSON.stringify(review))
@@ -75,9 +78,9 @@ export const api = createApi({
     getAllCheckResults: builder.query<GetCheckResultsResponseTypes[], GetCheckResultsRequestTypes>({
       query: ({source_uuid, ...params}) => ({
         params,
-        url: `resourses/${source_uuid}/stats/checks`
+        url: `resources/${source_uuid}/stats/checks`
       })
-    })
+    }),
   })
 })
 

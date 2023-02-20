@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ReviewCard from '../../components/ReviewCard/ReviewCard';
 import SocialNetworksCard from '../../components/SocialNetworksCard/SocialNetworksCard';
 import StateChart from '../../components/StateChart/StateChart';
@@ -13,6 +13,7 @@ import styles from './SourcePage.module.scss';
 const SourcePage = () => {
   const params = useParams()
   const uuid = params.uuid ?? ''
+  const navigate = useNavigate()
   
   let {data: source, isLoading} = useGetSourceQuery(uuid)
   
@@ -24,7 +25,7 @@ const SourcePage = () => {
     return null;
   }
   function summaryClickHandler() {
-    console.log('getSummary')
+    window.open(`${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/resources/${uuid}/stats/export`, '_blank')
   }
 
   return (

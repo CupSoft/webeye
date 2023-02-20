@@ -1,11 +1,10 @@
-import React from 'react';
-import { ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Line } from 'recharts';
-import { StateChartPropsType } from './StateChartTypes';
-import styles from './StateChart.module.scss'
+import { CartesianGrid, Legend, Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useGetAllCheckResultsQuery } from '../../services/apiService/apiService';
+import styles from './StateChart.module.scss';
+import { StateChartPropsType } from './StateChartTypes';
 
 const StateChart = ({sourceUuid}: StateChartPropsType) => {
-  const {data, isLoading} = useGetAllCheckResultsQuery({max_count: 7, timedelta: 1, source_uuid: sourceUuid});
+  const {data, isLoading} = useGetAllCheckResultsQuery({max_count: 10, timedelta: 86000, source_uuid: sourceUuid});
 
   if (isLoading) {
     return null
@@ -15,7 +14,7 @@ const StateChart = ({sourceUuid}: StateChartPropsType) => {
     <ResponsiveContainer 
       className={styles.chart_container}
     >
-        <LineChart
+        <BarChart
           data={data}
           margin={{
             top: 10,
@@ -25,14 +24,14 @@ const StateChart = ({sourceUuid}: StateChartPropsType) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="datetime" stroke='#c5c5c5'/>
+          <XAxis dataKey="end_datetime" stroke='#c5c5c5'/>
           <YAxis stroke='#c5c5c5'/>
           <Tooltip wrapperClassName={styles.chart_tooltip}/>
           <Legend />
-          <Line type="linear" dataKey="ok" stroke="#00ff00" fill="#00ff00" />
-          <Line type="linear" dataKey="partial" stroke="#ffff00" fill="#ffff00" />
-          <Line type="linear" dataKey="critical" stroke="#ff0000" fill="#ff0000" />
-        </LineChart>
+          <Bar type="linear" dataKey="ok" stackId='1' stroke="#00ff00" fill="#00ff00" />
+          <Bar type="monotone" dataKey="partial" stackId='1' stroke="#ffff00" fill="#ffff00" />
+          <Bar type="monotone" dataKey="critical" stackId='1' stroke="#ff0000" fill="#ff0000" />
+        </BarChart>
       </ResponsiveContainer>
   );
 };
