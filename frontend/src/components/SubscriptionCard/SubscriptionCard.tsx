@@ -1,59 +1,57 @@
 import cn from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
 import { userSelector } from '../../app/selectors/userSelector';
-import { useGetSubscriptionsMutation, usePostSubscriptionsMutation } from '../../services/apiService/apiService';
+import { useGetSubscriptionsQuery, usePatchSubscriptionsMutation, usePostSubscriptionsMutation } from '../../services/apiService/apiService';
 import { AUTH_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
 import Card from '../Card/Card';
 import styles from './SubscriptionCard.module.scss';
 import { SubscriptionCardPropsType } from './SubscriptionCardTypes';
 
 const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => {
-  const [emailChecked, setEmailChecked] = useState(false)
-  const [botChecked, setBotChecked] = useState(false)
-  const {isAuth, uuid: userUuid} = useAppSelector(userSelector)
+  const {isAuth} = useAppSelector(userSelector)
   const navigate = useNavigate()
   const [postSubscriptions] = usePostSubscriptionsMutation()
-  const [getSubscriptions] = useGetSubscriptionsMutation()
+  const [patchSubscriptions] = usePatchSubscriptionsMutation()
+  const {data: subs, isLoading} = useGetSubscriptionsQuery(sourceUuid)
 
-  useEffect(() => {
-    if (!isAuth) {
-      return
-    }
-    getSubscriptions(sourceUuid).then(value => {
-      if ('error' in value) {
-        return
-      }
+  if (isLoading) {
+    return null
+  }
+  console.log(subs)
 
-      const {data} = value
-
-      if (data) {
-        setEmailChecked(data.to_email)
-        setBotChecked(data.to_telegram)
-      }
-    })
-  }, [])
 
   function authClickHandler() {
     navigate(AUTH_ROUTE + `?next_page=${SOURCES_ROUTE + '/' + sourceUuid}`)
   }
 
-  function onCheckChange(event: React.ChangeEvent<HTMLInputElement>) {
-    if (!isAuth) {
-      return
-    }
-    const isBotClick = event.target.name === 'bot_sub'
+  function onCheckChange(event: any) {
+    let to_email
+    let to_telegram
 
-    if (isBotClick) {
-      setBotChecked(!botChecked)
+    if (event.target.name === 'bot_sub') {
+      to_email = (event.target.parentElement?.parentElement?.querySelector('#email_sub') as HTMLInputElement)?.checked
+      to_telegram = event.target.checked
     } else {
-      setEmailChecked(!emailChecked)
+      to_email = event.target.checked
+      to_telegram = (event.target.parentElement?.parentElement?.querySelector('#bot_sub') as HTMLInputElement)?.checked
     }
-    postSubscriptions({ 
-      resource_uuid: sourceUuid, 
-      to_email: isBotClick ? emailChecked : !emailChecked,
-      to_telegram: isBotClick ? !botChecked : botChecked,
+
+    if (subs === undefined || subs.length === 0) {
+      postSubscriptions({
+        resource_uuid: sourceUuid,
+        to_email,
+        to_telegram
+      })
+
+      return;
+    }
+
+    patchSubscriptions({
+      to_email,
+      to_telegram,
+      uuid: subs[0].uuid
     })
   }
 
@@ -82,9 +80,9 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
             className={styles.checkbox}
             type="checkbox"
             name="bot_sub"
-            checked={botChecked}
-            onChange={onCheckChange}
+            onClick={onCheckChange}
             id="bot_sub"
+            defaultChecked={subs && !!subs[0].to_telegram}
           />
           <span className={cn(styles.checkbox_text, 'noselect')}>
             Получать уведомления посредством телеграм бота
@@ -101,9 +99,9 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
             className={styles.checkbox}
             type="checkbox"
             name="email_sub"
-            checked={emailChecked}
             onChange={onCheckChange}
             id="email_sub"
+            defaultChecked={subs && !!subs[0].to_email}
           />
           <span className={cn(styles.checkbox_text, 'noselect')}>
             Получать уведомления по почте

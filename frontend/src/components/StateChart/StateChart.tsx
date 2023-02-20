@@ -4,13 +4,13 @@ import { StateChartPropsType } from './StateChartTypes';
 import styles from './StateChart.module.scss'
 
 const data = [
-  {time: '15.00',ok: 4000,partial: 2400,critical: 2400,},
-  {time: '16.00',ok: 3000,partial: 1398,critical: 2210,},
-  {time: '17.00',ok: 2000,partial: 9800,critical: 2290,},
-  {time: '18.00',ok: 2780,partial: 3908,critical: 2000,},
-  {time: '19.00',ok: 10890,partial: 4800,critical: 2181,},
-  {time: '20.00',ok: 2390,partial: 3800,critical: 2500},
-  {time: '21.00',ok: 3490,partial: 4300,critical: 2100,},
+  {datetime: '15.00',ok: 4000,partial: 2400,critical: 2400,},
+  {datetime: '16.00',ok: 3000,partial: 1398,critical: 2210,},
+  {datetime: '17.00',ok: 2000,partial: 9800,critical: 2290,},
+  {datetime: '18.00',ok: 2780,partial: 3908,critical: 2000,},
+  {datetime: '19.00',ok: 10890,partial: 4800,critical: 2181,},
+  {datetime: '20.00',ok: 2390,partial: 3800,critical: 2500},
+  {datetime: '21.00',ok: 3490,partial: 4300,critical: 2100,},
 ];
 
 const StateChart = ({sourceUuid}: StateChartPropsType) => {
@@ -28,7 +28,7 @@ const StateChart = ({sourceUuid}: StateChartPropsType) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="time" stroke='#c5c5c5'/>
+          <XAxis dataKey="datetime" stroke='#c5c5c5'/>
           <YAxis stroke='#c5c5c5'/>
           <Tooltip wrapperClassName={styles.chart_tooltip}/>
           <Legend />

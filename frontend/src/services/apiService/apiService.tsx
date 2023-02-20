@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ReportRequestTypes, ReviewGetTypes, ReviewRequestTypes, SocialReporGetTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
+import { GetCheckResultsRequestTypes, GetCheckResultsResponseTypes, ReportRequestTypes, ReviewGetTypes, ReviewRequestTypes, SocialReporGetTypes, SourceGetRequestTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPatchTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
 
-class CreatePostRequest {
+class CreateRequest {
   public method: string;
   constructor (public url: string, public body: string | FormData, public headers?: {[key: string]: string | undefined}) {
     this.method = 'POST'
@@ -15,6 +15,7 @@ export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/api/`,
+    // mode: 'no-cors',
     prepareHeaders(headers, {getState}) {
       const token = localStorage.getItem('token')
 
@@ -28,10 +29,10 @@ export const api = createApi({
   tagTypes: ['User', 'Source'],
   endpoints: (builder) => ({
     registerUser: builder.mutation<UserRegistrResponseTypes, UserRegistrRequestTypes>({
-      query: (user) => new CreatePostRequest('auth/users', JSON.stringify(user))
+      query: (user) => new CreateRequest('auth/users', JSON.stringify(user))
     }),
     loginUser: builder.mutation<UserLoginResponseTypes, FormData>({
-      query: (user) => new CreatePostRequest('auth/login/access-token', user, {'Content-Type': undefined})
+      query: (user) => new CreateRequest('auth/login/access-token', user, {'Content-Type': undefined})
     }),
     checkUser: builder.mutation<UserRegistrResponseTypes, void>({
       query: () => ({url: 'auth/users/me'})
@@ -39,8 +40,11 @@ export const api = createApi({
     getSource: builder.query<SourceGetTypes, string>({
       query: (sourceUuid) => ({ url: `resources/${sourceUuid}` })
     }),
-    getAllSources: builder.query<SourceGetTypes[], void>({
-      query: () => ({ url: `resources`})
+    getAllSources: builder.query<SourceGetTypes[], SourceGetRequestTypes>({
+      query: (params) => ({ 
+        url: `resources`,
+        params
+      })
     }),
     getAllSocialReports: builder.query<SocialReporGetTypes[], string>({
       query: (sourceUuid) => ({ url: `resources/${sourceUuid}/social_reports`})
@@ -49,16 +53,30 @@ export const api = createApi({
       query: (sourceUuid) => ({ url: `resources/${sourceUuid}/reviews` })
     }),
     postSubscriptions: builder.mutation<void, SubscriptionPostTypes>({
-      query: (subs) => new CreatePostRequest('subscriptions', JSON.stringify(subs))
+      query: (subs) => new CreateRequest('subscriptions', JSON.stringify(subs))
     }),
-    getSubscriptions: builder.mutation<SubscriptionGetResponseTypes, string>({
-      query: (sourceUuid) => ({ url: `subscriptions/${sourceUuid}`})
+    patchSubscriptions: builder.mutation<void, SubscriptionPatchTypes>({
+      query: ({uuid, ...subs}) => ({
+        method: 'PATCH',
+        url: `subscriptions/${uuid}`,
+        params: {...subs},
+        headers: {'Content-Type': 'application/json'}
+      })
+    }),
+    getSubscriptions: builder.query<SubscriptionGetResponseTypes[], string>({
+      query: (sourceUuid) => ({ url: `auth/users/me/subscriptions?resource_uuid=${sourceUuid}`})
     }),
     postReview: builder.mutation<void, ReviewRequestTypes>({
-      query: (review) => new CreatePostRequest('reviews', JSON.stringify(review))
+      query: (review) => new CreateRequest('reviews', JSON.stringify(review))
     }),
     postReport: builder.mutation<void, ReportRequestTypes>({
-      query: (report) => new CreatePostRequest('reports', JSON.stringify(report))
+      query: (report) => new CreateRequest('reports', JSON.stringify(report))
+    }),
+    getAllChekResults: builder.query<GetCheckResultsResponseTypes, GetCheckResultsRequestTypes>({
+      query: ({source_uuid, ...params}) => ({
+        params,
+        url: `resourses/${source_uuid}/stats/checks`
+      })
     })
   })
 })
@@ -71,6 +89,7 @@ export const { useCheckUserMutation } = api
 export const { useGetAllSocialReportsQuery } = api
 export const { useGetAllReviewsQuery } = api
 export const { usePostSubscriptionsMutation } = api
-export const { useGetSubscriptionsMutation } = api
+export const { useGetSubscriptionsQuery } = api
+export const { usePatchSubscriptionsMutation } = api
 export const { usePostReportMutation } = api
 export const { usePostReviewMutation } = api

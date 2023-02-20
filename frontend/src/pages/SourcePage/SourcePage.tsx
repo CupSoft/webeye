@@ -16,7 +16,7 @@ const SourcePage = () => {
   const params = useParams()
   const uuid = params.uuid ?? ''
   
-  let {data, isLoading} = useGetSourceQuery(uuid)
+  let {data: source, isLoading} = useGetSourceQuery(uuid)
   
   if (!source) {
     return <NotFoundPage/>
