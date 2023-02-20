@@ -93,7 +93,6 @@ async def update_subscription(
     """
     Update a subscription
     """
-    print("Пришло", to_telegram, to_email)
 
     subscription = await Subscription.filter(uuid=uuid).first()
 
@@ -115,8 +114,6 @@ async def update_subscription(
         subscription.to_email = to_email
 
     await subscription.save()
-
-    print("Сохранилось", subscription.to_telegram, subscription.to_email)
 
     return subscription
 
