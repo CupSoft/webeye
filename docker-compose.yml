@@ -101,10 +101,10 @@ services:
     build:
       context: frontend
       dockerfile: Dockerfile
+      args:
+        REACT_APP_API_HOST: ${API_HOST}
+        REACT_APP_API_PORT: ${API_PORT}
     restart: always
-    environment:
-      REACT_APP_API_HOST: ${API_HOST}
-      REACT_APP_API_PORT: ${API_PORT}
     ports:
       - "3000:80"
     depends_on:
