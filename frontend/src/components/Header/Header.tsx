@@ -33,7 +33,7 @@ const Header = () => {
         return
       }
       
-      window.open(`${TG_BOT_LINK}?start=${value.data.token}`, '_blank')
+      window.open(`${process.env.REACT_APP_BOT_LINK}?start=${value.data.token}`, '_blank')
     })
   }
 

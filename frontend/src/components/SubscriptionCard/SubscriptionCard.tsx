@@ -70,13 +70,16 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
 
   function botClickHandler(event: React.MouseEvent) {
     event.preventDefault();
+    if (!isAuth) {
+      return;
+    }
     getBotToken().then(value => {
       if ('error' in value) {
         toast('Ошибка авторизации бота!')
         return
       }
       
-      window.open(`${TG_BOT_LINK}?start=${value.data.token}`, '_blank')
+      window.open(`${process.env.REACT_APP_BOT_LINK}?start=${value.data.token}`, '_blank')
     })
   }
 
