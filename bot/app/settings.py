@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     API_HOST: str = "http://localhost"
     API_PORT: int = 8000
 
-    URL: str = "http://localhost:8000/"
+    URL: str
 
     ADMIN_ID: int
 
