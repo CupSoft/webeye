@@ -15,7 +15,6 @@ export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/api/`,
-    // mode: 'no-cors',
     prepareHeaders(headers, {getState}) {
       const token = localStorage.getItem('token')
 
