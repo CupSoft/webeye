@@ -1,14 +1,18 @@
-FROM node:latest
+FROM node:14 as build-step
+
+RUN mkdir /app
 
 WORKDIR /app
+COPY package.json /app
 
-ENV PATH /app/node_modules/.bin:$PATH
 
-COPY package.json .
-COPY package-lock.json .
-COPY tsconfig.json .
-RUN npm install --silent
+RUN npm install
 
-COPY . .
+COPY . /app
 
-CMD ["npm", "start"]
+RUN npm run build
+
+FROM nginx
+
+COPY --from=build-step /app/build /usr/share/nginx/html
+
