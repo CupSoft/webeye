@@ -117,12 +117,13 @@ async def create_check_result(check_result_in: CheckResultCreate):
             detail="The check with this uuid does not exist",
         )
 
-    check_result = await CheckResult.create(**exclude_keys(check_result_in.dict(), {"check_uuid"}), parent_check=check)
-
-    
     last_status = await check.resource_node.resource.status
 
-    if last_status != check_result_in.status:
+    check_result = await CheckResult.create(**exclude_keys(check_result_in.dict(), {"check_uuid"}), parent_check=check)
+
+    new_status = await check.resource_node.resource.status
+
+    if last_status != new_status:
         for subscription in check.resource_node.resource.subscriptions:
             subscription: Subscription
             if subscription.to_email:
