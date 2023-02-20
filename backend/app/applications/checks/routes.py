@@ -110,6 +110,7 @@ async def create_check_result(check_result_in: CheckResultCreate):
         .prefetch_related("resource_node__resource__subscriptions__user")
         .first()
     )
+    
     if check is None:
         raise HTTPException(
             status_code=404,
@@ -118,6 +119,7 @@ async def create_check_result(check_result_in: CheckResultCreate):
 
     check_result = await CheckResult.create(**exclude_keys(check_result_in.dict(), {"check_uuid"}), parent_check=check)
 
+    
     last_status = await check.resource_node.resource.status
 
     if last_status != check_result_in.status:

@@ -38,7 +38,21 @@ class Resource(BaseModel):
 
     @property
     async def status(self) -> Status:
-        return Status.ok
+        status_count = {
+            Status.ok: 0,
+            Status.partial: 0,
+            Status.critical: 0
+        }
+        async for node in self.nodes:
+            async for check in node.checks:
+                results = await check.results
+                results = sorted(results, key=lambda r: r.datetime, reverse=True)[:10]
+                for result in results:
+                    status_count[result.status] += 1 
+
+        res = sorted(status_count.items(), key=lambda x: x[1])[-1]
+        
+        return Status(res[0])
 
     class Meta:
         table = "resources"
