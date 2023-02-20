@@ -97,3 +97,7 @@ export type GetCheckResultsRequestTypes = {
   max_count: number;
   source_uuid: string;
 }
+
+export type GetBotTokenResponseTypes = {
+  token: string;
+}

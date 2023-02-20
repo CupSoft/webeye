@@ -1,16 +1,19 @@
 import styles from './Header.module.scss';
 import cn from 'classnames'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { AUTH_ROUTE, MAIN_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
+import { AUTH_ROUTE, MAIN_ROUTE, SOURCES_ROUTE, TG_BOT_LINK } from '../../utils/constants';
 import Button from '../UI/Button/Button';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { userSelector } from '../../app/selectors/userSelector';
+import { useGetBotTokenMutation } from '../../services/apiService/apiService';
+import { toast } from 'react-toastify';
 
 const Header = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const {isAuth} = useAppSelector(userSelector)
   const location = useLocation()
+  const [getBotToken] = useGetBotTokenMutation()
 
   function signInClickHandler() {
     if (isAuth) {
@@ -21,6 +24,17 @@ const Header = () => {
         navigate(AUTH_ROUTE + `?next_page=${location.pathname}`)
       }
     }
+  }
+
+  function botClickHandler() {
+    getBotToken().then(value => {
+      if ('error' in value) {
+        toast('Ошибка авторизации бота!')
+        return
+      }
+      
+      window.open(`${TG_BOT_LINK}?start=${value.data.token}`, '_blank')
+    })
   }
 
   return (
@@ -34,7 +48,10 @@ const Header = () => {
           <NavLink to={MAIN_ROUTE}>WebEye</NavLink>
         </span>
         <span className={cn(styles.buttons)}>
-          <Button btnType={'blue'}>Телеграм бот</Button>
+          <Button 
+            btnType={'blue'}
+            onClick={botClickHandler}
+          >Телеграм бот</Button>
           <Button
             size='md'
             onClick={signInClickHandler}
