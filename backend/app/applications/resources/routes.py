@@ -122,7 +122,6 @@ async def read_resource_checks_stats(uuid: UUID4, timedelta: datetime.timedelta,
             for check in await node.checks.all():
                 check: Check
                 for result in await check.results.filter(datetime__gte=start_datetime, datetime__lt=end_datetime).all():
-                    print(result)
                     result: CheckResult
                     if result.status == Status.ok:
                         ok_count += 1
@@ -136,6 +135,45 @@ async def read_resource_checks_stats(uuid: UUID4, timedelta: datetime.timedelta,
         )
 
     return resource_checks_stats[::-1]
+
+
+@router.get("/{uuid}/stats/reports", response_model=List[ResourceStatsOut], status_code=200)
+async def read_resource_reports_stats(uuid: UUID4, timedelta: datetime.timedelta, max_count: int = 10):
+    """
+    Get resource reports stats.
+    """
+    resource = await Resource.filter(uuid=uuid).first()
+
+    if resource is None:
+        raise HTTPException(
+            status_code=404,
+            detail="The resource with this uuid does not exist",
+        )
+
+    resource_reports_stats = []
+
+    for i in range(max_count):
+        end_datetime = datetime.datetime.now() - timedelta * i
+        start_datetime = end_datetime - timedelta
+
+        ok_count = 0
+        partial_count = 0
+        critical_count = 0
+
+        for report in await resource.reports.filter(datetime__gte=start_datetime, datetime__lt=end_datetime).all():
+            report: ReportOut
+            if report.status == Status.ok:
+                ok_count += 1
+            elif report.status == Status.partial:
+                partial_count += 1
+            elif report.status == Status.critical:
+                critical_count += 1
+
+        resource_reports_stats.append(
+            ResourceStatsOut(end_datetime=end_datetime, ok=ok_count, partial=partial_count, critical=critical_count)
+        )
+
+    return resource_reports_stats[::-1]
 
 
 @router.patch("/{uuid}", response_model=ResourceOut, status_code=201)

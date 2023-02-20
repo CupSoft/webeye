@@ -71,5 +71,7 @@ class EmailNotification(BaseModel):
 
 class TelegramNotification(BaseModel):
     chat_id: str
-    resource_status: Status
+    resource_name: str
+    resource_old_status: Status
+    resource_new_status: Status
     resource_uuid: UUID4
