@@ -1,5 +1,6 @@
 from tortoise import fields
 
+from app.applications.resources.schemas import Status
 from app.core.base.base_models import BaseModel
 from app.applications.checks.schemas import RequestType, Location
 
@@ -21,7 +22,7 @@ class CheckResult(BaseModel):
         "models.Check", related_name="results", to_field="uuid", on_delete=fields.CASCADE
     )
     response = fields.CharField(max_length=255)
-    result = fields.BooleanField(default=False)
+    status = fields.CharEnumField(Status)
     datetime = fields.DatetimeField(auto_now_add=True)
     location = fields.CharEnumField(Location)
 

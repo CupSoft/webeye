@@ -2,6 +2,7 @@ import uuid
 from enum import Enum
 from typing import Optional
 
+import datetime as datetime
 from pydantic import BaseModel, UUID4, validator
 
 
@@ -37,6 +38,18 @@ class ResourceDB(BaseResource):
 
     class Config:
         orm_mode = True
+
+
+class ResourceStatsIn(BaseProperties):
+    timedelta: datetime.timedelta
+    max_count: int
+
+
+class ResourceStatsOut(BaseProperties):
+    end_datetime: datetime.datetime
+    ok: int
+    partial: int
+    critical: int
 
 
 class ResourceOut(BaseResource):
@@ -108,7 +121,7 @@ class ResourceNodeOutWithResourceUUID(BaseResourceNode):
 
     class Config:
         orm_mode = True
-        
+
         schema_extra = {
             "example": {
                 "url": "https://www.hse.ru",

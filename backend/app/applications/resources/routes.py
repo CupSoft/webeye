@@ -1,3 +1,6 @@
+import datetime
+
+from app.applications.checks.models import Check, CheckResult
 from app.applications.resources.models import Resource, ResourceNode
 from app.applications.resources.schemas import (
     ResourceOut,
@@ -7,6 +10,9 @@ from app.applications.resources.schemas import (
     ResourceNodeCreate,
     ResourceOutWithRating,
     ResourceNodeOutWithResourceUUID,
+    ResourceStatsIn,
+    ResourceStatsOut,
+    Status,
 )
 from app.applications.reports.schemas import ReportOut
 from app.applications.social_reports.schemas import SocialReportOut
@@ -87,6 +93,49 @@ async def read_resource(
     rating = await resource.rating
     status = await resource.status
     return ResourceOutWithRating(**resource_dict, rating=rating, status=status)
+
+
+@router.get("/{uuid}/stats/checks", response_model=List[ResourceStatsOut], status_code=200)
+async def read_resource_checks_stats(uuid: UUID4, timedelta: datetime.timedelta, max_count: int = 10):
+    """
+    Get resource checks stats.
+    """
+    resource = await Resource.filter(uuid=uuid).first()
+
+    if resource is None:
+        raise HTTPException(
+            status_code=404,
+            detail="The resource with this uuid does not exist",
+        )
+
+    resource_checks_stats = []
+
+    for i in range(max_count):
+        end_datetime = datetime.datetime.now() - timedelta * i
+        start_datetime = end_datetime - timedelta
+
+        ok_count = 0
+        partial_count = 0
+        critical_count = 0
+
+        for node in await resource.nodes.all():
+            for check in await node.checks.all():
+                check: Check
+                for result in await check.results.filter(datetime__gte=start_datetime, datetime__lt=end_datetime).all():
+                    print(result)
+                    result: CheckResult
+                    if result.status == Status.ok:
+                        ok_count += 1
+                    elif result.status == Status.partial:
+                        partial_count += 1
+                    elif result.status == Status.critical:
+                        critical_count += 1
+
+        resource_checks_stats.append(
+            ResourceStatsOut(end_datetime=end_datetime, ok=ok_count, partial=partial_count, critical=critical_count)
+        )
+
+    return resource_checks_stats
 
 
 @router.patch("/{uuid}", response_model=ResourceOut, status_code=201)
@@ -239,8 +288,8 @@ async def read_resources_nodes(
     """
     Get resource nodes list.
     """
-    resources_nodes = await ResourceNode.all().limit(limit).offset(skip).prefetch_related('resource')
-    
+    resources_nodes = await ResourceNode.all().limit(limit).offset(skip).prefetch_related("resource")
+
     res = []
     for resource_node in resources_nodes:
         resource_node_dict = await resource_node.to_dict()
