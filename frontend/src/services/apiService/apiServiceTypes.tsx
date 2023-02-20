@@ -21,6 +21,11 @@ export type SourceGetTypes = {
   rating: number;
 }
 
+export type SourceGetRequestTypes = {
+  limit?: number;
+  skip?: number;
+}
+
 export type UserStoreTypes = {
   isAuth: boolean;
   isAdmin: boolean;
@@ -51,10 +56,16 @@ export type SubscriptionPostTypes = {
   resource_uuid: string;
 }
 
+export type SubscriptionPatchTypes = {
+  to_telegram: boolean;
+  to_email: boolean;
+  uuid: string;
+}
+
 export type SubscriptionGetResponseTypes = {
   to_telegram: boolean;
   to_email: boolean;
-  uuid?: string;
+  uuid: string;
 }
 
 export type ReviewRequestTypes = {
@@ -68,4 +79,17 @@ export type ReportRequestTypes = {
   is_moderated: false;
   uuid?: string;
   resource_uuid: string;
+}
+
+export type GetCheckResultsResponseTypes = {
+  datetime: string;
+  ok: number;
+  partial: number;
+  critical: number;
+}
+
+export type GetCheckResultsRequestTypes = {
+  timedelta: number;
+  max_count: number;
+  source_uuid: string;
 }

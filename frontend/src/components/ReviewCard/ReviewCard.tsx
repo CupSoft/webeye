@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAppSelector } from '../../app/hooks';
 import { userSelector } from '../../app/selectors/userSelector';
 import { usePostReportMutation, usePostReviewMutation } from '../../services/apiService/apiService';
@@ -10,7 +11,6 @@ import Button from '../UI/Button/Button';
 import TextArea from '../UI/TextArea/TextArea';
 import styles from './ReviewCard.module.scss';
 import { ReviewCardPropsType } from './ReviewCardTypes';
-import { ToastContainer, toast } from 'react-toastify'
 
 
 const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
@@ -79,10 +79,10 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
     setReviewValue(event.target.value)
   }
 
-  function onUnavailableChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    localStorage.setItem('unavailable_value', event.target.value)
-    // setUnavailableValue(event.target.value)
-  }
+  // function onUnavailableChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+  //   localStorage.setItem('unavailable_value', event.target.value)
+  //   setUnavailableValue(event.target.value)
+  // }
 
   return (
     <Card 

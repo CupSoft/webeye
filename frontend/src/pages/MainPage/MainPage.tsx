@@ -1,4 +1,5 @@
 import Card from '../../components/Card/Card';
+import SourcesTable from '../../components/SourcesTable/SourcesTable';
 import styles from './MainPage.module.scss'
 
 const MainPage = () => {
@@ -6,6 +7,7 @@ const MainPage = () => {
     <div className={styles.container}>
       <h1 className='page_title'>Мониторинг система</h1>
       <span className={styles.description}>Наша система отслеживает состояние и доступность информационных ресурсов российских ВУЗов</span>
+      <SourcesTable limit={10}/>
       <div className={styles.cards}>
         <Card
           icon='community'
