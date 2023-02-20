@@ -6,7 +6,7 @@ import { AUTH_ROUTE } from '../../utils/constants';
 import styles from './AdminPage.module.scss';
 
 const AdminPage = () => {
-  const {isAuth} = useSelector(userSelector)
+  const {isAuth, isAdmin} = useSelector(userSelector)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -17,7 +17,11 @@ const AdminPage = () => {
 
   return (
     <div className={styles.container}>
-      
+      {isAdmin ?
+        <>
+        </>
+      : 'Эта страница доступна только админам'
+      }
     </div>
   );
 };

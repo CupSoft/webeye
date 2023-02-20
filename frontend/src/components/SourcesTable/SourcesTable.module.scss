@@ -1,5 +1,6 @@
 .table {
-  @apply w-full max-w-7xl bg-gray-card border border-light-gray-card rounded-lg pt-1.5 pb-1.5 m-4;
+  @apply w-full bg-gray-card border border-light-gray-card rounded-lg pt-1.5 pb-1.5 m-4 mb-5;
+  max-width: 74.5rem;
 }
 
 .no_resources {
