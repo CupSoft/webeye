@@ -10,6 +10,7 @@ services:
     restart: always
     volumes:
       - pgdata-api:/var/lib/postgresql/data
+      - ./db-init-scripts:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_USER: ${POSTGRES_API_USER}
       POSTGRES_PASSWORD: ${POSTGRES_API_PASSWORD}
@@ -104,9 +105,10 @@ services:
       args:
         REACT_APP_API_HOST: ${API_HOST}
         REACT_APP_API_PORT: ${API_PORT}
+        REACT_APP_BOT_LINK: ${BOT_LINK}
     restart: always
     ports:
-      - "3000:80"
+      - "3000:3000"
     depends_on:
       - api
     links:

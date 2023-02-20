@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAppSelector } from '../../app/hooks';
 import { userSelector } from '../../app/selectors/userSelector';
-import { useGetSubscriptionsQuery, usePatchSubscriptionsMutation, usePostSubscriptionsMutation } from '../../services/apiService/apiService';
-import { AUTH_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
+import { useGetBotTokenMutation, useGetSubscriptionsQuery, usePatchSubscriptionsMutation, usePostSubscriptionsMutation } from '../../services/apiService/apiService';
+import { AUTH_ROUTE, SOURCES_ROUTE, TG_BOT_LINK } from '../../utils/constants';
 import Card from '../Card/Card';
 import styles from './SubscriptionCard.module.scss';
 import { SubscriptionCardPropsType } from './SubscriptionCardTypes';
@@ -15,6 +15,7 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
   const [postSubscriptions] = usePostSubscriptionsMutation()
   const [patchSubscriptions] = usePatchSubscriptionsMutation()
   let {data: subs, isLoading} = useGetSubscriptionsQuery(sourceUuid)
+  const [getBotToken] = useGetBotTokenMutation()
 
   if (isLoading) {
     return null
@@ -67,6 +68,21 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
     })
   }
 
+  function botClickHandler(event: React.MouseEvent) {
+    event.preventDefault();
+    if (!isAuth) {
+      return;
+    }
+    getBotToken().then(value => {
+      if ('error' in value) {
+        toast('Ошибка авторизации бота!')
+        return
+      }
+      
+      window.open(`${process.env.REACT_APP_BOT_LINK}?start=${value.data.token}`, '_blank')
+    })
+  }
+
   return (
     <Card 
       title={
@@ -100,7 +116,7 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
             Получать уведомления посредством телеграм бота
             <i 
               className={styles.tg_description}
-            >*не забудьте авторизоваться в<u><a href='#'>телеграм боте</a></u></i>
+            >*не забудьте авторизоваться в<u onClick={botClickHandler}>телеграм боте</u></i>
           </span>
         </label>
         <label 
