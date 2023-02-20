@@ -1,18 +1,10 @@
-FROM node:14 as build-step
-
-RUN mkdir /app
-
+FROM node:14-alpine AS builder
 WORKDIR /app
-COPY package.json /app
-
-
+COPY package.json ./
+COPY . .
 RUN npm install
-
-COPY . /app
-
 RUN npm run build
 
-FROM nginx
-
-COPY --from=build-step /app/build /usr/share/nginx/html
-
+FROM nginx:1.19-alpine AS server
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder ./app/build /usr/share/nginx/html
