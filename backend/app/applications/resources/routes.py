@@ -135,7 +135,7 @@ async def read_resource_checks_stats(uuid: UUID4, timedelta: datetime.timedelta,
             ResourceStatsOut(end_datetime=end_datetime, ok=ok_count, partial=partial_count, critical=critical_count)
         )
 
-    return resource_checks_stats
+    return resource_checks_stats[::-1]
 
 
 @router.patch("/{uuid}", response_model=ResourceOut, status_code=201)
