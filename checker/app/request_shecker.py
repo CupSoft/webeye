@@ -29,8 +29,10 @@ async def send_answers(answers: list[Answer]):
 
 async def send_answer(session, answer: Answer):
     json = answer.json()
+    print(f"Input json: {json}")
     async with session.post(URL_SEND_ANSWER, data=json, headers=api_headers) as resp:
         if resp.status != 201:
+            print(f"Error status: {resp.status}")
             logging.error("API is not responding")
 
 
