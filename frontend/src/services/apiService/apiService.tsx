@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { GetBotTokenResponseTypes, GetCheckResultsRequestTypes, GetCheckResultsResponseTypes, ReportRequestTypes, ReviewGetTypes, ReviewRequestTypes, SocialReporGetTypes, SourceGetRequestTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPatchTypes, SubscriptionPostResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
+import { AdminPostResourceTypes, GetBotTokenResponseTypes, GetCheckResultsRequestTypes, GetCheckResultsResponseTypes, ReportRequestTypes, ReviewGetTypes, ReviewRequestTypes, SocialReporGetTypes, SourceGetRequestTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPatchTypes, SubscriptionPostResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
 
 const baseUrl = `${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/api/`
 
@@ -85,6 +85,15 @@ export const api = createApi({
       query: () => ({
         url: baseUrl + 'auth/users/telegram/generate_token'
       })
+    }),
+    adminPostResource: builder.mutation<void, AdminPostResourceTypes>({
+      query: (source) => new CreateRequest('resources/', JSON.stringify(source))
+    }),
+    adminDeleteResource: builder.mutation<void, string>({
+      query: (uuid) => ({
+        method: 'DELETE',
+        url: baseUrl + `resources/${uuid}`
+      })
     })
   })
 })
@@ -103,3 +112,5 @@ export const { usePostReportMutation } = api
 export const { usePostReviewMutation } = api
 export const { useGetAllCheckResultsQuery } = api
 export const { useGetBotTokenMutation } = api
+export const { useAdminPostResourceMutation } = api
+export const { useAdminDeleteResourceMutation } = api

@@ -101,3 +101,7 @@ export type GetCheckResultsRequestTypes = {
 export type GetBotTokenResponseTypes = {
   token: string;
 }
+
+export type AdminPostResourceTypes = {
+  name: string;
+}
