@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     API_HOST: str = "http://localhost"
     API_PORT: int = 8000
 
+    URL: str
+
     ADMIN_ID: int
 
     USE_REDIS: bool = True  # Without redis, the API connection does not work
