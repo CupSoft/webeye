@@ -6,3 +6,7 @@
 .no_resources {
   @apply text-lg pt-3 pb-4;
 }
+
+.wrapper {
+  @apply flex flex-row;
+}

@@ -7,6 +7,10 @@
   }
 }
 
+.nowrap {
+  @apply whitespace-nowrap;
+}
+
 .fill_purple {
   @apply border-2 bg-purple border-purple hover:bg-opacity-0 transition-all disabled:hover:bg-purple;
 }

@@ -8,6 +8,10 @@
 
 .checkbox_text {
   @apply pl-2.5;
+
+  u {
+    cursor: pointer;
+  }
 }
 
 .tg_description, .tg_description * {

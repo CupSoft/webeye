@@ -104,9 +104,10 @@ services:
       args:
         REACT_APP_API_HOST: ${API_HOST}
         REACT_APP_API_PORT: ${API_PORT}
+        REACT_APP_BOT_LINK: ${BOT_LINK}
     restart: always
     ports:
-      - "3000:80"
+      - "3000:3000"
     depends_on:
       - api
     links:
@@ -132,6 +133,7 @@ services:
       REDIS_PORT: 6379
       API_HOST: ${API_HOST}
       API_PORT: ${API_PORT}
+      URL: ${URL}
     depends_on:
       - api
     links:

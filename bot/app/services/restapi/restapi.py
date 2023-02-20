@@ -32,7 +32,7 @@ async def api_get_resources(uuids: list) -> list[Resource]:
     async with aiohttp.ClientSession() as session:
         resources = []
         for uuid in uuids:
-            async with session.get(f"{URL_GET_RESOURCE}{uuid}", headers=await get_headers()) as resp:
+            async with session.get(f"{URL_GET_RESOURCE}/{uuid}", headers=await get_headers()) as resp:
                 if resp.status != 200:
                     raise ApiError(TOKEN_ERROR)
                 data = await resp.json()

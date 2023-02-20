@@ -6,4 +6,5 @@ export type ButtonPropsType = React.ButtonHTMLAttributes<HTMLButtonElement> & Re
   children: string | React.ReactElement;
   squared?: boolean;
   myClass?: string;
+  noWrap?: boolean;
 }

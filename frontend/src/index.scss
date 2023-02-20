@@ -17,6 +17,18 @@ hr {
   @apply text-red h-5 pl-3;
 }
 
+.admin_container {
+  @apply flex flex-col items-center;
+}
+
+.admin_wrapper {
+  @apply flex flex-col max-w-xl justify-center;
+}
+
+.admin_title {
+  @apply text-center text-3xl p-2;
+}
+
 .noselect {
   -webkit-touch-callout: none; 
     -webkit-user-select: none; 

@@ -3,7 +3,6 @@ import SourcesTable from '../../components/SourcesTable/SourcesTable';
 import styles from './MainPage.module.scss'
 
 const MainPage = () => {
-  console.log(`${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/api/`)
   return (
     <div className={styles.container}>
       <h1 className='page_title'>Мониторинг система</h1>

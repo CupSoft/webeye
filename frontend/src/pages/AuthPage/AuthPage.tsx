@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
-import { useLoginUserMutation, useRegisterUserMutation } from '../../services/apiService/apiService';
+import { useCheckUserMutation, useLoginUserMutation, useRegisterUserMutation } from '../../services/apiService/apiService';
 import { UserRegistrRequestTypes } from '../../services/apiService/apiServiceTypes';
 import { emailPattern } from '../../utils/constants';
 import { handleLoginUser } from '../../utils/handleLoginUser';
@@ -13,6 +13,7 @@ import styles from './AuthPage.module.scss';
 const AuthPage = () => {
   const [registerUser] = useRegisterUserMutation()
   const [loginUser] = useLoginUserMutation()
+  const [checkUser] = useCheckUserMutation()
   const {
     register,
     handleSubmit,
@@ -36,20 +37,42 @@ const AuthPage = () => {
           return
         }
 
+        loginUser(formData).then(handleLoginUser(dispatch, navigate, params, setAuthError)).then(() => checkUser().then(value => {
+          if ('error' in value) {
+            return
+          }
+    
+          const {uuid, email, is_admin} = value.data
+        
+          dispatch({
+            type: 'changeUser', 
+            payload: {
+              uuid,
+              email,
+              isAdmin: is_admin,
+              isAuth: true
+            }
+          })
+        }))
+      })
+    } else {
+      loginUser(formData).then(handleLoginUser(dispatch, navigate, params, setAuthError)).then(() => checkUser().then(value => {
+        if ('error' in value) {
+          return
+        }
+  
         const {uuid, email, is_admin} = value.data
+      
         dispatch({
           type: 'changeUser', 
           payload: {
             uuid,
             email,
-            isAdmin: is_admin
+            isAdmin: is_admin,
+            isAuth: true
           }
         })
-
-        loginUser(formData).then(handleLoginUser(dispatch, navigate, params, setAuthError))
-      })
-    } else {
-      loginUser(formData).then(handleLoginUser(dispatch, navigate, params, setAuthError))
+      }))
     }
   }
 

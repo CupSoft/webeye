@@ -4,9 +4,9 @@ import styles from './SourceBadge.module.scss'
 import cn from 'classnames'
 import { SourceCardPropsType } from './SourceBadgeTypes';
 
-const SourceCard = ({uuid, status='OK', name='ВУЗ', rating=4.78, i=0}: SourceCardPropsType) => {
+const SourceCard = ({uuid, status='OK', name='ВУЗ', rating=4.78, i=0, ...props}: SourceCardPropsType) => {
   return (
-    <div className={styles.container}>
+    <div className={styles.container} {...props}>
       <span className={styles.position}>{i + 1}.</span>
       <span className={styles.name}>
         <Link to={SOURCES_ROUTE + '/' + uuid}>{name}</Link>
