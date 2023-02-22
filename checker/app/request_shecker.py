@@ -57,5 +57,7 @@ async def my_request(session, task: Task):
 
 
 async def get_request(session, task: Task) -> Answer:
-    async with session.get(task.url) as resp:
+    async with session.get(task.url, allow_redirects=True) as resp:
+        if resp.status != 200:
+            logging.warning(f"Problem with {task.url} \nStatus: {resp.status} \nText: {await resp.text()}")
         return resp.status
