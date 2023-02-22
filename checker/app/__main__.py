@@ -47,7 +47,7 @@ async def watcher():
         logging.info("Responses received, sending... ")
         await send_answers(answers)
         logging.info("Sending completed")
-        await sleep(3 * 60)
+        await sleep(settings().CHECK_TIMEOUT)
 
 
 async def main():
