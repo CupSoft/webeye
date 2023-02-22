@@ -9,6 +9,7 @@ from app.models_pdc import Proxy
 
 
 class Settings(BaseSettings):
+    CHECK_TIMEOUT: int = 120
     API_HOST: str
     API_PORT: int
     API_LOGIN: str
