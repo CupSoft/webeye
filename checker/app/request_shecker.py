@@ -29,7 +29,7 @@ async def send_answers(answers: list[Answer]):
 
 async def send_answer(session, answer: Answer):
     json = answer.json()
-    print(f"Input json: {json}")
+    logging.info(f"Send. Check_uuid: {answer.check_uuid}")
     async with session.post(URL_SEND_ANSWER, data=json, headers=api_headers) as resp:
         if resp.status != 201:
             print(f"Error status: {resp.status}")
@@ -57,5 +57,7 @@ async def my_request(session, task: Task):
 
 
 async def get_request(session, task: Task) -> Answer:
-    async with session.get(task.url) as resp:
+    async with session.get(task.url, allow_redirects=True, timeout=15, verify_ssl=False) as resp:
+        if resp.status != 200:
+            logging.warning(f"Problem with {task.url} \nStatus: {resp.status} \nText: {await resp.text()}")
         return resp.status
