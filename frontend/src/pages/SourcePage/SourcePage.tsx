@@ -14,7 +14,7 @@ import styles from './SourcePage.module.scss';
 const SourcePage = () => {
   const params = useParams()
   const uuid = params.uuid ?? ''
-  const [timeDelta, setTimeDelta] = useState(172800)
+  const [timeDelta, setTimeDelta] = useState(3600)
   const [maxCount, setMaxCount] = useState(7)
   
   let {data: source, isLoading} = useGetSourceQuery(uuid)
