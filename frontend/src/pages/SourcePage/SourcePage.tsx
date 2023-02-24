@@ -14,7 +14,7 @@ import styles from './SourcePage.module.scss';
 const SourcePage = () => {
   const params = useParams()
   const uuid = params.uuid ?? ''
-  const [timeDelta, setTimeDelta] = useState(3600)
+  const [timeDelta, setTimeDelta] = useState(1)
   const [maxCount, setMaxCount] = useState(7)
   
   let {data: source, isLoading} = useGetSourceQuery(uuid)
@@ -48,7 +48,7 @@ const SourcePage = () => {
       <StateChart 
         sourceUuid={source.uuid}
         max_count={maxCount}
-        timedelta={timeDelta}
+        timedelta={+(timeDelta * 3600).toFixed(0)}
       />
       <div className={styles.inputs}>
         <div className={styles.col}>
@@ -56,10 +56,10 @@ const SourcePage = () => {
           <input 
             type="range" 
             name="timedelta" 
-            min={300}
+            min={5 / 60}
             defaultValue={timeDelta}
             onChange={(event) => setTimeDelta(+event.target.value)}
-            max={172800}
+            max={24 * 2}
           />
         </div>
         <div className={styles.col}>

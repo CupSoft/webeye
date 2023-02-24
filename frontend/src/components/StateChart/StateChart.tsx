@@ -20,19 +20,20 @@ const StateChart = ({sourceUuid, max_count=7, timedelta=3600}: StateChartPropsTy
       let end_datetime = ''
 
       const date = new Date(obj.end_datetime)
-      const ago = (Date.now() - Date.parse(obj.end_datetime)) / 1000 / 3600
+      const now = new Date()
 
-      if (ago < 24) {
+      if (now.getDate() === date.getDate()
+        && now.getMonth() === date.getMonth()
+        && now.getFullYear() === date.getFullYear()) {
         end_datetime = date.toLocaleTimeString().slice(0, -3)
       } else {
-        if (ago < 8760) {
+        if (now.getFullYear() === date.getFullYear()) {
           const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
           end_datetime = date.getDate() + ' ' + monthNames[date.getMonth()]
         } else {
           end_datetime = date.toLocaleDateString()
         }
       }
-      
 
       return {...obj, end_datetime}
     })
