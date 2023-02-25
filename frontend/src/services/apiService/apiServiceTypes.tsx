@@ -86,7 +86,7 @@ export type ReportRequestTypes = {
 }
 
 export type GetCheckResultsResponseTypes = {
-  datetime: string;
+  end_datetime: string;
   ok: number;
   partial: number;
   critical: number;
