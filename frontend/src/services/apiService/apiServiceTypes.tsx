@@ -70,6 +70,7 @@ export type SubscriptionGetResponseTypes = {
   to_telegram: boolean;
   to_email: boolean;
   uuid: string;
+  resource_uuid?: string;
 }
 
 export type ReviewRequestTypes = {

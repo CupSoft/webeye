@@ -63,10 +63,10 @@ export const api = createApi({
         headers: {'Content-Type': 'application/json'}
       })
     }),
-    getSubscriptions: builder.query<SubscriptionGetResponseTypes[], string>({
-      query: (resource_id) => ({ 
+    getSubscriptions: builder.mutation<SubscriptionGetResponseTypes[], string>({
+      query: (resource_uuid) => ({ 
         url: baseUrl + `auth/users/me/subscriptions`,
-        params: {resource_id}
+        params: {resource_uuid}
       })
     }),
     postReview: builder.mutation<void, ReviewRequestTypes>({
@@ -106,7 +106,7 @@ export const { useCheckUserMutation } = api
 export const { useGetAllSocialReportsQuery } = api
 export const { useGetAllReviewsQuery } = api
 export const { usePostSubscriptionsMutation } = api
-export const { useGetSubscriptionsQuery } = api
+export const { useGetSubscriptionsMutation } = api
 export const { usePatchSubscriptionsMutation } = api
 export const { usePostReportMutation } = api
 export const { usePostReviewMutation } = api
