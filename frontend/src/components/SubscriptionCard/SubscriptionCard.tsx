@@ -31,10 +31,17 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
       }
 
       const curSubs = value.data[0]
-
+      
       if (!curSubs) {
         postSubscriptions({
           ...subs, resource_uuid: sourceUuid
+        }).then(value => {
+          if ('error' in value) {
+            toast('Не уадлось получить ваши подписки')
+            return
+          }
+
+          setSubs(value.data)
         })
       } else {
         setSubs({
