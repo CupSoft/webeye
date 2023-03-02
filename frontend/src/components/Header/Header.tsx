@@ -1,12 +1,12 @@
-import styles from './Header.module.scss';
-import cn from 'classnames'
+import cn from 'classnames';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { AUTH_ROUTE, MAIN_ROUTE, SOURCES_ROUTE, TG_BOT_LINK } from '../../utils/constants';
-import Button from '../UI/Button/Button';
+import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { userSelector } from '../../app/selectors/userSelector';
 import { useGetBotTokenMutation } from '../../services/apiService/apiService';
-import { toast } from 'react-toastify';
+import { AUTH_ROUTE, MAIN_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
+import Button from '../UI/Button/Button';
+import styles from './Header.module.scss';
 
 const Header = () => {
   const navigate = useNavigate()
