@@ -38,11 +38,13 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
     }
     console.log(subs)
     if (subs?.length === 0 || subs === undefined) {
+      console.log('post')
       postSubscriptions({
         resource_uuid: sourceUuid,
         to_email,
         to_telegram
       }).then(value => {
+        console.log('post finished')
         if ('error' in value) {
           toast('Не удалось подписаться - подпишитесь повторно!')
           return
@@ -55,11 +57,13 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
       return;
     }
 
+    console.log('patch')
     patchSubscriptions({
       to_email,
       to_telegram,
       uuid: subs[0].uuid
     }).then(value => {
+      console.log('patch finished')
       if ('error' in value) {
         toast('Не удалось подписаться - подпишитесь повторно!')
         return
