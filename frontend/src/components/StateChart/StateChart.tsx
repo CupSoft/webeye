@@ -1,5 +1,6 @@
 import { CartesianGrid, Legend, Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useGetAllCheckResultsQuery } from '../../services/apiService/apiService';
+import { GetCheckResultsResponseTypes } from '../../services/apiService/apiServiceTypes';
 import styles from './StateChart.module.scss';
 import { StateChartPropsType } from './StateChartTypes';
 
@@ -10,12 +11,40 @@ const StateChart = ({sourceUuid, max_count=7, timedelta=3600}: StateChartPropsTy
     return null
   }
 
+  function normalizeData(data: GetCheckResultsResponseTypes[] | undefined): GetCheckResultsResponseTypes[] {
+    if (!data) {
+      return []
+    }
+
+    return data.map(obj => {
+      let end_datetime = ''
+
+      const date = new Date(obj.end_datetime)
+      const now = new Date()
+
+      if (now.getDate() === date.getDate()
+        && now.getMonth() === date.getMonth()
+        && now.getFullYear() === date.getFullYear()) {
+        end_datetime = date.toLocaleTimeString().slice(0, -3)
+      } else {
+        if (now.getFullYear() === date.getFullYear()) {
+          const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+          end_datetime = date.getDate() + ' ' + monthNames[date.getMonth()]
+        } else {
+          end_datetime = date.toLocaleDateString()
+        }
+      }
+
+      return {...obj, end_datetime}
+    })
+  }
+
   return (
     <ResponsiveContainer 
       className={styles.chart_container}
     >
         <BarChart
-          data={data}
+          data={normalizeData(data)}
           margin={{
             top: 10,
             right: 30,

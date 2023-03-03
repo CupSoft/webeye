@@ -1,10 +1,11 @@
 import cn from 'classnames';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAppSelector } from '../../app/hooks';
 import { userSelector } from '../../app/selectors/userSelector';
-import { useGetBotTokenMutation, useGetSubscriptionsQuery, usePatchSubscriptionsMutation, usePostSubscriptionsMutation } from '../../services/apiService/apiService';
-import { AUTH_ROUTE, SOURCES_ROUTE, TG_BOT_LINK } from '../../utils/constants';
+import { useGetBotTokenMutation, useGetSubscriptionsMutation, usePatchSubscriptionsMutation, usePostSubscriptionsMutation } from '../../services/apiService/apiService';
+import { AUTH_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
 import Card from '../Card/Card';
 import styles from './SubscriptionCard.module.scss';
 import { SubscriptionCardPropsType } from './SubscriptionCardTypes';
@@ -12,59 +13,61 @@ import { SubscriptionCardPropsType } from './SubscriptionCardTypes';
 const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => {
   const {isAuth} = useAppSelector(userSelector)
   const navigate = useNavigate()
+  const [subs, setSubs] = useState({to_email: false, to_telegram: false, uuid: ''})
   const [postSubscriptions] = usePostSubscriptionsMutation()
   const [patchSubscriptions] = usePatchSubscriptionsMutation()
-  let {data: subs, isLoading} = useGetSubscriptionsQuery(sourceUuid)
+  let [getSubscriptions] = useGetSubscriptionsMutation()
   const [getBotToken] = useGetBotTokenMutation()
-
-  if (isLoading) {
-    return null
-  }
 
   function authClickHandler() {
     navigate(AUTH_ROUTE + `?next_page=${SOURCES_ROUTE + '/' + sourceUuid}`)
   }
 
-  function onCheckChange(event: any) {
-    let to_email
-    let to_telegram
-
-    if (event.target.name === 'bot_sub') {
-      to_email = (event.target.parentElement?.parentElement?.querySelector('#email_sub') as HTMLInputElement)?.checked
-      to_telegram = event.target.checked
-    } else {
-      to_email = event.target.checked
-      to_telegram = (event.target.parentElement?.parentElement?.querySelector('#bot_sub') as HTMLInputElement)?.checked
-    }
-    console.log(subs)
-    if (subs?.length === 0 || subs === undefined) {
-      postSubscriptions({
-        resource_uuid: sourceUuid,
-        to_email,
-        to_telegram
-      }).then(value => {
-        if ('error' in value) {
-          toast('Не удалось подписаться - подпишитесь повторно!')
-          return
-        }
-        const {to_email, to_telegram, uuid} = value.data
-        subs = [{to_email, to_telegram, uuid}]
-        toast('Вы успешно подписались!')
-      })
-
-      return;
-    }
-
-    patchSubscriptions({
-      to_email,
-      to_telegram,
-      uuid: subs[0].uuid
-    }).then(value => {
+  useEffect(() => {
+    getSubscriptions(sourceUuid).then(value => {
       if ('error' in value) {
-        toast('Не удалось подписаться - подпишитесь повторно!')
         return
       }
-      toast('Вы успешно подписались!')
+
+      const curSubs = value.data[0]
+      
+      if (!curSubs) {
+        postSubscriptions({
+          ...subs, resource_uuid: sourceUuid
+        }).then(value => {
+          if ('error' in value) {
+            toast('Не уадлось получить ваши подписки')
+            return
+          }
+
+          setSubs(value.data)
+        })
+      } else {
+        setSubs({
+          to_email: curSubs.to_email, 
+          to_telegram: curSubs.to_telegram,
+          uuid: curSubs.uuid
+        })
+      }
+    })
+  }, [])
+
+  function onCheckChange(event: React.ChangeEvent<HTMLInputElement>) {
+    if (!isAuth) {
+      event.preventDefault();
+      return
+    }
+
+    const newSubs = {...subs, [event.target.name]: event.target.checked}
+    setSubs(newSubs)
+    patchSubscriptions({
+      ...newSubs
+    }).then(value => {
+      if ('error' in value) {
+        toast('Не удалось обновить ваши подписки')
+        return
+      }
+      toast('Ваши подписки успешно обновлены')
     })
   }
 
@@ -101,35 +104,38 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
     >
       <>
         <label 
-          htmlFor="bot_sub" 
+          htmlFor="to_telegram" 
           className={cn(styles.checkbox_label, !isAuth && styles.not_auth)}
         >
           <input 
             className={styles.checkbox}
             type="checkbox"
-            name="bot_sub"
-            onClick={onCheckChange}
-            id="bot_sub"
-            defaultChecked={subs && !!subs[0]?.to_telegram}
+            name="to_telegram"
+            onChange={onCheckChange}
+            id="to_telegram"
+            checked={subs.to_telegram}
           />
           <span className={cn(styles.checkbox_text, 'noselect')}>
             Получать уведомления посредством телеграм бота
             <i 
               className={styles.tg_description}
-            >*не забудьте авторизоваться в<u onClick={botClickHandler}>телеграм боте</u></i>
+            >*не забудьте авторизоваться в<u 
+              onClick={botClickHandler}
+              className={cn(!isAuth && styles.not_bot_auth)}
+            >телеграм боте</u></i>
           </span>
         </label>
         <label 
-          htmlFor="email_sub" 
+          htmlFor="to_email" 
           className={cn(styles.checkbox_label, !isAuth && styles.not_auth)}
         >
           <input
             className={styles.checkbox}
             type="checkbox"
-            name="email_sub"
+            name="to_email"
             onChange={onCheckChange}
-            id="email_sub"
-            defaultChecked={subs && !!subs[0]?.to_email}
+            id="to_email"
+            checked={subs.to_email}
           />
           <span className={cn(styles.checkbox_text, 'noselect')}>
             Получать уведомления по почте

@@ -70,6 +70,7 @@ export type SubscriptionGetResponseTypes = {
   to_telegram: boolean;
   to_email: boolean;
   uuid: string;
+  resource_uuid?: string;
 }
 
 export type ReviewRequestTypes = {
@@ -86,7 +87,7 @@ export type ReportRequestTypes = {
 }
 
 export type GetCheckResultsResponseTypes = {
-  datetime: string;
+  end_datetime: string;
   ok: number;
   partial: number;
   critical: number;

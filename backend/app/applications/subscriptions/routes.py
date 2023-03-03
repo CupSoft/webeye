@@ -102,7 +102,7 @@ async def update_subscription(
             detail="The subscription with this uuid does not exist",
         )
 
-    if (subscription.user != current_user) and (not current_user.is_admin):
+    if (subscription.user_id != current_user.uuid) and (not current_user.is_admin):
         raise HTTPException(
             status_code=403,
             detail="You do not have access to this subscription",
