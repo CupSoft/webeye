@@ -26,7 +26,6 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
   useEffect(() => {
     getSubscriptions(sourceUuid).then(value => {
       if ('error' in value) {
-        toast('Не удалось получить ваши подписки')
         return
       }
 
@@ -54,6 +53,11 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
   }, [])
 
   function onCheckChange(event: React.ChangeEvent<HTMLInputElement>) {
+    if (!isAuth) {
+      event.preventDefault();
+      return
+    }
+
     const newSubs = {...subs, [event.target.name]: event.target.checked}
     setSubs(newSubs)
     patchSubscriptions({
@@ -115,7 +119,10 @@ const SubscriptionCard = ({sourceUuid, ...props}: SubscriptionCardPropsType) => 
             Получать уведомления посредством телеграм бота
             <i 
               className={styles.tg_description}
-            >*не забудьте авторизоваться в<u onClick={botClickHandler}>телеграм боте</u></i>
+            >*не забудьте авторизоваться в<u 
+              onClick={botClickHandler}
+              className={cn(!isAuth && styles.not_bot_auth)}
+            >телеграм боте</u></i>
           </span>
         </label>
         <label 

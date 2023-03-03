@@ -12,6 +12,10 @@
   u {
     cursor: pointer;
   }
+
+  u.not_bot_auth {
+    cursor: default;
+  }
 }
 
 .tg_description, .tg_description * {
