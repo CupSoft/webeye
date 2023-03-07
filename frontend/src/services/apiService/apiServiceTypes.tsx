@@ -106,3 +106,8 @@ export type GetBotTokenResponseTypes = {
 export type AdminPostResourceTypes = {
   name: string;
 }
+
+export type ResourceNode = {
+  url: string,
+  uuid: string
+}

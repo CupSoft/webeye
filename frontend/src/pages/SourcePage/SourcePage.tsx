@@ -7,7 +7,7 @@ import StateChart from '../../components/StateChart/StateChart';
 import SubscriptionCard from '../../components/SubscriptionCard/SubscriptionCard';
 import Button from '../../components/UI/Button/Button';
 import UsersReviewsCard from '../../components/UsersReviewsCard/UsersReviewsCard';
-import { useGetSourceQuery } from '../../services/apiService/apiService';
+import { useGetAllResourceNodesQuery, useGetSourceQuery } from '../../services/apiService/apiService';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import styles from './SourcePage.module.scss';
 
@@ -17,15 +17,18 @@ const SourcePage = () => {
   const [timeDelta, setTimeDelta] = useState(2)
   const [maxCount, setMaxCount] = useState(7)
   
-  let {data: source, isLoading} = useGetSourceQuery(uuid)
+  const {data: source, isLoading: isSourceLoading} = useGetSourceQuery(uuid)
+  const {data: resourceNodes, isLoading} = useGetAllResourceNodesQuery(uuid)
   
   if (!source) {
     return <NotFoundPage/>
   }
 
-  if (isLoading) {
+  if (isSourceLoading || isLoading) {
     return null;
   }
+
+  console.log(resourceNodes)
   function summaryClickHandler() {
     window.open(`${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/resources/${uuid}/stats/export`, '_blank')
   }
@@ -45,6 +48,14 @@ const SourcePage = () => {
           <span className={styles.download_btn}>Получить отчёт</span>
         </Button>
       </div>
+      <a 
+        href={resourceNodes ? resourceNodes[0].url : '#'}
+        rel="noreferrer"
+        target='_blank'
+        className={styles.to_site}
+      >
+        <u>Посмотреть сайт</u>
+      </a>
       <StateChart 
         sourceUuid={source.uuid}
         max_count={maxCount}
