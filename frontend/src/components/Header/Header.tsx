@@ -27,6 +27,10 @@ const Header = () => {
   }
 
   function botClickHandler() {
+    if (!isAuth) {
+      window.open(`${process.env.REACT_APP_BOT_LINK}`, '_blank')
+      return
+    }
     getBotToken().then(value => {
       if ('error' in value) {
         toast('Ошибка авторизации бота!')
