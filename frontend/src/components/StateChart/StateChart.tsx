@@ -1,14 +1,19 @@
+import { useState } from 'react';
 import { CartesianGrid, Legend, Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Rectangle } from 'recharts';
 import { useGetAllCheckResultsQuery } from '../../services/apiService/apiService';
 import { GetCheckResultsResponseTypes } from '../../services/apiService/apiServiceTypes';
+import ChartLoader from '../ChartLoader/ChartLoader';
 import styles from './StateChart.module.scss';
 import { StateChartPropsType } from './StateChartTypes';
 
 const StateChart = ({sourceUuid, max_count=7, timedelta=3600}: StateChartPropsType) => {
+  const [isMyLoading, setIsMyLoading] = useState(true)
   const {data, isLoading} = useGetAllCheckResultsQuery({max_count, timedelta, source_uuid: sourceUuid});
 
-  if (isLoading) {
-    return null
+  setTimeout(() => setIsMyLoading(false), 2000)
+
+  if (isLoading || isMyLoading) {
+    return <ChartLoader/>
   }
 
   function normalizeData(data: GetCheckResultsResponseTypes[] | undefined): GetCheckResultsResponseTypes[] {
