@@ -5,7 +5,8 @@ type InputValidationOptions = {
   minLength?: number,
   maxLength?: number,
   required?: boolean,
-  pattern?: RegExp
+  pattern?: RegExp,
+  onChange?: () => void
 }
 export type InputPropsType = React.InputHTMLAttributes<HTMLInputElement> & React.ClassAttributes<HTMLInputElement> & {
   options: InputValidationOptions,
