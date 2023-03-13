@@ -1,6 +1,9 @@
 FROM node:14-alpine AS builder
+
 WORKDIR /app
-COPY package.json ./
+
+COPY package.json .
+COPY package-lock.json .
 RUN npm install
 
 
@@ -11,6 +14,10 @@ ARG REACT_APP_BOT_LINK
 ENV REACT_APP_API_HOST=$REACT_APP_API_HOST
 ENV REACT_APP_API_PORT=$REACT_APP_API_PORT
 ENV REACT_APP_BOT_LINK=$REACT_APP_BOT_LINK
-COPY . .
 
-CMD npm start
+COPY . .
+RUN npm run build
+
+EXPOSE 3000
+
+CMD npm run serve
