@@ -45,8 +45,7 @@ class Resource(BaseModel):
         }
         async for node in self.nodes:
             async for check in node.checks:
-                results = await check.results
-                results = sorted(results, key=lambda r: r.datetime, reverse=True)[:10]
+                results = await check.results.order_by('-datetime').limit(10)
                 for result in results:
                     status_count[result.status] += 1 
 
