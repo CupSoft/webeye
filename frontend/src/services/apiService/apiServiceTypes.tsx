@@ -19,6 +19,7 @@ export type SourceGetTypes = {
   status: 'OK' | 'partial' | 'critical';
   uuid: string;
   rating: number;
+  url: string;
 }
 
 export type SourceGetRequestTypes = {

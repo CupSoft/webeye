@@ -7,7 +7,7 @@ import StateChart from '../../components/StateChart/StateChart';
 import SubscriptionCard from '../../components/SubscriptionCard/SubscriptionCard';
 import Button from '../../components/UI/Button/Button';
 import UsersReviewsCard from '../../components/UsersReviewsCard/UsersReviewsCard';
-import { useGetAllResourceNodesQuery, useGetSourceQuery } from '../../services/apiService/apiService';
+import { useGetSourceQuery } from '../../services/apiService/apiService';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import styles from './SourcePage.module.scss';
 
@@ -18,17 +18,15 @@ const SourcePage = () => {
   const [maxCount, setMaxCount] = useState(7)
   
   const {data: source, isLoading: isSourceLoading} = useGetSourceQuery(uuid)
-  const {data: resourceNodes, isLoading} = useGetAllResourceNodesQuery(uuid)
   
+  if (isSourceLoading) {
+    return null;
+  }
+
   if (!source) {
     return <NotFoundPage/>
   }
 
-  if (isSourceLoading || isLoading) {
-    return null;
-  }
-
-  console.log(resourceNodes)
   function summaryClickHandler() {
     window.open(`${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/resources/${uuid}/stats/export`, '_blank')
   }
@@ -49,7 +47,7 @@ const SourcePage = () => {
         </Button>
       </div>
       <a 
-        href={resourceNodes ? resourceNodes[0].url : '#'}
+        href={source ? source.url : '#'}
         rel="noreferrer"
         target='_blank'
         className={styles.to_site}
