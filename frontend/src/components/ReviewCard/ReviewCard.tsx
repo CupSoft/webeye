@@ -38,12 +38,12 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
     if (btnType === 'unavailable') {
       postReport({status: 'critical', is_moderated: false, resource_uuid: sourceUuid}).then(value => {
         if ('error' in value) {
-          toast("Ошибка при отправлении сообщения! Отправьте его повторно")
+          toast("Ошибка при отправлении сообщения")
           return
         }
 
         setIsSayUnavailable(true)
-        toast("Сообщение успешно отправлено!")
+        toast("Сообщение успешно отправлено")
 
         localStorage.setItem('unavailable_value', '')
         // setUnavailableValue('')
@@ -55,7 +55,7 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
         resource_uuid: sourceUuid
       }).then(value => {
         if ('error' in value) {
-          toast('Ошибка при отправлении отзыва! Отправьте его повторно')
+          toast('Ошибка при отправлении отзыва')
           return
         }
 
@@ -70,8 +70,12 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
   }
 
   function onStarsChange(event: React.ChangeEvent<HTMLInputElement>) {
-    localStorage.setItem('stars_value', event.target.value)
-    setStarsValue(event.target.value)
+    const value = event.target.value
+    if (value !== '' && (value.length > 1 || +value > 5 || +value < 1)) {
+      return
+    }
+    localStorage.setItem('stars_value', value)
+    setStarsValue(value)
   }
 
   function onReviewChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
