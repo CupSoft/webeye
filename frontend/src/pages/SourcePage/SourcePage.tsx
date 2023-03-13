@@ -47,7 +47,7 @@ const SourcePage = () => {
         </Button>
       </div>
       <a 
-        href={source ? source.url : '#'}
+        href={source.url ?? '#'}
         rel="noreferrer"
         target='_blank'
         className={styles.to_site}
