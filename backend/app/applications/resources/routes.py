@@ -27,7 +27,12 @@ from fastapi import APIRouter, HTTPException, Depends
 
 from pydantic import UUID4
 
+import pandas as pd
+
+import pdfkit as pdf
+
 import logging
+
 
 logger = logging.getLogger(__name__)
 
@@ -325,7 +330,7 @@ async def read_resource_reviews(
     """
     Export resource recent checks by uuid.
     """
-    resource = await Resource.filter(uuid=uuid).prefetch_related("nodes").first()
+    resource = await Resource.filter(uuid=uuid).first()
 
     if resource is None:
         raise HTTPException(
@@ -333,12 +338,9 @@ async def read_resource_reviews(
             detail="The resource with this uuid does not exist",
         )
 
-    res = []
-    for review in resource.reviews:
-        review_dict = await review.to_dict()
-        res.append(ReviewOut(**review_dict, resource_uuid=resource.uuid))
+    results = await CheckResult.filter(parent_check__resource_node__resource__uuid=uuid).order_by('-datetime').limit(100)
 
-    return res
+    return None
 
 
 @router.get("/nodes/", response_model=List[ResourceNodeOutWithResourceUUID], status_code=200)
