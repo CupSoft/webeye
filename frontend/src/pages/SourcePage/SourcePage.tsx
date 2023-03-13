@@ -43,18 +43,18 @@ const SourcePage = () => {
           {uuid ? source.name : 'Ресурс'}
         </h1>
         <span className={styles.rating}>{source.rating}</span>
+        <a 
+          href={source.url ?? '#'}
+          rel="noreferrer"
+          target='_blank'
+          className={styles.to_site}
+        >
+          <u>Посмотреть сайт</u>
+        </a>
         <Button btnType='turquoise' onClick={summaryClickHandler}>
           <span className={styles.download_btn}>Получить отчёт</span>
         </Button>
       </div>
-      <a 
-        href={source.url ?? '#'}
-        rel="noreferrer"
-        target='_blank'
-        className={styles.to_site}
-      >
-        <u>Посмотреть сайт</u>
-      </a>
       <StateChart 
         sourceUuid={source.uuid}
         max_count={maxCount}

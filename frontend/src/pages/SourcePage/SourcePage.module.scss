@@ -4,7 +4,7 @@
   align-self: center;
 
   .title {
-    @apply flex flex-wrap flex-row items-center w-full pt-1 pr-7;
+    @apply flex flex-wrap flex-row items-center w-full pt-1 px-7;
     /* max-width: 105rem; */
   }
 
@@ -44,7 +44,7 @@
   }
 
   .to_site {
-    @apply w-full text-left pl-2.5 pb-1;
+    @apply pl-2.5 pb-1;
     * {
       cursor: pointer;
     }
