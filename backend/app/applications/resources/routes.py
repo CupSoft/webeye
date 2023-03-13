@@ -318,6 +318,29 @@ async def read_resource_reviews(
     return res
 
 
+@router.get("/{uuid}/export", response_model=List[ReviewOut], status_code=200)
+async def read_resource_reviews(
+    uuid: UUID4,
+):
+    """
+    Export resource recent checks by uuid.
+    """
+    resource = await Resource.filter(uuid=uuid).prefetch_related("nodes").first()
+
+    if resource is None:
+        raise HTTPException(
+            status_code=404,
+            detail="The resource with this uuid does not exist",
+        )
+
+    res = []
+    for review in resource.reviews:
+        review_dict = await review.to_dict()
+        res.append(ReviewOut(**review_dict, resource_uuid=resource.uuid))
+
+    return res
+
+
 @router.get("/nodes/", response_model=List[ResourceNodeOutWithResourceUUID], status_code=200)
 async def read_resources_nodes(
     skip: int = 0,
