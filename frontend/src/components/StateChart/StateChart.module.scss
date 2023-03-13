@@ -10,3 +10,8 @@
   min-height: 15rem;
   max-width: 105rem;
 }
+
+.gap {
+  @apply stroke-gray-dark hover:stroke-none;
+  stroke-width: .5rem;
+}
