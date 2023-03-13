@@ -44,7 +44,7 @@ async def read_resources(skip: int = 0, limit: int = 100):
     """
     Get resource list.
     """
-    resources = await Resource.all().prefetch_related("reviews").limit(limit).offset(skip)
+    resources = await Resource.all().prefetch_related("reviews").prefetch_related("").limit(limit).offset(skip)
     resources = sorted(resources, key=lambda r: len(r.reviews), reverse=True)
     res = []
     for resource in resources:
