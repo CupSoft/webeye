@@ -94,3 +94,6 @@ XlsxWriter
 yarl
 zipp
 python-decouple
+pandas
+pdfkit
+numpy
