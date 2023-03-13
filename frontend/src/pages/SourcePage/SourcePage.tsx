@@ -32,6 +32,10 @@ const SourcePage = () => {
     window.open(`${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/resources/${uuid}/stats/export`, '_blank')
   }
 
+  function siteOpenClickHandler() {
+    window.open(source?.url ?? '#', '_blank')
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.title}>
@@ -43,17 +47,14 @@ const SourcePage = () => {
           {uuid ? source.name : 'Ресурс'}
         </h1>
         <span className={styles.rating}>{source.rating}</span>
-        <a 
-          href={source.url ?? '#'}
-          rel="noreferrer"
-          target='_blank'
-          className={styles.to_site}
-        >
-          <u>Посмотреть сайт</u>
-        </a>
-        <Button btnType='turquoise' onClick={summaryClickHandler}>
-          <span className={styles.download_btn}>Получить отчёт</span>
-        </Button>
+        <span>
+          <Button btnType='yellow' onClick={siteOpenClickHandler}>
+          <span className={styles.to_site}></span>
+          </Button>
+          <Button btnType='turquoise' onClick={summaryClickHandler}>
+            <span className={styles.download_btn}></span>
+          </Button>
+        </span>
       </div>
       <StateChart 
         sourceUuid={source.uuid}

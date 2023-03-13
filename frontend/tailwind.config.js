@@ -18,7 +18,8 @@ module.exports = {
         'focus-input': '#2C3854',
         'light-gray-card': '#282D45',
         'light-text': '#949EB5',
-        'turquoise': '#48A3D6'
+        'turquoise': '#48A3D6',
+        'yellow': '#FBFE72'
       },
       transitionTimingFunction: {
         DEFAULT: 'ease-in-out'

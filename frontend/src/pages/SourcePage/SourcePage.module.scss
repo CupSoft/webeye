@@ -43,13 +43,6 @@
     border-color: #ffff00;
   }
 
-  .to_site {
-    @apply pl-2.5 pb-1;
-    * {
-      cursor: pointer;
-    }
-  }
-
   .rating {
     @apply text-left text-4xl font-bold mt-1 ml-1 pl-1.5 mr-auto;
     white-space: nowrap;
@@ -76,7 +69,9 @@
   .cards {
     @apply flex flex-row flex-wrap justify-center w-full pt-3;
   }
-
+  .download_btn:before {
+    content: 'Получить отчёт'
+  }
   .download_btn:after {
     @apply bg-gray-50;
     content: '.';
@@ -91,9 +86,33 @@
     -webkit-mask-size: cover;
     mask-size: cover;
   }
+  .to_site:before {
+    content: 'Посмотреть сайт';
+  }
+  .to_site:after {
+    @apply bg-gray-50;
+    content: '.';
+    color: rgba(0, 0, 0, 0);
+    height: 1.3rem;
+    width: 1.3rem;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 -.05rem 0 .6rem;
+    -webkit-mask: url('./../../assets/eyeIcon.svg') no-repeat 50% 50%;
+    mask: url('./../../assets/eyeIcon.svg') no-repeat 50% 50%;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+  }
 }
 
 @media (max-width: 425px) {
+  .download_btn:before, .to_site:before {
+    content: '' !important;
+  }
+  .download_btn:after, .to_site:after {
+    margin-right: .2rem !important;
+    margin-left: .2rem !important;
+  }
   .rating {
     font-size: 2rem !important;
     padding-bottom: .45rem;
