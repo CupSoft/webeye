@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { BaseSyntheticEvent, RefObject, useRef, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks';
@@ -14,6 +14,7 @@ const AuthPage = () => {
   const [registerUser] = useRegisterUserMutation()
   const [loginUser] = useLoginUserMutation()
   const [checkUser] = useCheckUserMutation()
+  const formRef = useRef<HTMLFormElement>(null)
   const {
     register,
     handleSubmit,
@@ -24,7 +25,21 @@ const AuthPage = () => {
   const navigate = useNavigate()
   const params = new URLSearchParams(window.location.search)
 
-  function onSubmit(data: FieldValues, type: 'login' | 'registr') {
+  function onEnterDownHanlder(evt: React.KeyboardEvent) {
+    if (evt.key !== 'Enter') {
+      return
+    }
+    handleSubmit((data) => onSubmit(data, evt, 'empty'))()
+  }
+
+  function onSubmit(
+    data: FieldValues, 
+    evt: React.KeyboardEvent | BaseSyntheticEvent<object, any, any> | undefined, type: 'login' | 'registr' | 'empty'
+  ) {
+    if (type === 'empty') {
+      return
+    }
+
     const formData = new FormData()
 
     formData.set('username', data.email)
@@ -80,6 +95,8 @@ const AuthPage = () => {
     <div className={styles.container}>
       <form 
         className={styles.form}
+        onKeyDown={onEnterDownHanlder}
+        ref={formRef}
       >
         <span className="auth_error">{authError}</span>
         <div className={styles.inputs}>
@@ -87,7 +104,8 @@ const AuthPage = () => {
             options={{
               minLength: 1,
               required: true,
-              pattern: emailPattern
+              pattern: emailPattern,
+              onChange: () => setAuthError('')
             }}
             register={register}
             placeholder="E-mail..."
@@ -96,7 +114,8 @@ const AuthPage = () => {
           <Input
             options={{
               minLength: 1,
-              required: true
+              required: true,
+              onChange: () => setAuthError('')
             }}
             type='password'
             register={register}
@@ -106,20 +125,21 @@ const AuthPage = () => {
         </div>
         <div className={styles.btns}>
           <Button 
-            disabled={!isValid} 
-            size='lg' 
-            squared={true}
-            onClick={handleSubmit((data) => onSubmit(data, 'registr'))}
-            id={styles.register_btn}
-          >Зарегистрироваться</Button>
-          <Button 
             disabled={!isValid}
             btnType='purple' 
             size='lg' 
-            onClick={handleSubmit((data) => onSubmit(data, 'login'))}
+            onClick={handleSubmit((data, evt) => onSubmit(data, evt, 'login'))}
             squared={true}
+            type='submit'
             id={styles.login_btn}
           >Войти</Button>
+          <Button 
+            disabled={!isValid} 
+            size='lg' 
+            squared={true}
+            onClick={handleSubmit((data, evt) => onSubmit(data, evt, 'registr'))}
+            id={styles.register_btn}
+          >Зарегистрироваться</Button>
         </div>
       </form>
     </div>
