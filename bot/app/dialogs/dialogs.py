@@ -57,6 +57,7 @@ async def handle_ping(message: Message):
 
 
 async def error_handler(event, dialog_manager: DialogManager):
+    logging.error(event.exception)
     if isinstance(event.exception, UnknownIntent):
         # Handling an error related to an outdated callback
         await handle_start_query(event.update.callback_query, dialog_manager)

@@ -1,4 +1,4 @@
-import { CartesianGrid, Legend, Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { CartesianGrid, Legend, Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Rectangle } from 'recharts';
 import { useGetAllCheckResultsQuery } from '../../services/apiService/apiService';
 import { GetCheckResultsResponseTypes } from '../../services/apiService/apiServiceTypes';
 import styles from './StateChart.module.scss';
@@ -57,9 +57,9 @@ const StateChart = ({sourceUuid, max_count=7, timedelta=3600}: StateChartPropsTy
           <YAxis stroke='#c5c5c5'/>
           <Tooltip wrapperClassName={styles.chart_tooltip}/>
           <Legend />
-          <Bar type="linear" dataKey="ok" stackId='1' stroke="#0DC268" fill="#0DC268" />
-          <Bar type="monotone" dataKey="partial" stackId='1' stroke="#FF9E00" fill="#FF9E00" />
-          <Bar type="monotone" dataKey="critical" stackId='1' stroke="#ED0A34" fill="#ED0A34" />
+          <Bar className={styles.gap} type="linear" dataKey="ok" stackId='1' fill="#0DC268" />
+          <Bar className={styles.gap} type="monotone" dataKey="partial" stackId='1' fill="#FF9E00" />
+          <Bar className={styles.gap} type="monotone" dataKey="critical" stackId='1' fill="#ED0A34"/>
         </BarChart>
       </ResponsiveContainer>
   );

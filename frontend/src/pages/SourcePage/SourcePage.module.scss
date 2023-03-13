@@ -41,6 +41,10 @@
     border-color: #ffff00;
   }
 
+  .to_site {
+    @apply w-full text-left pl-5;
+  }
+
   .rating {
     @apply text-left text-4xl font-bold mt-1 ml-1 pl-1.5 mr-auto;
     white-space: nowrap;
