@@ -4,7 +4,7 @@ import styles from './App.module.scss';
 import { useAppDispatch } from './app/hooks';
 import AppRouter from './components/AppRouter/AppRouter';
 import Header from './components/Header/Header';
-import ColorCircles from './components/UI/ColorCircles/ColorCircles';
+import ColorCircle from './components/UI/ColorCircle/ColorCircle';
 import { useCheckUserMutation } from './services/apiService/apiService';
 
 let prevPageX = 0
@@ -67,7 +67,8 @@ function App() {
           pauseOnHover
           theme="dark"
         />
-        <ColorCircles moveIndicator={moveIndicator}/>
+        <ColorCircle color='blue' position='left' moveIndicator={moveIndicator}/>
+        <ColorCircle color='yellow' position='right' moveIndicator={moveIndicator}/>
     </div>
   );
 }
