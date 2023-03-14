@@ -1,9 +1,8 @@
 import { useGetAllReviewsQuery } from '../../services/apiService/apiService';
-import { ReviewGetTypes } from '../../services/apiService/apiServiceTypes';
 import Card from '../Card/Card';
 import UserReviewBadge from '../UserReviewBadge/UserReviewBadge';
+import styles from './UsersReviewsCard.module.scss';
 import { UsersReviewsCardPropsType } from './UsersReviewsCardTypes';
-import styles from './UsersReviewsCard.module.scss'
 
 const UsersReviewsCard = ({sourceUuid, ...props}: UsersReviewsCardPropsType) => {
   const {data: reviews, isLoading} = useGetAllReviewsQuery(sourceUuid)

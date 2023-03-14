@@ -6,7 +6,7 @@ const SourcesLoader = () => {
     <ContentLoader 
       speed={2}
       width='100%'
-      height='37rem'
+      height='30rem'
       backgroundColor="#1c253d"
       foregroundColor="#2f364e"
       style={{

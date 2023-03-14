@@ -10,3 +10,33 @@
 .wrapper {
   @apply flex flex-row;
 }
+
+.delete_btn {
+  @apply -ml-12;
+  *:before {
+    content: 'Удалить ресурс';
+  }
+  *:after {
+    content: '.';
+    color: rgba(0, 0, 0, 0);
+    height: 1rem;
+    width: 1rem;
+    display: inline-flex;
+    align-items: center;
+    margin: 0rem 0 0 .5rem;
+    -webkit-mask: url('./../../../assets/closeIcon.svg') no-repeat 50% 50%;
+    mask: url('./../../../assets/closeIcon.svg') no-repeat 50% 50%;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    background: white;
+  }
+}
+
+@media (max-width: 768px) {
+  .delete_btn {
+    padding-left: .55rem;
+    *:before {
+      content: '' !important;
+    }
+  }
+}

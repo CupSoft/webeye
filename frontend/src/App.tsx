@@ -1,14 +1,29 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import styles from './App.module.scss';
 import { useAppDispatch } from './app/hooks';
 import AppRouter from './components/AppRouter/AppRouter';
 import Header from './components/Header/Header';
+import ColorCircles from './components/UI/ColorCircles/ColorCircles';
 import { useCheckUserMutation } from './services/apiService/apiService';
+
+let prevPageX = 0
+let prevPageY = 0
 
 function App() {
   const dispatch = useAppDispatch()
-  const [checkUser, {data, isLoading}] = useCheckUserMutation()
+  const [checkUser, {isLoading}] = useCheckUserMutation()
+  const [moveIndicator, setMoveIndicator] = useState({x: 0, y: 0})
+
+  function mouseMoveHandler(evt: React.MouseEvent) {
+    const x = evt.pageX - prevPageX
+    const y = evt.pageY - prevPageY
+
+    setMoveIndicator({x, y})
+
+    prevPageX = evt.pageX
+    prevPageY = evt.pageY
+  }
 
   useEffect(() => {
     checkUser().then(value => {
@@ -34,8 +49,10 @@ function App() {
     return null
   }
 
+  
+
   return (
-    <div className={styles.app}>
+    <div className={styles.app} onMouseMove={mouseMoveHandler}>
       <Header/>
       <AppRouter/>
       <ToastContainer
@@ -50,6 +67,7 @@ function App() {
           pauseOnHover
           theme="dark"
         />
+        <ColorCircles moveIndicator={moveIndicator}/>
     </div>
   );
 }

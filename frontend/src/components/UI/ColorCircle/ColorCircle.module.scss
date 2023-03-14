@@ -1,0 +1,28 @@
+.circle {
+  @apply absolute rounded-full;
+  height: 33vh;
+  width: 33vh;
+  z-index: 1 !important;
+  filter: blur(250px);
+  opacity: .6;
+}
+
+.circle.left {
+  @apply left-5;
+
+  bottom: 17.5%;
+}
+
+.circle.right {
+  @apply right-5;
+
+  top: 17.5%;
+}
+
+.circle.blue {
+  @apply bg-blue;
+}
+
+.circle.yellow {
+  @apply bg-yellow;
+}

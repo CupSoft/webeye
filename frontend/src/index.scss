@@ -22,7 +22,7 @@ hr {
 }
 
 .admin_wrapper {
-  @apply flex flex-col max-w-xl justify-center;
+  @apply flex flex-col max-w-xl justify-center items-center;
 }
 
 .admin_title {
@@ -45,6 +45,9 @@ body, html, #root {
   overflow-x: hidden;
   margin-right: calc(-1 * (100vw - 100%));
   height: 100vh;
+  * {
+    z-index: 2;
+  }
 }
 
 .page_title {

@@ -45,7 +45,7 @@ export type SocialReporGetTypes = {
 }
 
 export type ReviewGetTypes = {
-  datatime: string;
+  datetime: string;
   text: string;
   stars: number;
   uuid: string;

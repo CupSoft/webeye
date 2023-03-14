@@ -1,0 +1,32 @@
+.container {
+  @apply flex flex-col justify-start w-full p-3 hover:bg-focus-input;
+  .state {
+    &:before {
+      content: '';
+      display: inline-block;
+      border: .25rem solid;
+      margin: 0 .5rem .1rem 0;
+      border-radius: 100%;
+    }
+  }
+
+  .title {
+    @apply flex flex-row justify-start items-center;
+  }
+
+  .date {
+    @apply ml-auto
+  }
+
+  .state.ok:before {
+    border-color: #00ff00;
+  }
+
+  .state.critical:before {
+    border-color: #ff0000;
+  }
+
+  .state.partial:before {
+    border-color: #ffff00;
+  }
+}

@@ -41,6 +41,15 @@ const CreateResourceForm = () => {
             required: true,
           }}
         />
+        <Input
+          placeholder='Введите URL ресурса...'
+          register={register} 
+          name='url'
+          options={{
+            minLength: 1,
+            required: true,
+          }}
+        />
         <Button
           size='md'
           disabled={!isValid}
