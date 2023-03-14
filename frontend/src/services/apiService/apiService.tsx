@@ -75,7 +75,7 @@ export const api = createApi({
     postReport: builder.mutation<void, ReportRequestTypes>({
       query: (report) => new CreateRequest('reports/', JSON.stringify(report))
     }),
-    getAllReports: builder.query<ReportRequestTypes, void>({
+    getAllReports: builder.query<ReportRequestTypes[], void>({
       query: () => ({
         url: baseUrl + 'reports/'
       })
