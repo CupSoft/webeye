@@ -1,7 +1,7 @@
-import React from 'react';
 import { useGetAllSourcesQuery } from '../../services/apiService/apiService';
 import SourceCard from '../SourceBadge/SourceBadge';
-import styles from './SourcesTable.module.scss'
+import SourcesLoader from '../SourcesLoader/SourcesLoader';
+import styles from './SourcesTable.module.scss';
 
 const SourcesTable = ({limit=-1, skip=-1}) => {
   let params = {}
@@ -14,7 +14,7 @@ const SourcesTable = ({limit=-1, skip=-1}) => {
   const {data: sources, isLoading} = useGetAllSourcesQuery(params)
 
   if (isLoading) {
-    return null
+    return <SourcesLoader/>
   }
   
   return (

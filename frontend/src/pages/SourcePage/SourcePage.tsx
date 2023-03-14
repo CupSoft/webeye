@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ReviewCard from '../../components/ReviewCard/ReviewCard';
 import SocialNetworksCard from '../../components/SocialNetworksCard/SocialNetworksCard';
+import SourceLoader from '../../components/SourceLoader/SourceLoader';
 import StateChart from '../../components/StateChart/StateChart';
 import SubscriptionCard from '../../components/SubscriptionCard/SubscriptionCard';
 import Button from '../../components/UI/Button/Button';
@@ -18,7 +19,7 @@ const SourcePage = () => {
   const [maxCount, setMaxCount] = useState(7)
   
   const {data: source, isLoading: isSourceLoading} = useGetSourceQuery(uuid)
-  
+
   if (isSourceLoading) {
     return null;
   }
@@ -29,6 +30,10 @@ const SourcePage = () => {
 
   function summaryClickHandler() {
     window.open(`${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/resources/${uuid}/stats/export`, '_blank')
+  }
+
+  function siteOpenClickHandler() {
+    window.open(source?.url ?? '#', '_blank')
   }
 
   return (
@@ -42,18 +47,15 @@ const SourcePage = () => {
           {uuid ? source.name : 'Ресурс'}
         </h1>
         <span className={styles.rating}>{source.rating}</span>
-        <Button btnType='turquoise' onClick={summaryClickHandler}>
-          <span className={styles.download_btn}>Получить отчёт</span>
-        </Button>
+        <span>
+          <Button btnType='yellow' onClick={siteOpenClickHandler}>
+          <span className={styles.to_site}></span>
+          </Button>
+          <Button btnType='turquoise' onClick={summaryClickHandler}>
+            <span className={styles.download_btn}></span>
+          </Button>
+        </span>
       </div>
-      <a 
-        href={source.url ?? '#'}
-        rel="noreferrer"
-        target='_blank'
-        className={styles.to_site}
-      >
-        <u>Посмотреть сайт</u>
-      </a>
       <StateChart 
         sourceUuid={source.uuid}
         max_count={maxCount}

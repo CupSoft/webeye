@@ -15,6 +15,10 @@
   @apply border-2 bg-purple border-purple hover:bg-opacity-0 transition-all disabled:hover:bg-purple;
 }
 
+.yellow {
+  @apply border-2 border-yellow hover:bg-none transition-all disabled:hover:bg-none;
+}
+
 .squared {
   @apply rounded-2xl;
 }
