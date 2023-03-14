@@ -12,6 +12,8 @@ const UsersReviewsCard = ({sourceUuid, ...props}: UsersReviewsCardPropsType) => 
     return null
   }
 
+  console.log(reviews)
+
   return (
     <Card 
       title='Отзывы, которые пользователи оставили об этом ресурсе'
