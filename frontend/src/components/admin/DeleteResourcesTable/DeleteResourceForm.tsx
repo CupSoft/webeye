@@ -43,8 +43,9 @@ const DeleteResourceForm = () => {
               <SourceCard i={i} {...source}/>
               <Button 
                 noWrap={true}
+                myClass={styles.delete_btn}
                 onClick={() => deleteClickHandler(source.uuid)}
-              >Удалить ресурс</Button>
+              ><span></span></Button>
             </div>
           )}
         </div>
