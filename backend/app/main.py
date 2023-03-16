@@ -6,6 +6,7 @@ from app.core.init_app import (
     configure_logging,
     init_middlewares,
     register_db,
+    upgrade_db,
     register_exceptions,
     register_routers,
     create_default_admin_user,
@@ -27,6 +28,7 @@ app = FastAPI(
 
 @app.on_event("startup")
 async def db_init():
+    await upgrade_db(app)
     register_db(app)
 
 

@@ -18,8 +18,10 @@ CREATE TABLE IF NOT EXISTS "short_tg_token" (
 );
 CREATE TABLE IF NOT EXISTS "resources" (
     "uuid" UUID NOT NULL  PRIMARY KEY,
-    "name" VARCHAR(255) NOT NULL UNIQUE
+    "name" VARCHAR(255) NOT NULL UNIQUE,
+    "status" VARCHAR(8) NOT NULL  DEFAULT 'OK'
 );
+COMMENT ON COLUMN "resources"."status" IS 'ok: OK\npartial: partial\ncritical: critical\nddos: ddos';
 CREATE TABLE IF NOT EXISTS "subscriptions" (
     "uuid" UUID NOT NULL  PRIMARY KEY,
     "to_telegram" BOOL NOT NULL  DEFAULT False,
@@ -47,7 +49,7 @@ CREATE TABLE IF NOT EXISTS "check_results" (
     "location" VARCHAR(7) NOT NULL,
     "parent_check_id" UUID NOT NULL REFERENCES "checks" ("uuid") ON DELETE CASCADE
 );
-COMMENT ON COLUMN "check_results"."status" IS 'ok: OK\npartial: partial\ncritical: critical';
+COMMENT ON COLUMN "check_results"."status" IS 'ok: OK\npartial: partial\ncritical: critical\nddos: ddos';
 COMMENT ON COLUMN "check_results"."location" IS 'russia: RUSSIA\naustria: AUSTRIA\ngermany: GERMANY';
 CREATE TABLE IF NOT EXISTS "reviews" (
     "uuid" UUID NOT NULL  PRIMARY KEY,
@@ -65,7 +67,7 @@ CREATE TABLE IF NOT EXISTS "reports" (
     "resource_id" UUID NOT NULL REFERENCES "resources" ("uuid") ON DELETE CASCADE,
     "user_id" UUID NOT NULL REFERENCES "users" ("uuid") ON DELETE CASCADE
 );
-COMMENT ON COLUMN "reports"."status" IS 'ok: OK\npartial: partial\ncritical: critical';
+COMMENT ON COLUMN "reports"."status" IS 'ok: OK\npartial: partial\ncritical: critical\nddos: ddos';
 CREATE TABLE IF NOT EXISTS "social_network_reports" (
     "uuid" UUID NOT NULL  PRIMARY KEY,
     "status" VARCHAR(8) NOT NULL,
@@ -76,7 +78,7 @@ CREATE TABLE IF NOT EXISTS "social_network_reports" (
     "created_at" TIMESTAMPTZ NOT NULL  DEFAULT CURRENT_TIMESTAMP,
     "resource_id" UUID NOT NULL REFERENCES "resources" ("uuid") ON DELETE CASCADE
 );
-COMMENT ON COLUMN "social_network_reports"."status" IS 'ok: OK\npartial: partial\ncritical: critical';
+COMMENT ON COLUMN "social_network_reports"."status" IS 'ok: OK\npartial: partial\ncritical: critical\nddos: ddos';
 COMMENT ON COLUMN "social_network_reports"."social_network" IS 'vk: VK\nok: OK';
 CREATE TABLE IF NOT EXISTS "aerich" (
     "id" SERIAL NOT NULL PRIMARY KEY,

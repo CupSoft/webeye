@@ -23,6 +23,8 @@ from app.applications.subscriptions.routes import router as subscriptions_routes
 from app.applications.social_reports.routes import router as social_reports_routes
 from app.applications.reviews.routes import router as reviews_routes
 
+from aerich import Command
+
 
 def configure_logging(log_settings: dict = None):
     log_settings = log_settings or DEFAULT_LOGGING
@@ -40,7 +42,9 @@ def init_middlewares(app: FastAPI):
 
 
 def get_app_list():
-    app_list = [f"{settings.APPLICATIONS_MODULE}.{app}.models" for app in settings.APPLICATIONS]
+    app_list = [
+        f"{settings.APPLICATIONS_MODULE}.{app}.models" for app in settings.APPLICATIONS
+    ]
     return app_list
 
 
@@ -91,6 +95,12 @@ def register_db(app: FastAPI, db_url: str = None):
     )
 
 
+async def upgrade_db(app: FastAPI, db_url: str = None):
+    command = Command(tortoise_config=TORTOISE_ORM, app='models')
+    await command.init()
+    await command.upgrade()
+
+
 def register_exceptions(app: FastAPI):
     app.add_exception_handler(APIException, on_api_exception)
 
@@ -99,8 +109,17 @@ def register_routers(app: FastAPI):
     app.include_router(login_router, prefix="/api/auth/login", tags=["login"])
     app.include_router(users_router, prefix="/api/auth/users", tags=["users"])
     app.include_router(resources_routes, prefix="/api/resources", tags=["resources"])
-    app.include_router(checks_routes, prefix="/api/checks", tags=["checks"], dependencies=[Depends(get_current_admin)])
-    app.include_router(subscriptions_routes, prefix="/api/subscriptions", tags=["subscriptions"])
+    app.include_router(
+        checks_routes,
+        prefix="/api/checks",
+        tags=["checks"],
+        dependencies=[Depends(get_current_admin)],
+    )
+    app.include_router(
+        subscriptions_routes, prefix="/api/subscriptions", tags=["subscriptions"]
+    )
     app.include_router(reports_routes, prefix="/api/reports", tags=["reports"])
-    app.include_router(social_reports_routes, prefix="/api/social_reports", tags=["social_reports"])
+    app.include_router(
+        social_reports_routes, prefix="/api/social_reports", tags=["social_reports"]
+    )
     app.include_router(reviews_routes, prefix="/api/reviews", tags=["reviews"])
