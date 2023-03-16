@@ -10,6 +10,7 @@ class Status(str, Enum):
     ok = "OK"
     partial = "partial"
     critical = "critical"
+    ddos = "ddos"
 
 
 class BaseProperties(BaseModel):

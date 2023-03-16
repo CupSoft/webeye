@@ -50,8 +50,7 @@ async def read_resources(skip: int = 0, limit: int = 100):
     for resource in resources:
         resource_dict = await resource.to_dict()
         rating = await resource.rating
-        status = await resource.status
-        res.append(ResourceOutWithRating(**resource_dict, rating=rating, status=status))
+        res.append(ResourceOutWithRating(**resource_dict, rating=rating))
 
     return res
 
@@ -75,8 +74,7 @@ async def create_resource(
     resource = await Resource.create(**resource_in.dict())
 
     resource_dict = await resource.to_dict()
-    status = await resource.status
-    return ResourceOut(**resource_dict, status=status)
+    return ResourceOut(**resource_dict)
 
 
 @router.get("/{uuid}", response_model=ResourceOutWithRating, status_code=200)
@@ -97,8 +95,7 @@ async def read_resource(
     resource_dict = await resource.to_dict()
 
     rating = await resource.rating
-    status = await resource.status
-    return ResourceOutWithRating(**resource_dict, rating=rating, status=status)
+    return ResourceOutWithRating(**resource_dict, rating=rating)
 
 
 @router.get("/{uuid}/stats/checks", response_model=List[ResourceStatsOut], status_code=200)
@@ -213,8 +210,7 @@ async def update_resource(
     await resource.save()
 
     resource_dict = await resource.to_dict()
-    status = await resource.status
-    return ResourceOut(**resource_dict, status=status)
+    return ResourceOut(**resource_dict)
 
 
 @router.delete("/{uuid}", status_code=200)
