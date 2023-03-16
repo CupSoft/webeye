@@ -26,6 +26,10 @@
     }
   }
 
+  .date {
+    @apply ml-auto text-light-text;
+  }
+
   .state.ok:before {
     border-color: #00ff00;
   }
