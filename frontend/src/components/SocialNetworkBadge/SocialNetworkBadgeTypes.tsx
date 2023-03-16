@@ -3,6 +3,7 @@ export type SocialNetworkBadgePropsType = {
   social_network: 'VK' | 'OK' | string;
   snippet: string;
   status: 'OK' | 'partial' | 'critical';
+  created_at: string;
 }
 
 export type IconsType = {

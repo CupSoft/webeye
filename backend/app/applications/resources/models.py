@@ -9,6 +9,7 @@ from app.applications.resources.schemas import Status
 
 class Resource(BaseModel):
     name = fields.CharField(max_length=255, unique=True)
+    status = fields.CharEnumField(Status, default=Status.ok)
     nodes: fields.ReverseRelation["ResourceNode"]
     reviews: fields.ReverseRelation["Review"]
     subscriptions: fields.ReverseRelation["Subscription"]
@@ -36,8 +37,7 @@ class Resource(BaseModel):
         except ZeroDivisionError:
             return None
 
-    @property
-    async def status(self) -> Status:
+    async def update_status(self) -> Status:
         status_count = {
             Status.ok: 0,
             Status.partial: 0,
@@ -50,6 +50,9 @@ class Resource(BaseModel):
                     status_count[result.status] += 1 
 
         res = sorted(status_count.items(), key=lambda x: x[1])[-1]
+        
+        self.status = Status(res[0])
+        await self.save()
         
         return Status(res[0])
 

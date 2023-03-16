@@ -16,12 +16,13 @@ const SourcesTable = ({limit=-1, skip=-1}) => {
   if (isLoading) {
     return <SourcesLoader/>
   }
-  
+
   return (
     <>
       {sources?.length ?
         <div className={styles.table}>
-          {sources.map((source, i) => <SourceCard i={i} key={source.uuid} {...source}/>)}
+          {[...sources].sort((a, b) => b.rating - a.rating)
+            .map((source, i) => <SourceCard i={i} key={source.uuid} {...source}/>)}
         </div>
         : <span className={styles.no_resources}>В базе данных пока нет ресурсов</span>
       }

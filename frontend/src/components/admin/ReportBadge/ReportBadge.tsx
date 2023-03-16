@@ -1,6 +1,5 @@
-import React from 'react';
-import styles from './ReportBadge.module.scss'
-import cn from 'classnames'
+import cn from 'classnames';
+import styles from './ReportBadge.module.scss';
 import { ReportBadgePropsType } from './ReportBadgeTypes';
 const resource = ''
 const text = 'Не работает сайт'

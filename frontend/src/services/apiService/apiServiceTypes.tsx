@@ -85,6 +85,7 @@ export type ReportRequestTypes = {
   is_moderated: false;
   uuid?: string;
   resource_uuid: string;
+  text: string;
 }
 
 export type GetCheckResultsResponseTypes = {
