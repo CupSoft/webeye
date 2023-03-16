@@ -32,7 +32,7 @@
 }
 
 .green {
-  @apply text-green hover:opacity-90 transition-all;
+  @apply text-green border-2 border-green/[0] hover:opacity-90 hover:border-green hover:text-white hover:bg-green disabled:hover:border-green/[0] disabled:hover:bg-green/[0] disabled:hover:text-green/[.55] transition-all;
 }
 
 .blue {
@@ -40,7 +40,7 @@
 }
 
 .turquoise {
-  @apply border-2 border-green hover:bg-green;
+  @apply border-2 border-turquoise hover:bg-turquoise;
 }
 
 .fill_turquoise {

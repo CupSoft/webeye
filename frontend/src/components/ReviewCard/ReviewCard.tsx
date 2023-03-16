@@ -21,10 +21,10 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
   const [starsValue, setStarsValue] = useState('')
   const [postReport] = usePostReportMutation()
   const [postReview] = usePostReviewMutation()
-  // const [unavailableValue, setUnavailableValue] = useState('')
+  const [unavailableValue, setUnavailableValue] = useState('')
   
   useEffect(() => {
-    // setUnavailableValue(localStorage.getItem('unavailable_value') || '')
+    setUnavailableValue(localStorage.getItem('unavailable_value') || '')
     setReviewValue(localStorage.getItem('review_value') || '')
     setStarsValue(localStorage.getItem('stars_value') || '')
   }, [isAuth])
@@ -35,8 +35,19 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
       return
     }
 
-    if (btnType === 'unavailable') {
-      postReport({status: 'critical', is_moderated: false, resource_uuid: sourceUuid}).then(value => {
+    if (btnType !== 'review') {
+      console.log({
+        status: btnType === 'unavailable' ? 'critical' : 'OK',
+        is_moderated: false, 
+        resource_uuid: sourceUuid,
+        text: btnType === 'unavailable' ? unavailableValue : ''
+    })
+      postReport({
+        status: btnType === 'unavailable' ? 'critical' : 'OK',
+        is_moderated: false, 
+        resource_uuid: sourceUuid,
+        text: btnType === 'unavailable' ? unavailableValue : ''
+    }).then(value => {
         if ('error' in value) {
           toast("Ошибка при отправлении сообщения")
           return
@@ -45,8 +56,10 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
         setIsSayUnavailable(true)
         toast("Сообщение успешно отправлено")
 
-        localStorage.setItem('unavailable_value', '')
-        // setUnavailableValue('')
+        if (btnType === 'unavailable') {
+          localStorage.setItem('unavailable_value', '')
+          setUnavailableValue('')
+        } 
       })
     } else {
       postReview({
@@ -83,10 +96,10 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
     setReviewValue(event.target.value)
   }
 
-  // function onUnavailableChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-  //   localStorage.setItem('unavailable_value', event.target.value)
-  //   setUnavailableValue(event.target.value)
-  // }
+  function onUnavailableChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    localStorage.setItem('unavailable_value', event.target.value)
+    setUnavailableValue(event.target.value)
+  }
 
   return (
     <Card 
@@ -95,22 +108,31 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
       {...props}
     >
       <>
-        {/* <div className={styles.textarea_wrapper}>
+        <div className={styles.textarea_wrapper}>
           <TextArea
             name='unavailable'
             value={unavailableValue}
-            placeholder='Сообщите о недоступности...'
+            placeholder='Опишите проблему...'
             maxLength={255}
             onChange={onUnavailableChange}
           />
-        </div> */}
+        </div>
         <Button 
           btnType='red'
           onClick={() => btnsClickHandler('unavailable')}
-          disabled={isSayUnavailable}
+          disabled={isSayUnavailable || unavailableValue.length < 1}
         >
           {isAuth 
             ? 'Сообщить о недоступности' : 'Авторизоваться и сообщить о недоступности'
+          }
+        </Button>
+        <Button 
+          btnType='green'
+          onClick={() => btnsClickHandler('available')}
+          disabled={isSayUnavailable}
+        >
+          {isAuth 
+            ? 'Все работает' : 'Авторизоваться и сообщить о недоступности'
           }
         </Button>
         <div className={styles.textarea_wrapper}>

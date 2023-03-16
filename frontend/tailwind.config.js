@@ -25,7 +25,7 @@ module.exports = {
         DEFAULT: 'ease-in-out'
       },
       transitionDuration: {
-        DEFAULT: '50ms'
+        DEFAULT: '100ms'
       }
     },
   },

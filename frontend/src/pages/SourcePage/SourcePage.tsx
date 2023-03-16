@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ReviewCard from '../../components/ReviewCard/ReviewCard';
 import SocialNetworksCard from '../../components/SocialNetworksCard/SocialNetworksCard';
-import SourceLoader from '../../components/SourceLoader/SourceLoader';
 import StateChart from '../../components/StateChart/StateChart';
 import SubscriptionCard from '../../components/SubscriptionCard/SubscriptionCard';
 import Button from '../../components/UI/Button/Button';
