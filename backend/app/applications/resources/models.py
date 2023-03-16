@@ -52,6 +52,7 @@ class Resource(BaseModel):
         res = sorted(status_count.items(), key=lambda x: x[1])[-1]
         
         self.status = Status(res[0])
+        await self.save()
         
         return Status(res[0])
 
