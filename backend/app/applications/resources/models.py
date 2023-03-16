@@ -12,7 +12,7 @@ class Resource(BaseModel):
     status = fields.CharEnumField(Status, default=Status.ok)
     nodes: fields.ReverseRelation["ResourceNode"]
     reviews: fields.ReverseRelation["Review"]
-    subscriptions: fields.ReverseRelation["Subscription"]1
+    subscriptions: fields.ReverseRelation["Subscription"]
     reports: fields.ReverseRelation["Report"]
     social_network_reports: fields.ReverseRelation["SocialNetworkReport"]
 
