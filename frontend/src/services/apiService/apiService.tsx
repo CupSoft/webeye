@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { AdminPostResourceTypes, GetBotTokenResponseTypes, GetCheckResultsRequestTypes, GetCheckResultsResponseTypes, ReportRequestTypes, ReportResponseTypes, ResourceNode, ReviewGetTypes, ReviewRequestTypes, SocialReporGetTypes, SourceGetRequestTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPatchTypes, SubscriptionPostResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
+import { AdminPostResourceTypes, GetBotTokenResponseTypes, GetCheckResultsRequestTypes, GetCheckResultsResponseTypes, GetDodosRequestTypes, ReportRequestTypes, ReportResponseTypes, ResourceNode, ReviewGetTypes, ReviewRequestTypes, SocialReporGetTypes, SourceGetRequestTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPatchTypes, SubscriptionPostResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
 
 const baseUrl = `${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/api/`
 
@@ -110,6 +110,9 @@ export const api = createApi({
       query: (resourseUuid) => ({
         url: baseUrl + `resources/${resourseUuid}/nodes`,
       })
+    }),
+    getDdos: builder.mutation<GetDodosRequestTypes, void>({
+      query: () => ({url: baseUrl + 'resources/is_dodos'})
     })
   })
 })
@@ -133,3 +136,4 @@ export const { useAdminDeleteResourceMutation } = api
 export const { useGetAllResourceNodesQuery } = api
 export const { useGetAllReportsQuery } = api
 export const { useAdminDeleteReportMutation } = api
+export const { useGetDdosMutation } = api

@@ -122,3 +122,7 @@ export type ResourceNode = {
   url: string,
   uuid: string
 }
+
+export type GetDodosRequestTypes = {
+  is_ddos: boolean;
+}
