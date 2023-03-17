@@ -13,6 +13,7 @@ from app.applications.resources.schemas import (
     ResourceStatsIn,
     ResourceStatsOut,
     Status,
+    IsDDOS,
 )
 from app.applications.reports.schemas import ReportOut
 from app.applications.social_reports.schemas import SocialReportOut
@@ -26,8 +27,6 @@ from typing import List
 from fastapi import APIRouter, HTTPException, Depends
 
 from pydantic import UUID4
-
-import pandas as pd
 
 import logging
 
@@ -52,6 +51,11 @@ async def read_resources(skip: int = 0, limit: int = 100):
         res.append(ResourceOutWithRating(**resource_dict, rating=rating, url=url))
 
     return res
+
+
+@router.get("/is_ddos", response_model=IsDDOS, status_code=200)
+async def is_ddos_handler():
+    return IsDDOS(is_ddos=await Resource.exclude(status=Status.ok).count() / await Resource.all().count())
 
 
 @router.post("/", response_model=ResourceOut, status_code=201)

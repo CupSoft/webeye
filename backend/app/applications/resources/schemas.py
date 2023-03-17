@@ -10,7 +10,6 @@ class Status(str, Enum):
     ok = "OK"
     partial = "partial"
     critical = "critical"
-    ddos = "ddos"
 
 
 class BaseProperties(BaseModel):
@@ -51,6 +50,10 @@ class ResourceStatsOut(BaseProperties):
     ok: int
     partial: int
     critical: int
+
+
+class IsDDOS(BaseModel):
+    is_ddos: bool
 
 
 class ResourceOut(BaseResource):
