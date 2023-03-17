@@ -80,6 +80,12 @@ export const api = createApi({
         url: baseUrl + 'reports/'
       })
     }),
+    adminDeleteReport: builder.mutation<void, string>({
+      query: (uuid) => ({
+        method: 'DELETE',
+        url: baseUrl + `reports/${uuid}`
+      })
+    }),
     getAllCheckResults: builder.query<GetCheckResultsResponseTypes[], GetCheckResultsRequestTypes>({
       query: ({source_uuid, ...params}) => ({
         params,
@@ -126,3 +132,4 @@ export const { useAdminPostResourceMutation } = api
 export const { useAdminDeleteResourceMutation } = api
 export const { useGetAllResourceNodesQuery } = api
 export const { useGetAllReportsQuery } = api
+export const { useAdminDeleteReportMutation } = api

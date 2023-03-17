@@ -1,12 +1,30 @@
-import React from 'react';
-import { useGetAllReportsQuery } from '../../../services/apiService/apiService';
+import React, { useEffect, useState } from 'react';
+import { useAdminDeleteReportMutation, useGetAllReportsQuery } from '../../../services/apiService/apiService';
+import { ReportResponseTypes } from '../../../services/apiService/apiServiceTypes';
 import ReportBadge from '../ReportBadge/ReportBadge';
 
 const ReportsForm = () => {
-  let {data: reports, isLoading} = useGetAllReportsQuery()
+  let {data, isLoading} = useGetAllReportsQuery()
+  const [reports, setReports] = useState<ReportResponseTypes[]>()
+  const [adminDeleteReport] = useAdminDeleteReportMutation()
+
+  useEffect(() => {
+    if (data) {
+      setReports(data)
+    }
+  }, [data])
 
   if (isLoading) {
     return null
+  }
+
+  function deleteClickHandler(evt: React.MouseEvent, uuid: string) {
+    adminDeleteReport(uuid).then(value => {
+      if ('error' in value) {
+        return
+      }
+      setReports(reports?.filter((report) => report.uuid !== uuid))
+    })
   }
 
   // reports = [
@@ -19,7 +37,11 @@ const ReportsForm = () => {
       <div className='admin_wrapper'>
         <h3 className='admin_title'>Заявки о доступности ресурсов</h3>
           {reports && [...reports].sort((a, b) => a.resource_name >= b.resource_name ? 1 : -1).map(report =>
-            <ReportBadge key={report.uuid} {...report}/>
+            <ReportBadge 
+              deleteClickHandler={(evt) => deleteClickHandler(evt, report.uuid)}
+              key={report.uuid} 
+              {...report}
+            />
           )}
       </div>
     </div>

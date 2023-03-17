@@ -32,7 +32,33 @@
 }
 
 .green {
-  @apply text-green border-2 border-green/[0] hover:opacity-90 hover:border-green hover:text-white hover:bg-green disabled:hover:border-green/[0] disabled:hover:bg-green/[0] disabled:hover:text-green/[.55] transition-all;
+  @apply text-green border-2 border-green/[0] transition-all;
+
+  *:before {
+    @apply text-green hover:text-white transition-all;
+  }
+
+  *:after {
+    @apply bg-green border-green;
+  }
+
+  &:hover {
+    @apply text-white bg-green border-green;
+
+    *:before {
+      @apply text-white;
+    }
+
+    *:after {
+      @apply bg-white;
+    }
+  }
+
+  &:disabled {
+    &:hover {
+      @apply text-green bg-green/[0] border-green/[0];
+    }
+  }
 }
 
 .blue {

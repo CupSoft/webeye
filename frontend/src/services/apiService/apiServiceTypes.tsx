@@ -91,7 +91,7 @@ export type ReportRequestTypes = {
 export type ReportResponseTypes = {
   status: 'critical' | 'OK';
   is_moderated: boolean;
-  uuid?: string;
+  uuid: string;
   text: string;
   created_at: string;
   resource_name: string;

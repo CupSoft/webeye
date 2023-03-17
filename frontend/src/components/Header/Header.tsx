@@ -54,6 +54,7 @@ const Header = () => {
         <span className={cn(styles.buttons)}>
           <Button 
             btnType={'blue'}
+            noWrap={true}
             onClick={botClickHandler}
           >Телеграм бот</Button>
           <Button

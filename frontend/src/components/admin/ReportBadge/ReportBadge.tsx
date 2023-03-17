@@ -1,8 +1,9 @@
 import cn from 'classnames';
+import Button from '../../UI/Button/Button';
 import styles from './ReportBadge.module.scss';
 import { ReportBadgePropsType } from './ReportBadgeTypes';
 
-const ReportBadge = ({status, is_moderated, text, created_at, resource_name}: ReportBadgePropsType) => {
+const ReportBadge = ({uuid, status, is_moderated, text, created_at, resource_name, deleteClickHandler}: ReportBadgePropsType) => {
   return (
     <>
     {!is_moderated && status === 'critical' &&
@@ -14,6 +15,20 @@ const ReportBadge = ({status, is_moderated, text, created_at, resource_name}: Re
         </span>
         <hr/>
         <span className={styles.text}>{text ?? 'Нет текста'}</span>
+        <div className={styles.moderate_btns}>
+          <Button 
+            myClass={styles.approve_btn}
+            btnType='green'
+            noWrap={true}
+            onClick={deleteClickHandler}
+          ><span></span></Button>
+          <Button 
+            myClass={styles.delete_btn}
+            btnType='red'
+            noWrap={true}
+            onClick={deleteClickHandler}
+          ><span></span></Button>
+        </div>
       </div>
     }
     </>
