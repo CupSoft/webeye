@@ -88,6 +88,11 @@ export type ReportRequestTypes = {
   text: string;
 }
 
+export type ReportRequestPatchTypes = {
+  is_moderated: boolean;
+  uuid: string;
+}
+
 export type ReportResponseTypes = {
   status: 'critical' | 'OK';
   is_moderated: boolean;

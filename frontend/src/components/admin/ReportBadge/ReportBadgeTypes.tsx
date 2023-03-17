@@ -6,4 +6,5 @@ export type ReportBadgePropsType = {
   resource_name?: string;
   uuid: string;
   deleteClickHandler: (evt: React.MouseEvent) => void;
+  pacthClickHandler: (evt: React.MouseEvent) => void;
 }

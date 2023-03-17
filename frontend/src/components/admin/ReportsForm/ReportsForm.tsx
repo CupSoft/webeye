@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useAdminDeleteReportMutation, useGetAllReportsQuery } from '../../../services/apiService/apiService';
+import { useAdminDeleteReportMutation, useAdminPatchReportMutation, useGetAllReportsQuery } from '../../../services/apiService/apiService';
 import { ReportResponseTypes } from '../../../services/apiService/apiServiceTypes';
 import ReportBadge from '../ReportBadge/ReportBadge';
 
@@ -7,6 +7,7 @@ const ReportsForm = () => {
   let {data, isLoading} = useGetAllReportsQuery()
   const [reports, setReports] = useState<ReportResponseTypes[]>()
   const [adminDeleteReport] = useAdminDeleteReportMutation()
+  const [adminPatchReport] = useAdminPatchReportMutation()
 
   useEffect(() => {
     if (data) {
@@ -23,14 +24,19 @@ const ReportsForm = () => {
       if ('error' in value) {
         return
       }
+
       setReports(reports?.filter((report) => report.uuid !== uuid))
     })
   }
 
-  // reports = [
-  //   {created_at: new Date().toString(), uuid: '1', status: 'critical', resource_name: 'HSE', is_moderated: false, text: 'Не работает сайт'},
-  //   {created_at: new Date().toString(), uuid: '2', status: 'critical', resource_name: 'ABC', is_moderated: false, text: 'Плохо работает сайт'},
-  // ]
+  async function patchClickHandler(evt: React.MouseEvent, uuid: string) {
+    const value = await adminPatchReport({uuid, is_moderated: true})
+
+    if ('error' in value) {
+      return
+    }
+
+  }
 
   return (
     <div className='admin_container'>
@@ -39,6 +45,7 @@ const ReportsForm = () => {
           {reports && [...reports].sort((a, b) => a.resource_name >= b.resource_name ? 1 : -1).map(report =>
             <ReportBadge 
               deleteClickHandler={(evt) => deleteClickHandler(evt, report.uuid)}
+              pacthClickHandler={(evt) => patchClickHandler(evt, report.uuid)}
               key={report.uuid} 
               {...report}
             />

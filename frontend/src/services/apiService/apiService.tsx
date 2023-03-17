@@ -1,12 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { AdminPostResourceRequestTypes, AdminPostResourceResponseTypes, GetBotTokenResponseTypes, GetCheckResultsRequestTypes, GetCheckResultsResponseTypes, GetDodosRequestTypes, ReportRequestTypes, ReportResponseTypes, ResourceNode, ReviewGetTypes, ReviewRequestTypes, SocialReporGetTypes, SourceGetRequestTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPatchTypes, SubscriptionPostResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes';
+import { AdminPostResourceRequestTypes, AdminPostResourceResponseTypes, GetBotTokenResponseTypes, GetCheckResultsRequestTypes, GetCheckResultsResponseTypes, GetDodosRequestTypes, ReportRequestPatchTypes, ReportRequestTypes, ReportResponseTypes, ResourceNode, ReviewGetTypes, ReviewRequestTypes, SocialReporGetTypes, SourceGetRequestTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPatchTypes, SubscriptionPostResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes';
 
 const baseUrl = `${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/api/`
 
 class CreateRequest {
-  public method: string;
-  constructor (public url: string, public body: string | FormData, public headers?: {[key: string]: string | undefined}) {
-    this.method = 'POST'
+  constructor (public url: string, public body: string | FormData, public method?: string, public headers?: {[key: string]: string | undefined}) {
+    this.method = method ?? 'POST'
     this.url = baseUrl + url;
     this.body = body;
     this.headers = {'Content-Type': 'application/json', ...headers}
@@ -32,7 +31,7 @@ export const api = createApi({
       query: (user) => new CreateRequest('auth/users/', JSON.stringify(user))
     }),
     loginUser: builder.mutation<UserLoginResponseTypes, FormData>({
-      query: (user) => new CreateRequest('auth/login/access-token', user, {'Content-Type': undefined})
+      query: (user) => new CreateRequest('auth/login/access-token', user, 'POST', {'Content-Type': undefined})
     }),
     checkUser: builder.mutation<UserRegistrResponseTypes, void>({
       query: () => ({url: baseUrl + 'auth/users/me'})
@@ -56,12 +55,7 @@ export const api = createApi({
       query: (subs) => new CreateRequest('subscriptions/', JSON.stringify(subs))
     }),
     patchSubscriptions: builder.mutation<void, SubscriptionPatchTypes>({
-      query: ({uuid, ...subs}) => ({
-        method: 'PATCH',
-        url: baseUrl + `subscriptions/${uuid}`,
-        params: {...subs},
-        headers: {'Content-Type': 'application/json'}
-      })
+      query: ({uuid, ...subs}) => new CreateRequest(`subscriptions/${uuid}`, JSON.stringify(subs), 'PATCH')
     }),
     getSubscriptions: builder.mutation<SubscriptionGetResponseTypes[], string>({
       query: (resource_uuid) => ({ 
@@ -79,6 +73,9 @@ export const api = createApi({
       query: () => ({
         url: baseUrl + 'reports/'
       })
+    }),
+    adminPatchReport: builder.mutation<void, ReportRequestPatchTypes>({
+      query: ({uuid, ...body}) => new CreateRequest(`reports/${uuid}`, JSON.stringify(body), 'PATCH')
     }),
     adminDeleteReport: builder.mutation<void, string>({
       query: (uuid) => ({
@@ -116,7 +113,7 @@ export const api = createApi({
       })
     }),
     getDdos: builder.mutation<GetDodosRequestTypes, void>({
-      query: () => ({url: baseUrl + 'resources/is_dodos'})
+      query: () => ({url: baseUrl + 'resources/is_ddos'})
     })
   })
 })
@@ -142,3 +139,4 @@ export const { useGetAllReportsQuery } = api
 export const { useAdminDeleteReportMutation } = api
 export const { useGetDdosMutation } = api
 export const { useAdminPostResourceNodeMutation } = api
+export const { useAdminPatchReportMutation } = api
