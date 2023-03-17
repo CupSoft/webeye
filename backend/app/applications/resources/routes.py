@@ -370,6 +370,11 @@ async def read_resource_reviews(
 
         prev_result = result
 
+    if str(result.status).split(".")[1] != data["status"][-1]:
+        data["status"].append(str(prev_result.status).split(".")[1])
+        data["time_from"].append(prev_changed_datetime.strftime("%m/%d/%Y, %H:%M:%S"))
+        data["time_to"].append(result.datetime.strftime("%m/%d/%Y, %H:%M:%S"))
+
     df = pd.DataFrame(data)
     sheet_name = resource.name.lower().strip() or "export"
 
