@@ -5,6 +5,7 @@ import ReviewCard from '../../components/ReviewCard/ReviewCard';
 import SocialNetworksCard from '../../components/SocialNetworksCard/SocialNetworksCard';
 import StateChart from '../../components/StateChart/StateChart';
 import SubscriptionCard from '../../components/SubscriptionCard/SubscriptionCard';
+import TextWithIcon from '../../components/TextWithIcon/TextWithIcon';
 import Button from '../../components/UI/Button/Button';
 import UsersReviewsCard from '../../components/UsersReviewsCard/UsersReviewsCard';
 import { useGetSourceQuery } from '../../services/apiService/apiService';
@@ -50,6 +51,7 @@ const SourcePage = () => {
           <Button btnType='yellow' onClick={siteOpenClickHandler}>
           <span className={styles.to_site}></span>
           </Button>
+          <TextWithIcon/>
           <Button btnType='turquoise' onClick={summaryClickHandler}>
             <span className={styles.download_btn}></span>
           </Button>
