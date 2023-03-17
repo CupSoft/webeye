@@ -41,23 +41,21 @@
   *:after {
     @apply bg-green border-green transition-all;
   }
+}
 
-  &:hover {
-    @apply text-white bg-green border-green;
+.green:disabled:hover {
+  @apply text-green bg-green bg-opacity-0 border-green border-opacity-0;
+}
 
-    *:before {
-      @apply text-white;
-    }
+.green:hover {
+  @apply text-white bg-green border-green;
 
-    *:after {
-      @apply bg-white;
-    }
+  *:before {
+    @apply text-white;
   }
 
-  &:disabled {
-    &:hover {
-      @apply text-green bg-green/[0] border-green/[0];
-    }
+  *:after {
+    @apply bg-white;
   }
 }
 
@@ -66,7 +64,7 @@
 }
 
 .turquoise {
-  @apply border-2 border-turquoise hover:bg-turquoise disabled:hover:bg-turquoise/[0];
+  @apply border-2 border-turquoise disabled:hover:bg-turquoise/[0] hover:bg-turquoise;
 }
 
 .fill_turquoise {
