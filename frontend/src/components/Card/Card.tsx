@@ -11,7 +11,7 @@ const icons: IconsType = {
   sources: sourcesIcon,
 }
 
-const Card = ({icon='', size='sm', title='Карточка', description='', bodyFlexStart=false,children='', ...props}: CardPropsType) => {
+const Card = ({icon='', size='sm', title='Карточка', description='', bodyFlexStart=false, children='', scrolled=true, ...props}: CardPropsType) => {
   return (
     <div className={cn(styles.container, styles[size])} {...props}>
       {icon && <img className={styles.icon} src={icons[icon]} alt='Сообщество'/>}

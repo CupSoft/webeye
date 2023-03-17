@@ -87,7 +87,7 @@ const SourcePage = () => {
       <div className={styles.cards}>
         <ReviewCard sourceUuid={source.uuid}/>
         <UsersReviewsCard sourceUuid={source.uuid}/>
-        <SocialNetworksCard sourceUuid={source.uuid}/>
+        <SocialNetworksCard sourceName={source.name} sourceUuid={source.uuid}/>
         <SubscriptionCard sourceUuid={source.uuid}/>
       </div>
     </div>
