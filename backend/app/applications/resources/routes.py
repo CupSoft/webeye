@@ -354,8 +354,11 @@ async def read_resource_reviews(
     results = (
         await CheckResult.filter(parent_check__resource_node__resource__uuid=uuid).order_by("-datetime").limit(100)
     )
+    # TODO: rewrite shitcode below
 
     prev_result = results[0]
+    prev_changed_result = results[0]
+
     prev_changed_datetime = datetime.datetime.now()
     data = {"status": [], "time_from": [], "time_to": []}
 
@@ -365,7 +368,7 @@ async def read_resource_reviews(
             data["status"].append(str(prev_result.status).split(".")[1])
             data["time_from"].append(prev_changed_datetime.strftime("%m/%d/%Y, %H:%M:%S"))
             data["time_to"].append(result.datetime.strftime("%m/%d/%Y, %H:%M:%S"))
-
+            prev_changed_result = result
             prev_changed_datetime = result.datetime
 
         prev_result = result
@@ -376,8 +379,8 @@ async def read_resource_reviews(
 
     if str(result.status).split(".")[1] != pr_st:
         data["status"].append(str(prev_result.status).split(".")[1])
-        data["time_from"].append(results[0].datetime.strftime("%m/%d/%Y, %H:%M:%S"))
-        data["time_to"].append(result.datetime.strftime("%m/%d/%Y, %H:%M:%S"))
+        data["time_from"].append(result.datetime.strftime("%m/%d/%Y, %H:%M:%S"))
+        data["time_to"].append(prev_changed_result.datetime.strftime("%m/%d/%Y, %H:%M:%S"))
 
     df = pd.DataFrame(data)
     sheet_name = resource.name.lower().strip() or "export"
