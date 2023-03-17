@@ -1,7 +1,5 @@
 import { useRef, useState } from 'react';
-import { Bar, BarChart, CartesianGrid, Cell, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import useOnInside from '../../hooks/useOnHover';
-import useOnTouchOutside from '../../hooks/useOnTouchOutside';
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useGetAllCheckResultsQuery } from '../../services/apiService/apiService';
 import { GetCheckResultsResponseTypes } from '../../services/apiService/apiServiceTypes';
 import ChartLoader from '../ChartLoader/ChartLoader';
@@ -10,15 +8,15 @@ import { StateChartPropsType } from './StateChartTypes';
 
 const StateChart = ({sourceUuid, max_count=7, timedelta=3600}: StateChartPropsType) => {
   const {data, isLoading} = useGetAllCheckResultsQuery({max_count, timedelta, source_uuid: sourceUuid});
-  const [needShowTooltip, setNeedShowTooltip] = useState(true)
+  const [needShowTooltip, setNeedShowTooltip] = useState(!('ontouchstart' in window))
   const ref = useRef(null)
 
-  useOnTouchOutside(ref, () => {
-    setNeedShowTooltip(false)
-  })
-  useOnInside(ref, () => {
-    setNeedShowTooltip(true)
-  })
+  // useOnTouchOutside(ref, () => {
+  //   setNeedShowTooltip(false)
+  // })
+  // useOnInside(ref, () => {
+  //   setNeedShowTooltip(true)
+  // })
 
   if (isLoading) {
     return <ChartLoader/>
@@ -58,6 +56,7 @@ const StateChart = ({sourceUuid, max_count=7, timedelta=3600}: StateChartPropsTy
       ref={ref}
     >
         <BarChart
+          onClick={() => {}}
           data={normalizeData(data)}
           margin={{
             top: 10,
