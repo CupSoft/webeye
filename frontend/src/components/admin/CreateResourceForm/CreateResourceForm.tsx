@@ -52,6 +52,7 @@ const CreateResourceForm = () => {
         />
         <Button
           size='md'
+          btnType='purple'
           disabled={!isValid}
         >Добавить ресурс</Button>
       </div>
