@@ -1,3 +1,4 @@
+import datetime
 import uuid
 
 from pydantic import BaseModel, UUID4, validator
@@ -13,6 +14,7 @@ class BaseProperties(BaseModel):
 
 class Report(BaseProperties):
     status: Status
+    text: str = None
     is_moderated: bool = False
 
 
@@ -23,6 +25,16 @@ class ReportCreate(Report):
 
 class ReportOut(Report):
     uuid: UUID4
+    created_at: datetime.datetime
+
+    class Config:
+        orm_mode = True
+
+
+class ReportOutWithResourceName(Report):
+    uuid: UUID4
+    resource_name: str
+    created_at: datetime.datetime
 
     class Config:
         orm_mode = True
@@ -30,3 +42,4 @@ class ReportOut(Report):
 
 class ReportUpdate(Report):
     status: Status = None
+    text: str | None

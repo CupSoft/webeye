@@ -7,6 +7,7 @@ from app.applications.resources.schemas import Status
 
 class Report(BaseModel):
     status = fields.CharEnumField(Status)
+    text = fields.CharField(max_length=255, default="")
     is_moderated = fields.BooleanField(default=False)
     resource: fields.ForeignKeyRelation["Resource"] = fields.ForeignKeyField(
         "models.Resource", related_name="reports", to_field="uuid", on_delete=fields.CASCADE
