@@ -26,3 +26,7 @@ class ReportOut(Report):
 
     class Config:
         orm_mode = True
+
+
+class ReportUpdate(Report):
+    status: Status = None
