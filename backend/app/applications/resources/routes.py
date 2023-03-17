@@ -370,7 +370,11 @@ async def read_resource_reviews(
 
         prev_result = result
 
-    if str(result.status).split(".")[1] != data["status"][-1]:
+    pr_st = None
+    if len(data["status"]) > 0:
+        pr_st = data["status"][-1]
+
+    if str(result.status).split(".")[1] != pr_st:
         data["status"].append(str(prev_result.status).split(".")[1])
         data["time_from"].append(prev_changed_datetime.strftime("%m/%d/%Y, %H:%M:%S"))
         data["time_to"].append(result.datetime.strftime("%m/%d/%Y, %H:%M:%S"))
