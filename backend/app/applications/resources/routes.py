@@ -13,6 +13,7 @@ from app.applications.resources.schemas import (
     ResourceStatsIn,
     ResourceStatsOut,
     Status,
+    IsDDOS,
 )
 from app.applications.reports.schemas import ReportOut
 from app.applications.social_reports.schemas import SocialReportOut
@@ -26,10 +27,6 @@ from typing import List
 from fastapi import APIRouter, HTTPException, Depends
 
 from pydantic import UUID4
-
-import pandas as pd
-
-import pdfkit as pdf
 
 import logging
 
@@ -50,9 +47,15 @@ async def read_resources(skip: int = 0, limit: int = 100):
     for resource in resources:
         resource_dict = await resource.to_dict()
         rating = await resource.rating
-        res.append(ResourceOutWithRating(**resource_dict, rating=rating))
+        url = await resource.url
+        res.append(ResourceOutWithRating(**resource_dict, rating=rating, url=url))
 
     return res
+
+
+@router.get("/is_ddos", response_model=IsDDOS, status_code=200)
+async def is_ddos_handler():
+    return IsDDOS(is_ddos=(await Resource.exclude(status=Status.ok).count() / await Resource.all().count()) > 0.5)
 
 
 @router.post("/", response_model=ResourceOut, status_code=201)
@@ -84,7 +87,7 @@ async def read_resource(
     """
     Get resource by uuid.
     """
-    resource = await Resource.filter(uuid=uuid).first().prefetch_related("reviews")
+    resource: Resource = await Resource.filter(uuid=uuid).first().prefetch_related("reviews")
 
     if resource is None:
         raise HTTPException(
@@ -95,7 +98,9 @@ async def read_resource(
     resource_dict = await resource.to_dict()
 
     rating = await resource.rating
-    return ResourceOutWithRating(**resource_dict, rating=rating)
+    url = await resource.url
+
+    return ResourceOutWithRating(**resource_dict, rating=rating, url=url)
 
 
 @router.get("/{uuid}/stats/checks", response_model=List[ResourceStatsOut], status_code=200)
@@ -134,7 +139,12 @@ async def read_resource_checks_stats(uuid: UUID4, timedelta: datetime.timedelta,
                         critical_count += 1
 
         resource_checks_stats.append(
-            ResourceStatsOut(end_datetime=end_datetime, ok=ok_count, partial=partial_count, critical=critical_count)
+            ResourceStatsOut(
+                end_datetime=end_datetime,
+                ok=ok_count,
+                partial=partial_count,
+                critical=critical_count,
+            )
         )
 
     return resource_checks_stats[::-1]
@@ -173,7 +183,12 @@ async def read_resource_reports_stats(uuid: UUID4, timedelta: datetime.timedelta
                 critical_count += 1
 
         resource_reports_stats.append(
-            ResourceStatsOut(end_datetime=end_datetime, ok=ok_count, partial=partial_count, critical=critical_count)
+            ResourceStatsOut(
+                end_datetime=end_datetime,
+                ok=ok_count,
+                partial=partial_count,
+                critical=critical_count,
+            )
         )
 
     return resource_reports_stats[::-1]
@@ -334,7 +349,9 @@ async def read_resource_reviews(
             detail="The resource with this uuid does not exist",
         )
 
-    results = await CheckResult.filter(parent_check__resource_node__resource__uuid=uuid).order_by('-datetime').limit(100)
+    results = (
+        await CheckResult.filter(parent_check__resource_node__resource__uuid=uuid).order_by("-datetime").limit(100)
+    )
 
     return None
 

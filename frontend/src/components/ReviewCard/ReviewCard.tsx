@@ -36,12 +36,6 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
     }
 
     if (btnType !== 'review') {
-      console.log({
-        status: btnType === 'unavailable' ? 'critical' : 'OK',
-        is_moderated: false, 
-        resource_uuid: sourceUuid,
-        text: btnType === 'unavailable' ? unavailableValue : ''
-    })
       postReport({
         status: btnType === 'unavailable' ? 'critical' : 'OK',
         is_moderated: false, 
@@ -77,7 +71,7 @@ const ReviewCard = ({sourceUuid, ...props}: ReviewCardPropsType) => {
         setStarsValue('')
         setReviewValue('')
 
-        toast('Отзыв успешно отправлен!')
+        toast('Отзыв успешно отправлен')
       })
     }
   }

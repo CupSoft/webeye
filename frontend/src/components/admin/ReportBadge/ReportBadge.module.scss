@@ -15,7 +15,7 @@
   }
 
   .date {
-    @apply ml-auto
+    @apply ml-auto text-light-text;
   }
 
   .state.ok:before {
@@ -28,5 +28,61 @@
 
   .state.partial:before {
     border-color: #ffff00;
+  }
+
+  .moderate_btns {
+    @apply w-full flex justify-center mt-1;
+    margin-bottom: 0.1rem;
+
+    button:first-child {
+      @apply ml-0 mb-0 mr-1.5;
+    }
+
+    button:last-child {
+      @apply mr-0 mb-0 ml-1.5;
+    }
+
+    * {
+      @apply flex-grow;
+    }
+
+    .delete_btn {
+      *:before {
+        content: 'Удалить';
+      }
+      *:after {
+        content: '.';
+        color: rgba(0, 0, 0, 0);
+        height: 1rem;
+        width: 1rem;
+        display: inline-flex;
+        align-items: center;
+        margin: 0rem 0 0 .5rem;
+        -webkit-mask: url('./../../../assets/closeIcon.svg') no-repeat 50% 50%;
+        mask: url('./../../../assets/closeIcon.svg') no-repeat 50% 50%;
+        -webkit-mask-size: cover;
+        mask-size: cover;
+        background: white;
+      }
+    }
+
+    .approve_btn {
+      *:before {
+        content: 'Прочитано';
+      }
+      *:after {
+        content: '.';
+        color: rgba(0, 0, 0, 0);
+        height: 1rem;
+        width: 1rem;
+        display: inline-flex;
+        align-items: center;
+        margin: 0rem 0 0 .5rem;
+        -webkit-mask: url('./../../../assets/checkIcon.svg') no-repeat 50% 50%;
+        mask: url('./../../../assets/checkIcon.svg') no-repeat 50% 50%;
+        -webkit-mask-size: cover;
+        mask-size: cover;
+      }
+    }
   }
 }

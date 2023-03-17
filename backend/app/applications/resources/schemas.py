@@ -10,7 +10,6 @@ class Status(str, Enum):
     ok = "OK"
     partial = "partial"
     critical = "critical"
-    ddos = "ddos"
 
 
 class BaseProperties(BaseModel):
@@ -53,6 +52,10 @@ class ResourceStatsOut(BaseProperties):
     critical: int
 
 
+class IsDDOS(BaseModel):
+    is_ddos: bool
+
+
 class ResourceOut(BaseResource):
     uuid: UUID4
     status: Status
@@ -71,6 +74,7 @@ class ResourceOut(BaseResource):
 
 class ResourceOutWithRating(ResourceOut):
     rating: float = None
+    url: str = None
 
     class Config:
         orm_mode = True
@@ -78,6 +82,7 @@ class ResourceOutWithRating(ResourceOut):
         schema_extra = {
             "example": {
                 "name": "HSE",
+                "url": "https://hse.ru",
                 "status": "OK",
                 "uuid": "f7b4c2c0-5b5a-4b4a-9c1c-8e1b0c1b0c1b",
                 "rating": "4.76",

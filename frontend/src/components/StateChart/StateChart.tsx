@@ -1,4 +1,7 @@
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { useRef, useState } from 'react';
+import { Bar, BarChart, CartesianGrid, Cell, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import useOnInside from '../../hooks/useOnHover';
+import useOnTouchOutside from '../../hooks/useOnTouchOutside';
 import { useGetAllCheckResultsQuery } from '../../services/apiService/apiService';
 import { GetCheckResultsResponseTypes } from '../../services/apiService/apiServiceTypes';
 import ChartLoader from '../ChartLoader/ChartLoader';
@@ -7,6 +10,15 @@ import { StateChartPropsType } from './StateChartTypes';
 
 const StateChart = ({sourceUuid, max_count=7, timedelta=3600}: StateChartPropsType) => {
   const {data, isLoading} = useGetAllCheckResultsQuery({max_count, timedelta, source_uuid: sourceUuid});
+  const [needShowTooltip, setNeedShowTooltip] = useState(true)
+  const ref = useRef(null)
+
+  useOnTouchOutside(ref, () => {
+    setNeedShowTooltip(false)
+  })
+  useOnInside(ref, () => {
+    setNeedShowTooltip(true)
+  })
 
   if (isLoading) {
     return <ChartLoader/>
@@ -43,6 +55,7 @@ const StateChart = ({sourceUuid, max_count=7, timedelta=3600}: StateChartPropsTy
   return (
     <ResponsiveContainer 
       className={styles.chart_container}
+      ref={ref}
     >
         <BarChart
           data={normalizeData(data)}
@@ -56,11 +69,11 @@ const StateChart = ({sourceUuid, max_count=7, timedelta=3600}: StateChartPropsTy
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="end_datetime" stroke='#c5c5c5'/>
           <YAxis stroke='#c5c5c5'/>
-          <Tooltip wrapperClassName={styles.chart_tooltip}/>
+          {needShowTooltip && <Tooltip wrapperClassName={styles.chart_tooltip} />}
           <Legend />
-          <Bar type="linear" dataKey="ok" stackId='1' fill="#0DC268" />
-          <Bar type="monotone" dataKey="partial" stackId='1' fill="#FF9E00" />
-          <Bar type="monotone" dataKey="critical" stackId='1' fill="#ED0A34"/>
+          <Bar dataKey="ok" stackId='1' fill="#0DC268" />
+          <Bar dataKey="partial" stackId='1' fill="#FF9E00" />
+          <Bar dataKey="critical" stackId='1' fill="#ED0A34" />
         </BarChart>
       </ResponsiveContainer>
   );

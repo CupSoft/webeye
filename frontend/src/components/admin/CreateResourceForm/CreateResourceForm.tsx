@@ -1,11 +1,9 @@
-import React from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useAdminPostResourceMutation } from '../../../services/apiService/apiService';
-import { AdminPostResourceTypes } from '../../../services/apiService/apiServiceTypes';
+import { useAdminPostResourceMutation, useAdminPostResourceNodeMutation } from '../../../services/apiService/apiService';
+import { AdminPostResourceRequestTypes } from '../../../services/apiService/apiServiceTypes';
 import Button from '../../UI/Button/Button';
 import Input from '../../UI/Input/Input';
-import styles from './CreateResourceForm.module.scss'
 
 const CreateResourceForm = () => {
   const {
@@ -15,16 +13,27 @@ const CreateResourceForm = () => {
     formState: {errors, isDirty, isValid}
   } = useForm({mode: 'onBlur'})
   const [adminPostResource] = useAdminPostResourceMutation()
+  const [adminPostResourceNode] = useAdminPostResourceNodeMutation()
 
   function onSubmit(data: FieldValues) {
-    adminPostResource(data as AdminPostResourceTypes).then(value => {
+    adminPostResource(data as AdminPostResourceRequestTypes).then(value => {
       if ('error' in value) {
         toast('Ресурс с таким именем уже сществует')
         return
       }
 
-      reset()
-      toast('Ресурс успешно добавлен в базу данных')
+      adminPostResourceNode({ 
+        url: data.url, 
+        resource_uuid: value.data.uuid
+      }).then(value1 => {
+        if ('error' in value1) {
+          toast('Ошибка при создании первичной ноды')
+          return
+        }
+
+        reset()
+        toast('Ресурс успешно добавлен в базу данных')
+      })
     })
   }
 
@@ -52,6 +61,7 @@ const CreateResourceForm = () => {
         />
         <Button
           size='md'
+          btnType='purple'
           disabled={!isValid}
         >Добавить ресурс</Button>
       </div>

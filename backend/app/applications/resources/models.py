@@ -26,6 +26,13 @@ class Resource(BaseModel):
             return None
 
     @property
+    async def url(self) -> str | None:
+        rn = await ResourceNode.filter(resource=self).first()
+        if rn:
+            return rn.url
+        return None
+
+    @property
     async def rating(self) -> float | None:
         sum_star = 0
         for review in self.reviews:
@@ -38,22 +45,18 @@ class Resource(BaseModel):
             return None
 
     async def update_status(self) -> Status:
-        status_count = {
-            Status.ok: 0,
-            Status.partial: 0,
-            Status.critical: 0
-        }
+        status_count = {Status.ok: 0, Status.partial: 0, Status.critical: 0}
         async for node in self.nodes:
             async for check in node.checks:
-                results = await check.results.order_by('-datetime').limit(10)
+                results = await check.results.order_by("-datetime").limit(10)
                 for result in results:
-                    status_count[result.status] += 1 
+                    status_count[result.status] += 1
 
         res = sorted(status_count.items(), key=lambda x: x[1])[-1]
-        
+
         self.status = Status(res[0])
         await self.save()
-        
+
         return Status(res[0])
 
     class Meta:
@@ -62,7 +65,10 @@ class Resource(BaseModel):
 
 class ResourceNode(BaseModel):
     resource: fields.ForeignKeyRelation["Resource"] = fields.ForeignKeyField(
-        "models.Resource", related_name="nodes", to_field="uuid", on_delete=fields.CASCADE
+        "models.Resource",
+        related_name="nodes",
+        to_field="uuid",
+        on_delete=fields.CASCADE,
     )
     url = fields.CharField(max_length=255, unique=True)
     checks: fields.ReverseRelation["Check"]

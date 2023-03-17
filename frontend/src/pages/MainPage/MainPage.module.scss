@@ -5,7 +5,11 @@
     @apply text-light-text pt-3 pb-3;
   }
 
+  .ddos {
+    @apply px-5 py-3 bg-red font-semibold text-xl mt-0.5 mb-2.5 text-center;
+  }
+
   .cards {
-    @apply flex flex-row flex-wrap justify-center -m-2.5 mb-0 mt-0;
+    @apply flex flex-row flex-wrap justify-center -m-2.5 mt-0;
   }
 }

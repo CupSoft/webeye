@@ -88,6 +88,20 @@ export type ReportRequestTypes = {
   text: string;
 }
 
+export type ReportRequestPatchTypes = {
+  is_moderated: boolean;
+  uuid: string;
+}
+
+export type ReportResponseTypes = {
+  status: 'critical' | 'OK';
+  is_moderated: boolean;
+  uuid: string;
+  text: string;
+  created_at: string;
+  resource_name: string;
+}
+
 export type GetCheckResultsResponseTypes = {
   end_datetime: string;
   ok: number;
@@ -105,11 +119,21 @@ export type GetBotTokenResponseTypes = {
   token: string;
 }
 
-export type AdminPostResourceTypes = {
+export type AdminPostResourceRequestTypes = {
   name: string;
 }
 
+export type AdminPostResourceResponseTypes = {
+  name: string;
+  uuid: string;
+  status: 'OK' | 'partial' | 'critical'
+}
+
 export type ResourceNode = {
-  url: string,
-  uuid: string
+  url: string;
+  resource_uuid: string;
+}
+
+export type GetDodosRequestTypes = {
+  is_ddos: boolean;
 }

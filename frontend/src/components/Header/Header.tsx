@@ -4,14 +4,14 @@ import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { userSelector } from '../../app/selectors/userSelector';
 import { useGetBotTokenMutation } from '../../services/apiService/apiService';
-import { AUTH_ROUTE, MAIN_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
+import { ADMIN_ROUTE, AUTH_ROUTE, MAIN_ROUTE, SOURCES_ROUTE } from '../../utils/constants';
 import Button from '../UI/Button/Button';
 import styles from './Header.module.scss';
 
 const Header = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const {isAuth} = useAppSelector(userSelector)
+  const {isAuth, isAdmin} = useAppSelector(userSelector)
   const location = useLocation()
   const [getBotToken] = useGetBotTokenMutation()
 
@@ -47,6 +47,7 @@ const Header = () => {
         <span className={cn(styles.navigation)}>
           <NavLink to={MAIN_ROUTE}>Главная</NavLink>
           <NavLink to={SOURCES_ROUTE}>Все ВУЗы</NavLink>
+          {isAdmin && <NavLink to={ADMIN_ROUTE}>Админка</NavLink>}
         </span>
         <span className={cn(styles.title)}>
           <NavLink to={MAIN_ROUTE}>WebEye</NavLink>
@@ -54,6 +55,7 @@ const Header = () => {
         <span className={cn(styles.buttons)}>
           <Button 
             btnType={'blue'}
+            noWrap={true}
             onClick={botClickHandler}
           >Телеграм бот</Button>
           <Button
@@ -62,7 +64,7 @@ const Header = () => {
           >{isAuth ? 'Выйти' : 'Войти'}</Button>
         </span>
       </div>
-      <hr/>
+      <hr className={styles.hr}/>
     </>
   );
 };

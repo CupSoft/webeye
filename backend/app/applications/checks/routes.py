@@ -110,7 +110,7 @@ async def create_check_result(check_result_in: CheckResultCreate):
         .prefetch_related("resource_node__resource__subscriptions__user")
         .first()
     )
-    
+
     if check is None:
         raise HTTPException(
             status_code=404,
@@ -123,7 +123,6 @@ async def create_check_result(check_result_in: CheckResultCreate):
 
     new_status = await check.resource_node.resource.update_status()
 
-    print(last_status, new_status)
     if last_status != new_status:
         for subscription in check.resource_node.resource.subscriptions:
             subscription: Subscription

@@ -7,16 +7,8 @@
   opacity: .6;
 }
 
-.circle.left {
-  @apply left-5;
-
-  bottom: 17.5%;
-}
-
-.circle.right {
-  @apply right-5;
-
-  top: 17.5%;
+.circle.right, .circle.left {
+  transition: all 2s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .circle.blue {

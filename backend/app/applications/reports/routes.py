@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, HTTPException, Depends
 
-from app.applications.reports.schemas import ReportOut, ReportCreate
+from app.applications.reports.schemas import ReportOut, ReportCreate, ReportUpdate, ReportOutWithResourceName
 from app.applications.reports.models import Report
 
 from app.applications.users.models import User
@@ -21,14 +21,20 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
-@router.get("/", response_model=List[ReportOut], status_code=200)
+@router.get("/", response_model=List[ReportOutWithResourceName], status_code=200)
 async def read_reports(skip: int = 0, limit: int = 100, current_user: User = Depends(get_current_admin)):
     """
     Get list of reports.
     """
-    reports = await Report.all().limit(limit).offset(skip)
+    reports = await Report.all().limit(limit).offset(skip).prefetch_related("resource")
 
-    return reports
+    res = []
+    for report in reports:
+        report_dict = await report.to_dict()
+        resource_name = report.resource.name
+        res.append(ReportOutWithResourceName(**report_dict, resource_name=resource_name))
+
+    return res
 
 
 @router.post("/", response_model=ReportOut, status_code=201)
@@ -56,6 +62,36 @@ async def create_report(report_in: ReportCreate, current_user: User = Depends(ge
     report = await Report.create(
         **exclude_keys(report_in.dict(), {"resource_uuid", "user_uuid"}), user=current_user, resource=resource
     )
+
+    return report
+
+
+@router.patch("/{uuid}", response_model=ReportOut, status_code=200)
+async def update_report(
+    uuid: UUID4,
+    report_in: ReportUpdate,
+    current_user: User = Depends(get_current_admin),
+):
+    """
+    Update a report
+    """
+
+    report = await Report.filter(uuid=uuid).first()
+
+    if report is None:
+        raise HTTPException(
+            status_code=404,
+            detail="The report with this uuid does not exist",
+        )
+
+    if report_in.is_moderated is not None:
+        report.is_moderated = report_in.is_moderated
+    if report_in.status is not None:
+        report.status = report_in.status
+    if report_in.text is not None:
+        report.text = report_in.text
+
+    await report.save()
 
     return report
 

@@ -12,8 +12,9 @@ const SourcesLoader = () => {
       style={{
         border: '1px solid rgb(40, 45, 69)',
         maxWidth: '74.5rem',
-        marginBottom: '1.2rem',
-        marginTop: '1rem',
+        minHeight: '30rem',
+        marginTop: '.6rem',
+        marginBottom: '.6rem',
         borderRadius: '.5rem'
       }}
     >

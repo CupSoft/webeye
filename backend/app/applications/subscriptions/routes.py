@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, HTTPException, Depends
 
-from app.applications.subscriptions.schemas import SubscriptionOut, SubscriptionIn
+from app.applications.subscriptions.schemas import SubscriptionOut, SubscriptionIn, SubscriptionUpdate
 from app.applications.subscriptions.models import Subscription
 
 from app.applications.users.models import User
@@ -86,8 +86,7 @@ async def read_subscription(uuid: UUID4, current_user: User = Depends(get_curren
 @router.patch("/{uuid}", response_model=SubscriptionOut, status_code=200)
 async def update_subscription(
     uuid: UUID4,
-    to_telegram: bool = False,
-    to_email: bool = False,
+    subscribtion_in: SubscriptionUpdate,
     current_user: User = Depends(get_current_user),
 ):
     """
@@ -108,10 +107,10 @@ async def update_subscription(
             detail="You do not have access to this subscription",
         )
 
-    if to_telegram is not None:
-        subscription.to_telegram = to_telegram
-    if to_email is not None:
-        subscription.to_email = to_email
+    if subscribtion_in.to_telegram is not None:
+        subscription.to_telegram = subscribtion_in.to_telegram
+    if subscribtion_in.to_email is not None:
+        subscription.to_email = subscribtion_in.to_email
 
     await subscription.save()
 
