@@ -57,10 +57,12 @@ const Header = () => {
             btnType={'blue'}
             noWrap={true}
             onClick={botClickHandler}
+            myClass={styles.tg_bot}
           >Телеграм бот</Button>
           <Button
             size='md'
             onClick={signInClickHandler}
+            myClass={styles.login_btn}
           >{isAuth ? 'Выйти' : 'Войти'}</Button>
         </span>
       </div>

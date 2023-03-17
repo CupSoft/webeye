@@ -1,7 +1,8 @@
 .source_select {
-  @apply text-black outline-none mx-2.5 mt-0.5 mb-3.5;
+  @apply outline-none mx-2.5 mt-0.5 mb-3.5 p-1.5 cursor-pointer bg-focus-input;
+
   * {
-    @apply text-black outline-none;
+    @apply outline-none;
   }
 }
 
