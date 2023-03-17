@@ -31,7 +31,16 @@
   }
 
   .moderate_btns {
-    @apply w-full flex justify-center;
+    @apply w-full flex justify-center mt-1;
+    margin-bottom: 0.1rem;
+
+    button:first-child {
+      @apply ml-0 mb-0 mr-1.5;
+    }
+
+    button:last-child {
+      @apply mr-0 mb-0 ml-1.5;
+    }
 
     * {
       @apply flex-grow;

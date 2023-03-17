@@ -43,7 +43,7 @@ const SourcePage = () => {
             cn("page_title", styles.status, styles[source.status.toLowerCase()])
           }
         >
-          {uuid ? source.name : 'Ресурс'}
+          {source.name ?? 'Ресурс'}
         </h1>
         <span className={styles.rating}>{source.rating}</span>
         <span>

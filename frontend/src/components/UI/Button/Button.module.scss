@@ -39,7 +39,7 @@
   }
 
   *:after {
-    @apply bg-green border-green;
+    @apply bg-green border-green transition-all;
   }
 
   &:hover {

@@ -12,7 +12,7 @@
   }
 
   .name {
-    @apply w-4/12 text-left;
+    @apply w-4/12 text-left break-words;
 
     min-width: 6rem;
 
