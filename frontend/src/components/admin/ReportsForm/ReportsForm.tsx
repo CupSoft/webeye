@@ -36,6 +36,7 @@ const ReportsForm = () => {
       return
     }
 
+    setReports(reports?.filter((report) => report.uuid !== uuid))
   }
 
   return (
