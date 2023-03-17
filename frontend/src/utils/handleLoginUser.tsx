@@ -21,6 +21,6 @@ export const handleLoginUser = (dispatch: AppDispatch, navigate: NavigateFunctio
       isAuth: true
     }
   })
-
+  
   navigate(params?.get('next_page') ?? MAIN_ROUTE)
 }

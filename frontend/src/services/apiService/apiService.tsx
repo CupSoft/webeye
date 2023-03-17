@@ -74,6 +74,11 @@ export const api = createApi({
         url: baseUrl + 'reports/'
       })
     }),
+    getSourceReports: builder.query<ReportResponseTypes[], string>({
+      query: (sourceUuid) => ({
+        url: baseUrl + `resources/${sourceUuid}/reports`
+      })
+    }),
     adminPatchReport: builder.mutation<void, ReportRequestPatchTypes>({
       query: ({uuid, ...body}) => new CreateRequest(`reports/${uuid}`, JSON.stringify(body), 'PATCH')
     }),
@@ -140,3 +145,4 @@ export const { useAdminDeleteReportMutation } = api
 export const { useGetDdosMutation } = api
 export const { useAdminPostResourceNodeMutation } = api
 export const { useAdminPatchReportMutation } = api
+export const { useGetSourceReportsQuery } = api

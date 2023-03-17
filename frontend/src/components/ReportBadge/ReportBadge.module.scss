@@ -58,8 +58,8 @@
         display: inline-flex;
         align-items: center;
         margin: 0rem 0 0 .5rem;
-        -webkit-mask: url('./../../../assets/closeIcon.svg') no-repeat 50% 50%;
-        mask: url('./../../../assets/closeIcon.svg') no-repeat 50% 50%;
+        -webkit-mask: url('./../../assets/closeIcon.svg') no-repeat 50% 50%;
+        mask: url('./../../assets/closeIcon.svg') no-repeat 50% 50%;
         -webkit-mask-size: cover;
         mask-size: cover;
         background: white;
@@ -68,7 +68,7 @@
 
     .approve_btn {
       *:before {
-        content: 'Прочитано';
+        content: 'Опубликовать';
       }
       *:after {
         content: '.';
@@ -78,8 +78,8 @@
         display: inline-flex;
         align-items: center;
         margin: 0rem 0 0 .5rem;
-        -webkit-mask: url('./../../../assets/checkIcon.svg') no-repeat 50% 50%;
-        mask: url('./../../../assets/checkIcon.svg') no-repeat 50% 50%;
+        -webkit-mask: url('./../../assets/checkIcon.svg') no-repeat 50% 50%;
+        mask: url('./../../assets/checkIcon.svg') no-repeat 50% 50%;
         -webkit-mask-size: cover;
         mask-size: cover;
       }

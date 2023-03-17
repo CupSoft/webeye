@@ -9,4 +9,5 @@ export type CardPropsType = {
   children?: string | React.ReactElement | never[];
   description?: string;
   bodyFlexStart?: boolean;
+  scrolled?: boolean;
 }

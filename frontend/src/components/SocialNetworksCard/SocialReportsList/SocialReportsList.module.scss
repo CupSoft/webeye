@@ -1,0 +1,13 @@
+.container {
+  @apply flex items-center flex-col;
+  overflow-y: auto;
+
+  .no_social_reports {
+    @apply p-3 pt-0 text-center;
+  }
+  
+  .title {
+    @apply text-lg font-semibold p-2.5 pt-0 pb-0;
+    text-decoration: underline;
+  }
+}

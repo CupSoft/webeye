@@ -1,0 +1,8 @@
+.container {
+  @apply flex items-center flex-col;
+  overflow-y: auto;
+
+  .no_reports {
+    @apply p-3 pt-0 text-center;;
+  }
+}

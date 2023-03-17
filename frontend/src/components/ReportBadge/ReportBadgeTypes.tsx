@@ -5,6 +5,7 @@ export type ReportBadgePropsType = {
   created_at?: string;
   resource_name?: string;
   uuid: string;
-  deleteClickHandler: (evt: React.MouseEvent) => void;
-  pacthClickHandler: (evt: React.MouseEvent) => void;
+  deleteClickHandler?: (evt: React.MouseEvent) => void;
+  pacthClickHandler?: (evt: React.MouseEvent) => void;
+  showModerated: boolean;
 }
