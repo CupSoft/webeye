@@ -3,6 +3,8 @@ import { useEffect, useRef } from 'react';
 import styles from './ColorCircle.module.scss';
 import { ColorCirclePropsType } from './ColorCircleTypes';
 
+const k = 10
+
 const ColorCircle = ({position, color, moveIndicator}: ColorCirclePropsType) => {
   const ref = useRef<HTMLElement>(null)
 
@@ -11,13 +13,12 @@ const ColorCircle = ({position, color, moveIndicator}: ColorCirclePropsType) => 
       return
     }
     const el = ref.current
-    
     if (position === 'right') {
-      el.style.top = el.offsetTop - moveIndicator.y / window.innerHeight * 100 + 'px'
-      el.style.left = el.offsetLeft - moveIndicator.x / window.innerWidth * 100 + 'px'
+      el.style.top = 17.5 - moveIndicator.y / window.innerHeight * k + '%'
+      el.style.right = -moveIndicator.x / window.innerWidth * k + '%'
     } else {
-      el.style.top = el.offsetTop + moveIndicator.y / window.innerHeight * 100 + 'px'
-      el.style.left = el.offsetLeft + moveIndicator.x / window.innerWidth * 100 + 'px'
+      el.style.bottom = 17.5 - moveIndicator.y / window.innerHeight * k + '%'
+      el.style.left = -moveIndicator.x / window.innerWidth * k + '%'
     }
 
   }, [moveIndicator])

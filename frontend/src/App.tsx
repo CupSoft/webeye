@@ -7,22 +7,16 @@ import Header from './components/Header/Header';
 import ColorCircle from './components/UI/ColorCircle/ColorCircle';
 import { useCheckUserMutation } from './services/apiService/apiService';
 
-let prevPageX = 0
-let prevPageY = 0
-
 function App() {
   const dispatch = useAppDispatch()
   const [checkUser, {isLoading}] = useCheckUserMutation()
   const [moveIndicator, setMoveIndicator] = useState({x: 0, y: 0})
 
   function mouseMoveHandler(evt: React.MouseEvent) {
-    const x = evt.pageX - prevPageX
-    const y = evt.pageY - prevPageY
+    const x = evt.pageX
+    const y = evt.pageY
 
     setMoveIndicator({x, y})
-
-    prevPageX = evt.pageX
-    prevPageY = evt.pageY
   }
 
   useEffect(() => {
@@ -48,8 +42,6 @@ function App() {
   if (isLoading) {
     return null
   }
-
-  
 
   return (
     <div className={styles.app} onMouseMove={mouseMoveHandler}>
