@@ -1,6 +1,6 @@
 import { BaseSyntheticEvent, RefObject, useRef, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
@@ -23,7 +23,8 @@ const AuthPage = () => {
   const [authError, setAuthError] = useState('')
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const params = new URLSearchParams(window.location.search)
+  const location = useLocation()
+  const params = new URLSearchParams(location.search)
 
   function onEnterDownHanlder(evt: React.KeyboardEvent) {
     if (evt.key !== 'Enter') {
