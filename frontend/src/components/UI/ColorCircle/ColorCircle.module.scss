@@ -4,7 +4,7 @@
   width: 33vh;
   z-index: 1 !important;
   filter: blur(250px);
-  opacity: .6;
+  opacity: .2;
 }
 
 .circle.right, .circle.left {
@@ -12,9 +12,11 @@
 }
 
 .circle.blue {
-  @apply bg-blue;
+  /* @apply bg-blue; */
+  background: #32cafd87;
 }
 
 .circle.yellow {
-  @apply bg-yellow;
+  /* @apply bg-yellow; */
+  background: #7214FF;
 }

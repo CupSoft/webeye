@@ -39,7 +39,8 @@ hr {
 }
 
 body, html, #root {
-  @apply bg-gray-dark;
+  /* @apply bg-gray-dark; */
+  background-color: #060B27;
   position: relative;
   min-width: 300px;
   font-size: 16px;

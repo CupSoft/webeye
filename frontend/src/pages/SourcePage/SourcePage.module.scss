@@ -8,6 +8,10 @@
     /* max-width: 105rem; */
   }
 
+  .range_input::-ms-track {
+    @apply bg-blue;
+  };
+
   .inputs {
     @apply flex flex-row flex-wrap p-3 -mb-3 pt-5;
 
@@ -73,7 +77,6 @@
     content: 'Получить отчёт'
   }
   .download_btn:after {
-    @apply bg-gray-50;
     content: '.';
     color: rgba(0, 0, 0, 0);
     height: 1.3rem;
