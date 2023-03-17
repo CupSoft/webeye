@@ -6,6 +6,8 @@ from tortoise.exceptions import DoesNotExist
 from app.core.base.base_models import BaseModel
 from app.applications.resources.schemas import Status
 
+from app.settings import config
+
 
 class Resource(BaseModel):
     name = fields.CharField(max_length=255, unique=True)
@@ -48,7 +50,7 @@ class Resource(BaseModel):
         status_count = {Status.ok: 0, Status.partial: 0, Status.critical: 0}
         async for node in self.nodes:
             async for check in node.checks:
-                results = await check.results.order_by("-datetime").limit(10)
+                results = await check.results.order_by("-datetime").limit(config.settings.SENSITIVITY)
                 for result in results:
                     status_count[result.status] += 1
 
