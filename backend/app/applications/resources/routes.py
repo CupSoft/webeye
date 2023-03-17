@@ -352,7 +352,7 @@ async def read_resource_reviews(
         )
 
     results = (
-        await CheckResult.filter(parent_check__resource_node__resource__uuid=uuid).order_by("-datetime").limit(100)
+        await CheckResult.filter(parent_check__resource_node__resource__uuid=uuid).order_by("-datetime").limit(3000)
     )
     # TODO: rewrite shitcode below
 
