@@ -10,7 +10,6 @@ from app.applications.resources.schemas import (
     ResourceNodeCreate,
     ResourceOutWithRating,
     ResourceNodeOutWithResourceUUID,
-    ResourceStatsIn,
     ResourceStatsOut,
     Status,
     IsDDOS,
@@ -24,7 +23,10 @@ from app.applications.users.models import User
 
 from typing import List
 
-from fastapi import APIRouter, HTTPException, Depends
+import pandas as pd
+import io
+
+from fastapi import APIRouter, HTTPException, Depends, Response
 
 from pydantic import UUID4
 
@@ -334,7 +336,7 @@ async def read_resource_reviews(
     return res
 
 
-@router.get("/{uuid}/export", response_model=List[ReviewOut], status_code=200)
+@router.get("/{uuid}/stats/export", status_code=200)
 async def read_resource_reviews(
     uuid: UUID4,
 ):
@@ -353,7 +355,40 @@ async def read_resource_reviews(
         await CheckResult.filter(parent_check__resource_node__resource__uuid=uuid).order_by("-datetime").limit(100)
     )
 
-    return None
+    prev_result = results[0]
+    prev_changed_datetime = datetime.datetime.now()
+    data = {"status": [], "time_from": [], "time_to": []}
+
+    for result in results[1:]:
+        result: CheckResult
+        if result.status != prev_result.status:
+            data["status"].append(str(prev_result.status).split(".")[1])
+            data["time_from"].append(prev_changed_datetime.strftime("%m/%d/%Y, %H:%M:%S"))
+            data["time_to"].append(result.datetime.strftime("%m/%d/%Y, %H:%M:%S"))
+
+            prev_changed_datetime = result.datetime
+
+        prev_result = result
+
+    df = pd.DataFrame(data)
+    sheet_name = resource.name.lower().strip() or "export"
+
+    bio = io.BytesIO()
+    writer = pd.ExcelWriter(bio, engine="xlsxwriter")
+
+    df.to_excel(writer, sheet_name=sheet_name, index=False, na_rep="NaN")
+
+    for column in df:
+        column_length = max(df[column].astype(str).map(len).max(), len(column))
+        col_idx = df.columns.get_loc(column)
+        writer.sheets[sheet_name].set_column(col_idx, col_idx, column_length)
+
+    writer.close()
+    bio.seek(0)
+
+    bytes_data = bio.read()
+
+    return Response(content=bytes_data, media_type="application/vnd.ms-excel")
 
 
 @router.get("/nodes/", response_model=List[ResourceNodeOutWithResourceUUID], status_code=200)

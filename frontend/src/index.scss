@@ -60,13 +60,13 @@ body, html, #root {
   -webkit-text-fill-color: transparent;
 }
 
-::-webkit-scrollbar-track {
+::-webkit-scrollbar-track, ::-moz-scrollbar-track {
   @apply bg-none;
 }
-::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb, ::-moz-scrollbar-thumb {
   @apply bg-gray-600 bg-opacity-50 rounded-3xl hover:bg-gray-700;
 }
-::-webkit-scrollbar {
+::-webkit-scrollbar, ::-moz-scrollbar {
   @apply w-0.5;
 }
 
