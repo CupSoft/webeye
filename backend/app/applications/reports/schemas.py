@@ -42,4 +42,5 @@ class ReportOutWithResourceName(Report):
 
 class ReportUpdate(Report):
     status: Status = None
-    text: str | None
+    text: str = None
+    is_moderated: bool = None

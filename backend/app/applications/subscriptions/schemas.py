@@ -32,6 +32,21 @@ class SubscriptionOut(Subscription):
         }
 
 
+class SubscriptionUpdate(BaseProperties):
+    to_telegram: bool = None
+    to_email: bool = None
+
+    class Config:
+        orm_mode = True
+
+        schema_extra = {
+            "example": {
+                "to_email": False,
+                "to_telegram": False,
+            }
+        }
+
+
 class SubscriptionOutWithResourceUUID(Subscription):
     resource_uuid: UUID4
 
