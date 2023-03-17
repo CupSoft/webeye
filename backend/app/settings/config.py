@@ -6,11 +6,19 @@ import string
 import random
 
 
+def sensitivity_cast(n):
+    n = int(n)
+    assert n > 0 and n < 100
+    return n
+
+
 class Settings:
     VERSION = "0.1.0"
     APP_TITLE = "Preprof"
     PROJECT_NAME = "Name"
     APP_DESCRIPTION = "Project for preprof"
+
+    SENSITIVITY = config("SENSITIVITY", cast=sensitivity_cast, default=5)
 
     SERVER_HOST = "localhost"
 
