@@ -68,7 +68,10 @@ const StateChart = ({sourceUuid, max_count=7, timedelta=3600}: StateChartPropsTy
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="end_datetime" stroke='#c5c5c5'/>
           <YAxis stroke='#c5c5c5'/>
-          {needShowTooltip && <Tooltip wrapperClassName={styles.chart_tooltip} />}
+          {needShowTooltip && <Tooltip
+            cursor={{fill: 'rgb(255, 255, 255, 0.1)'}}
+            wrapperClassName={styles.chart_tooltip} 
+          />}
           <Legend />
           <Bar dataKey="ok" stackId='1' fill="#0DC268" />
           <Bar dataKey="partial" stackId='1' fill="#FF9E00" />
