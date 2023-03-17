@@ -110,7 +110,7 @@ async def create_check_result(check_result_in: CheckResultCreate):
         .prefetch_related("resource_node__resource__subscriptions__user")
         .first()
     )
-    
+
     if check is None:
         raise HTTPException(
             status_code=404,

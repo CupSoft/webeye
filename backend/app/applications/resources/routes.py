@@ -42,9 +42,7 @@ async def read_resources(skip: int = 0, limit: int = 100):
     """
     Get resource list.
     """
-    resources = (
-        await Resource.all().prefetch_related("reviews").limit(limit).offset(skip)
-    )
+    resources = await Resource.all().prefetch_related("reviews").limit(limit).offset(skip)
     resources = sorted(resources, key=lambda r: len(r.reviews), reverse=True)
     res = []
     for resource in resources:
@@ -85,9 +83,7 @@ async def read_resource(
     """
     Get resource by uuid.
     """
-    resource: Resource = (
-        await Resource.filter(uuid=uuid).first().prefetch_related("reviews")
-    )
+    resource: Resource = await Resource.filter(uuid=uuid).first().prefetch_related("reviews")
 
     if resource is None:
         raise HTTPException(
@@ -103,12 +99,8 @@ async def read_resource(
     return ResourceOutWithRating(**resource_dict, rating=rating, url=url)
 
 
-@router.get(
-    "/{uuid}/stats/checks", response_model=List[ResourceStatsOut], status_code=200
-)
-async def read_resource_checks_stats(
-    uuid: UUID4, timedelta: datetime.timedelta, max_count: int = 10
-):
+@router.get("/{uuid}/stats/checks", response_model=List[ResourceStatsOut], status_code=200)
+async def read_resource_checks_stats(uuid: UUID4, timedelta: datetime.timedelta, max_count: int = 10):
     """
     Get resource checks stats.
     """
@@ -133,9 +125,7 @@ async def read_resource_checks_stats(
         for node in await resource.nodes.all():
             for check in await node.checks.all():
                 check: Check
-                for result in await check.results.filter(
-                    datetime__gte=start_datetime, datetime__lt=end_datetime
-                ).all():
+                for result in await check.results.filter(datetime__gte=start_datetime, datetime__lt=end_datetime).all():
                     result: CheckResult
                     if result.status == Status.ok:
                         ok_count += 1
@@ -156,12 +146,8 @@ async def read_resource_checks_stats(
     return resource_checks_stats[::-1]
 
 
-@router.get(
-    "/{uuid}/stats/reports", response_model=List[ResourceStatsOut], status_code=200
-)
-async def read_resource_reports_stats(
-    uuid: UUID4, timedelta: datetime.timedelta, max_count: int = 10
-):
+@router.get("/{uuid}/stats/reports", response_model=List[ResourceStatsOut], status_code=200)
+async def read_resource_reports_stats(uuid: UUID4, timedelta: datetime.timedelta, max_count: int = 10):
     """
     Get resource reports stats.
     """
@@ -183,9 +169,7 @@ async def read_resource_reports_stats(
         partial_count = 0
         critical_count = 0
 
-        for report in await resource.reports.filter(
-            datetime__gte=start_datetime, datetime__lt=end_datetime
-        ).all():
+        for report in await resource.reports.filter(datetime__gte=start_datetime, datetime__lt=end_datetime).all():
             report: ReportOut
             if report.status == Status.ok:
                 ok_count += 1
@@ -298,9 +282,7 @@ async def read_resource_reports(
     return list(resource.reports)
 
 
-@router.get(
-    "/{uuid}/social_reports", response_model=List[SocialReportOut], status_code=200
-)
+@router.get("/{uuid}/social_reports", response_model=List[SocialReportOut], status_code=200)
 async def read_resource_social_reports(
     uuid: UUID4,
     is_moderated: bool = False,
@@ -308,11 +290,7 @@ async def read_resource_social_reports(
     """
     Get resource social reports by uuid.
     """
-    resource = (
-        await Resource.filter(uuid=uuid)
-        .prefetch_related("social_network_reports")
-        .first()
-    )
+    resource = await Resource.filter(uuid=uuid).prefetch_related("social_network_reports").first()
 
     if resource is None:
         raise HTTPException(
@@ -321,9 +299,7 @@ async def read_resource_social_reports(
         )
 
     res = []
-    social_reports = await resource.social_network_reports.filter(
-        is_moderated=is_moderated
-    ).all()
+    social_reports = await resource.social_network_reports.filter(is_moderated=is_moderated).all()
     for social_report in social_reports:
         report_dict = await social_report.to_dict()
         res.append(SocialReportOut(**report_dict, resource_uuid=resource.uuid))
@@ -370,17 +346,13 @@ async def read_resource_reviews(
         )
 
     results = (
-        await CheckResult.filter(parent_check__resource_node__resource__uuid=uuid)
-        .order_by("-datetime")
-        .limit(100)
+        await CheckResult.filter(parent_check__resource_node__resource__uuid=uuid).order_by("-datetime").limit(100)
     )
 
     return None
 
 
-@router.get(
-    "/nodes/", response_model=List[ResourceNodeOutWithResourceUUID], status_code=200
-)
+@router.get("/nodes/", response_model=List[ResourceNodeOutWithResourceUUID], status_code=200)
 async def read_resources_nodes(
     skip: int = 0,
     limit: int = 100,
@@ -389,18 +361,12 @@ async def read_resources_nodes(
     """
     Get resource nodes list.
     """
-    resources_nodes = (
-        await ResourceNode.all().limit(limit).offset(skip).prefetch_related("resource")
-    )
+    resources_nodes = await ResourceNode.all().limit(limit).offset(skip).prefetch_related("resource")
 
     res = []
     for resource_node in resources_nodes:
         resource_node_dict = await resource_node.to_dict()
-        res.append(
-            ResourceNodeOutWithResourceUUID(
-                **resource_node_dict, resource_uuid=resource_node.resource.uuid
-            )
-        )
+        res.append(ResourceNodeOutWithResourceUUID(**resource_node_dict, resource_uuid=resource_node.resource.uuid))
 
     return res
 
@@ -429,9 +395,7 @@ async def create_node(
             detail="The resource with this uuid does not exist",
         )
 
-    resource_node = await ResourceNode.create(
-        url=resource_node_in.url, uuid=resource_node_in.uuid, resource=resource
-    )
+    resource_node = await ResourceNode.create(url=resource_node_in.url, uuid=resource_node_in.uuid, resource=resource)
 
     return resource_node
 

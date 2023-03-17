@@ -42,9 +42,7 @@ def init_middlewares(app: FastAPI):
 
 
 def get_app_list():
-    app_list = [
-        f"{settings.APPLICATIONS_MODULE}.{app}.models" for app in settings.APPLICATIONS
-    ]
+    app_list = [f"{settings.APPLICATIONS_MODULE}.{app}.models" for app in settings.APPLICATIONS]
     return app_list
 
 
@@ -96,7 +94,7 @@ def register_db(app: FastAPI, db_url: str = None):
 
 
 async def upgrade_db(app: FastAPI, db_url: str = None):
-    command = Command(tortoise_config=TORTOISE_ORM, app='models')
+    command = Command(tortoise_config=TORTOISE_ORM, app="models")
     await command.init()
     await command.upgrade()
 
@@ -115,11 +113,7 @@ def register_routers(app: FastAPI):
         tags=["checks"],
         dependencies=[Depends(get_current_admin)],
     )
-    app.include_router(
-        subscriptions_routes, prefix="/api/subscriptions", tags=["subscriptions"]
-    )
+    app.include_router(subscriptions_routes, prefix="/api/subscriptions", tags=["subscriptions"])
     app.include_router(reports_routes, prefix="/api/reports", tags=["reports"])
-    app.include_router(
-        social_reports_routes, prefix="/api/social_reports", tags=["social_reports"]
-    )
+    app.include_router(social_reports_routes, prefix="/api/social_reports", tags=["social_reports"])
     app.include_router(reviews_routes, prefix="/api/reviews", tags=["reviews"])
