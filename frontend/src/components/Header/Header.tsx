@@ -64,7 +64,7 @@ const Header = () => {
           >{isAuth ? 'Выйти' : 'Войти'}</Button>
         </span>
       </div>
-      <hr/>
+      <hr className={styles.hr}/>
     </>
   );
 };

@@ -1,6 +1,14 @@
+.hr {
+  display: flex;
+  width: 100%;
+  /* max-width: max(76rem, 46%); */
+  align-self: center;
+}
+
 .header {
-  @apply flex justify-center items-center px-10 py-3.5;
-  /* align-self: center; */
+  @apply flex justify-center items-center px-10 py-3.5 w-full;
+  max-width: max(79.5rem, 46%);
+  align-self: center;
 
   .title {
     min-width: 4rem;
