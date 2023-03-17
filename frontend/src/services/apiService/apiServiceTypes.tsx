@@ -88,6 +88,15 @@ export type ReportRequestTypes = {
   text: string;
 }
 
+export type ReportResponseTypes = {
+  status: 'critical' | 'OK';
+  is_moderated: boolean;
+  uuid?: string;
+  text: string;
+  created_at: string;
+  resource_name: string;
+}
+
 export type GetCheckResultsResponseTypes = {
   end_datetime: string;
   ok: number;

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { AdminPostResourceTypes, GetBotTokenResponseTypes, GetCheckResultsRequestTypes, GetCheckResultsResponseTypes, ReportRequestTypes, ResourceNode, ReviewGetTypes, ReviewRequestTypes, SocialReporGetTypes, SourceGetRequestTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPatchTypes, SubscriptionPostResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
+import { AdminPostResourceTypes, GetBotTokenResponseTypes, GetCheckResultsRequestTypes, GetCheckResultsResponseTypes, ReportRequestTypes, ReportResponseTypes, ResourceNode, ReviewGetTypes, ReviewRequestTypes, SocialReporGetTypes, SourceGetRequestTypes, SourceGetTypes, SubscriptionGetResponseTypes, SubscriptionPatchTypes, SubscriptionPostResponseTypes, SubscriptionPostTypes, UserLoginResponseTypes, UserRegistrRequestTypes, UserRegistrResponseTypes } from './apiServiceTypes'
 
 const baseUrl = `${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/api/`
 
@@ -75,7 +75,7 @@ export const api = createApi({
     postReport: builder.mutation<void, ReportRequestTypes>({
       query: (report) => new CreateRequest('reports/', JSON.stringify(report))
     }),
-    getAllReports: builder.query<ReportRequestTypes[], void>({
+    getAllReports: builder.query<ReportResponseTypes[], void>({
       query: () => ({
         url: baseUrl + 'reports/'
       })
