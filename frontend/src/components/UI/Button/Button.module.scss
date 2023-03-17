@@ -1,5 +1,8 @@
 .btn {
-  @apply py-3 rounded-3xl m-2.5 w-auto text-gray-50;
+  @apply rounded-3xl m-2.5 w-auto text-gray-50;
+
+  padding-top: .65rem;
+  padding-bottom: .65rem;
 
   &:disabled {
     opacity: 0.5;
@@ -16,7 +19,13 @@
 }
 
 .yellow {
-  @apply border-2 border-yellow hover:bg-none transition-all disabled:hover:bg-none;
+  @apply border-yellow hover:bg-none transition-all disabled:hover:bg-none;
+
+  &:hover {
+    *:before {
+      text-decoration: underline;
+    }
+  }
 }
 
 .squared {
@@ -41,23 +50,21 @@
   *:after {
     @apply bg-green border-green transition-all;
   }
+}
 
-  &:hover {
-    @apply text-white bg-green border-green;
+.green:disabled:hover {
+  @apply text-green bg-green bg-opacity-0 border-green border-opacity-0;
+}
 
-    *:before {
-      @apply text-white;
-    }
+.green:hover {
+  @apply text-white bg-green border-green;
 
-    *:after {
-      @apply bg-white;
-    }
+  *:before {
+    @apply text-white;
   }
 
-  &:disabled {
-    &:hover {
-      @apply text-green bg-green/[0] border-green/[0];
-    }
+  *:after {
+    @apply bg-white;
   }
 }
 
@@ -66,7 +73,20 @@
 }
 
 .turquoise {
-  @apply border-2 border-turquoise hover:bg-turquoise disabled:hover:bg-turquoise/[0];
+  @apply border-2 border-turquoise disabled:hover:bg-turquoise/[0] hover:bg-turquoise;
+
+  *:after {
+    @apply bg-white;
+  }
+
+  &:hover {
+    *:before {
+      @apply text-black;
+    }
+    *:after {
+      @apply bg-black;
+    }
+  }
 }
 
 .fill_turquoise {

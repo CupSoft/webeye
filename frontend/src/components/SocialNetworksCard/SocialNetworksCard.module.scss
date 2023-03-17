@@ -1,3 +1,11 @@
-.no_social_reports {
-  @apply p-3 pt-0 text-center;
+.source_select {
+  @apply outline-none mx-2.5 mt-0.5 mb-3.5 p-1.5 cursor-pointer bg-focus-input;
+
+  * {
+    @apply outline-none;
+  }
+}
+
+.hr {
+  @apply my-2.5;
 }

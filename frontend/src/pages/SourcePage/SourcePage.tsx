@@ -67,6 +67,7 @@ const SourcePage = () => {
             type="range" 
             name="timedelta" 
             min={1}
+            className={styles.range_input}
             defaultValue={timeDelta}
             onChange={(event) => setTimeDelta(+event.target.value)}
             max={4}
@@ -77,6 +78,7 @@ const SourcePage = () => {
           <input 
             type="range" 
             name="maxCount"
+            className={styles.range_input}
             onChange={(event) => setMaxCount(+event.target.value)}
             defaultValue={maxCount}
             min={2}
@@ -87,7 +89,7 @@ const SourcePage = () => {
       <div className={styles.cards}>
         <ReviewCard sourceUuid={source.uuid}/>
         <UsersReviewsCard sourceUuid={source.uuid}/>
-        <SocialNetworksCard sourceUuid={source.uuid}/>
+        <SocialNetworksCard sourceName={source.name} sourceUuid={source.uuid}/>
         <SubscriptionCard sourceUuid={source.uuid}/>
       </div>
     </div>

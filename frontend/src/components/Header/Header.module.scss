@@ -29,6 +29,10 @@
     @apply flex flex-wrap justify-end items-center ml-2.5 -mr-4 -m-2 w-1/2;
   }
 
+  .login_btn, .tg_bot {
+    @apply font-semibold;
+  }
+
   span {
     @apply m-0;
   }

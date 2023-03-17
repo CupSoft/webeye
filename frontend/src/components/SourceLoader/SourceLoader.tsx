@@ -7,7 +7,7 @@ const SourceLoader = () => {
       speed={2}
       width='100%'
       height='37rem'
-      backgroundColor="#1c253d"
+      backgroundColor="#11152F"
       foregroundColor="#2f364e"
       style={{
         border: '1px solid rgb(40, 45, 69)',
