@@ -28,7 +28,7 @@ const SourcePage = () => {
   }
 
   function summaryClickHandler() {
-    window.open(`${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/resources/${uuid}/stats/export`, '_blank')
+    window.open(`${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/api/resources/${uuid}/stats/export`, '_blank')
   }
 
   function siteOpenClickHandler() {
