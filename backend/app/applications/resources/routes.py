@@ -14,10 +14,12 @@ from app.applications.resources.schemas import (
     Status,
     IsDDOS,
 )
+from app.applications.checks.schemas import CheckCreate
 from app.applications.reports.schemas import ReportOut
 from app.applications.social_reports.schemas import SocialReportOut
 from app.applications.reviews.schemas import ReviewOut
 from app.core.auth.utils.contrib import get_current_admin, get_current_user
+from app.core.base.utils import exclude_keys
 
 from app.applications.users.models import User
 
@@ -451,6 +453,10 @@ async def create_node(
 
     resource_node = await ResourceNode.create(url=resource_node_in.url, uuid=resource_node_in.uuid, resource=resource)
 
+    check_in = CheckCreate(expectation = '200', request_type='GET', resource_node_uuid=resource_node.uuid)
+    check = await Check.create(**exclude_keys(check_in.dict(), {"resource_node_uuid"}), resource_node=resource_node)
+
+    
     return resource_node
 
 
