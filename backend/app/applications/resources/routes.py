@@ -57,7 +57,10 @@ async def read_resources(skip: int = 0, limit: int = 100):
 
 @router.get("/is_ddos", response_model=IsDDOS, status_code=200)
 async def is_ddos_handler():
-    return IsDDOS(is_ddos=(await Resource.exclude(status=Status.ok).count() / await Resource.all().count()) > 0.5)
+    try:
+        return IsDDOS(is_ddos=(await Resource.exclude(status=Status.ok).count() / await Resource.all().count()) > 0.5)
+    except:
+        return IsDDOS(is_ddos=False)
 
 
 @router.post("/", response_model=ResourceOut, status_code=201)
